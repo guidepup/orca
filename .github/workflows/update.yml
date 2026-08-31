@@ -143,17 +143,20 @@ jobs:
           speech-dispatcher \
             --run-single \
             --timeout 0 >/dev/null 2>&1 &
-          sleep 1
+          sleep 2
 
-          export DISPLAY=:99
           Xvfb :99 >/dev/null 2>&1 &
+          export DISPLAY=:99
           sleep 1
 
           eval "$(dbus-launch --sh-syntax --exit-with-session)"
-          sleep 1
+          sleep 5
 
-          /usr/libexec/at-spi-bus-launcher >/dev/null 2>&1 &
-          sleep 1
+          echo "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS"
+          echo "DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID"
+
+          /usr/libexec/at-spi-bus-launcher &
+          sleep 5
 
           ./orca/bin/orca --version
 
