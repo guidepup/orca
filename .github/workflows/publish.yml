@@ -16,7 +16,13 @@ jobs:
 
       - name: Build archive
         run: |
-          zip -r "./guidepup-orca-${{ github.event.release.tag_name }}.zip" .
+          mkdir -p ./archive
+          cp -a ./orca/. ./archive/
+          cp ./guidepup.ini ./archive/
+          cp ./LICENSE ./archive/
+
+          tar -czf "./guidepup-orca-${{ github.event.release.tag_name }}.tar.gz" \
+            -C ./archive .
 
       - name: Publish
         env:
@@ -24,5 +30,5 @@ jobs:
         run: |
           gh release upload \
             "${{ github.event.release.tag_name }}" \
-            "guidepup-orca-${{ github.event.release.tag_name }}.zip" \
+            "guidepup-orca-${{ github.event.release.tag_name }}.tar.gz" \
             --clobber
