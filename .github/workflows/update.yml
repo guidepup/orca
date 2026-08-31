@@ -177,6 +177,13 @@ jobs:
           dconf list /org/gnome/orca/
           dconf list /org/gnome/orca/default/
 
+          export GSETTINGS_SCHEMA_DIR="$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas"
+
+          glib-compile-schemas "$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas"
+
+          gsettings list-schemas | grep -i orca
+          gsettings list-relocatable-schemas | grep -i orca
+
           gsettings list-recursively \
             org.gnome.Orca.Braille:/org/gnome/orca/default/braille/
 
