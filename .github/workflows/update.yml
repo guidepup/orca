@@ -112,29 +112,10 @@ jobs:
           meson compile -C _build
           meson install -C _build
 
-      - name: Create isolated dconf database
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          rm -rf .dconf
-          mkdir -p .dconf
-
-          printf '%s\n' \
-            "user-db:guidepup" \
-            > .dconf/profile
-
-          touch .dconf/guidepup
-
       - name: Initialise Orca defaults
         shell: bash
         run: |
           set -euo pipefail
-
-          export DCONF_PROFILE="$GITHUB_WORKSPACE/.dconf/profile"
-          export GSETTINGS_SCHEMA_DIR="$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas"
-
-          dconf reset -f /org/gnome/orca/
 
           pulseaudio \
             --start \
@@ -159,24 +140,119 @@ jobs:
 
           ./orca/bin/orca --version
 
-          timeout 10s \
+          timeout 20s \
             ./orca/bin/orca --replace \
             > /tmp/orca.log 2>&1 || true
 
           cat /tmp/orca.log
 
-      - name: Dump Orca settings
+      - name: List Orca settings
         shell: bash
         run: |
           set -euo pipefail
 
-          export DCONF_PROFILE="$GITHUB_WORKSPACE/.dconf/profile"
-          export GSETTINGS_SCHEMA_DIR="$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas"
+          dconf list /org/gnome/orca/
+          dconf list /org/gnome/orca/default/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Braille:/org/gnome/orca/default/braille/
+
+          gsettings list-recursively \
+            org.gnome.Orca.CaretNavigation:/org/gnome/orca/default/caret-navigation/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Chat:/org/gnome/orca/default/chat/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Document:/org/gnome/orca/default/document/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Extensions:/org/gnome/orca/default/extensions/
+
+          gsettings list-recursively \
+            org.gnome.Orca.FlatReview:/org/gnome/orca/default/flat-review/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Keybindings:/org/gnome/orca/default/keybindings/
+
+          gsettings list-recursively \
+            org.gnome.Orca.LiveRegions:/org/gnome/orca/default/live-regions/
+
+          gsettings list-recursively \
+            org.gnome.Orca.MathPresentation:/org/gnome/orca/default/math-presentation/
+
+          gsettings list-recursively \
+            org.gnome.Orca.MouseReview:/org/gnome/orca/default/mouse-review/
+
+          gsettings list-recursively \
+            org.gnome.Orca.ProfileMetadata:/org/gnome/orca/default/metadata/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Pronunciations:/org/gnome/orca/default/pronunciations/
+
+          gsettings list-recursively \
+            org.gnome.Orca.SayAll:/org/gnome/orca/default/say-all/
+
+          gsettings list-recursively \
+            org.gnome.Orca.SleepMode:/org/gnome/orca/default/sleep-mode/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Sound:/org/gnome/orca/default/sound/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Speech:/org/gnome/orca/default/speech/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Spellcheck:/org/gnome/orca/default/spellcheck/
+
+          gsettings list-recursively \
+            org.gnome.Orca.StructuralNavigation:/org/gnome/orca/default/structural-navigation/
+
+          gsettings list-recursively \
+            org.gnome.Orca.SystemInformation:/org/gnome/orca/default/system-information/
+
+          gsettings list-recursively \
+            org.gnome.Orca.TableNavigation:/org/gnome/orca/default/table-navigation/
+
+          gsettings list-recursively \
+            org.gnome.Orca.TextAttributes:/org/gnome/orca/default/text-attributes/
+
+          gsettings list-recursively \
+            org.gnome.Orca.TypingEcho:/org/gnome/orca/default/typing-echo/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/default/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/uppercase/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/hyperlink/
+
+          gsettings list-recursively \
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/system/
+
+      - name: Dump Orca default settings
+        shell: bash
+        run: |
+          set -euo pipefail
 
           dconf dump /org/gnome/orca/ > settings.ini
+          dconf dump /org/gnome/orca/default/ > default.ini
 
           echo "Generated settings:"
           cat settings.ini
+
+          echo "Generated default:"
+          cat default.ini
+
+      - name: Cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf source
+          rm -rf orca.tar.xz
 
       - name: Record version
         run: |
