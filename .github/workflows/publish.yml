@@ -1,0 +1,28 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build archive
+        run: |
+          zip -r "./guidepup-orca-${{ github.event.release.tag_name }}.zip" .
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload \
+            "${{ github.event.release.tag_name }}" \
+            "guidepup-orca-${{ github.event.release.tag_name }}.zip" \
+            --clobber
