@@ -49,6 +49,7 @@ jobs:
             cargo \
             dbus \
             dbus-x11 \
+            dconf-cli \
             gettext \
             git \
             itstool \
