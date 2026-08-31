@@ -88,6 +88,7 @@ jobs:
             libyelp-dev \
             meson \
             ninja-build \
+            orca \
             pulseaudio \
             python-gi-dev \
             python3 \
@@ -99,6 +100,8 @@ jobs:
             python3-pip \
             python3-psutil \
             python3-speechd \
+            speech-dispatcher \
+            speech-dispatcher-espeak-ng \
             xvfb \
             yelp-tools
 
