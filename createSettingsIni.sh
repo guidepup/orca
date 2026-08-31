@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCHEMA_FILE="$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas/org.gnome.Orca.gschema.xml"
-OUTPUT_FILE="$GITHUB_WORKSPACE/guidepup.ini"
+OUTPUT_FILE="$GITHUB_WORKSPACE/default.ini"
 
 if [[ ! -f "$SCHEMA_FILE" ]]; then
     echo "ERROR: Schema file not found: $SCHEMA_FILE" >&2
