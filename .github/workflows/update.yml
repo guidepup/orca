@@ -177,93 +177,91 @@ jobs:
         run: |
           set -euo pipefail
 
-          dconf list /org/gnome/orca/
-          dconf list /org/gnome/orca/default/
+          dconf list /org/gnome/orca/ || true
+          dconf list /org/gnome/orca/default/ || true
 
           export GSETTINGS_SCHEMA_DIR="$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas"
 
-          glib-compile-schemas "$GITHUB_WORKSPACE/orca/share/glib-2.0/schemas"
-
-          gsettings list-schemas | grep -i orca
-          gsettings list-relocatable-schemas | grep -i orca
+          gsettings list-schemas | grep -i orca || true
+          gsettings list-relocatable-schemas | grep -i orca || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Braille:/org/gnome/orca/default/braille/
+            org.gnome.Orca.Braille:/org/gnome/orca/default/braille/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.CaretNavigation:/org/gnome/orca/default/caret-navigation/
+            org.gnome.Orca.CaretNavigation:/org/gnome/orca/default/caret-navigation/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Chat:/org/gnome/orca/default/chat/
+            org.gnome.Orca.Chat:/org/gnome/orca/default/chat/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Document:/org/gnome/orca/default/document/
+            org.gnome.Orca.Document:/org/gnome/orca/default/document/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Extensions:/org/gnome/orca/default/extensions/
+            org.gnome.Orca.Extensions:/org/gnome/orca/default/extensions/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.FlatReview:/org/gnome/orca/default/flat-review/
+            org.gnome.Orca.FlatReview:/org/gnome/orca/default/flat-review/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Keybindings:/org/gnome/orca/default/keybindings/
+            org.gnome.Orca.Keybindings:/org/gnome/orca/default/keybindings/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.LiveRegions:/org/gnome/orca/default/live-regions/
+            org.gnome.Orca.LiveRegions:/org/gnome/orca/default/live-regions/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.MathPresentation:/org/gnome/orca/default/math-presentation/
+            org.gnome.Orca.MathPresentation:/org/gnome/orca/default/math-presentation/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.MouseReview:/org/gnome/orca/default/mouse-review/
+            org.gnome.Orca.MouseReview:/org/gnome/orca/default/mouse-review/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.ProfileMetadata:/org/gnome/orca/default/metadata/
+            org.gnome.Orca.ProfileMetadata:/org/gnome/orca/default/metadata/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Pronunciations:/org/gnome/orca/default/pronunciations/
+            org.gnome.Orca.Pronunciations:/org/gnome/orca/default/pronunciations/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.SayAll:/org/gnome/orca/default/say-all/
+            org.gnome.Orca.SayAll:/org/gnome/orca/default/say-all/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.SleepMode:/org/gnome/orca/default/sleep-mode/
+            org.gnome.Orca.SleepMode:/org/gnome/orca/default/sleep-mode/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Sound:/org/gnome/orca/default/sound/
+            org.gnome.Orca.Sound:/org/gnome/orca/default/sound/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Speech:/org/gnome/orca/default/speech/
+            org.gnome.Orca.Speech:/org/gnome/orca/default/speech/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Spellcheck:/org/gnome/orca/default/spellcheck/
+            org.gnome.Orca.Spellcheck:/org/gnome/orca/default/spellcheck/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.StructuralNavigation:/org/gnome/orca/default/structural-navigation/
+            org.gnome.Orca.StructuralNavigation:/org/gnome/orca/default/structural-navigation/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.SystemInformation:/org/gnome/orca/default/system-information/
+            org.gnome.Orca.SystemInformation:/org/gnome/orca/default/system-information/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.TableNavigation:/org/gnome/orca/default/table-navigation/
+            org.gnome.Orca.TableNavigation:/org/gnome/orca/default/table-navigation/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.TextAttributes:/org/gnome/orca/default/text-attributes/
+            org.gnome.Orca.TextAttributes:/org/gnome/orca/default/text-attributes/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.TypingEcho:/org/gnome/orca/default/typing-echo/
+            org.gnome.Orca.TypingEcho:/org/gnome/orca/default/typing-echo/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/default/
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/default/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/uppercase/
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/uppercase/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/hyperlink/
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/hyperlink/ || true
 
           gsettings list-recursively \
-            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/system/
+            org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/system/ || true
 
       - name: Dump Orca default settings
         if: steps.current.outputs.skip != 'true'
@@ -272,13 +270,9 @@ jobs:
           set -euo pipefail
 
           dconf dump /org/gnome/orca/ > settings.ini
-          dconf dump /org/gnome/orca/default/ > default.ini
 
           echo "Generated settings:"
           cat settings.ini
-
-          echo "Generated default:"
-          cat default.ini
 
       - name: Cleanup
         if: steps.current.outputs.skip != 'true'
