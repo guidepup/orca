@@ -68,11 +68,11 @@ jobs:
             meson \
             ninja-build \
             pulseaudio \
+            python-gi-dev \
             python3 \
             python3-brlapi \
             python3-dasbus \
             python3-gi \
-            python3-gi-dev \
             python3-louis \
             python3-lxml \
             python3-pip \
