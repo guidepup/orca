@@ -141,15 +141,15 @@ jobs:
           pulseaudio \
             --start \
             --exit-idle-time=-1 \
-            --log-target=stderr >/dev/null 2>&1 &
+            --log-target=stderr &
           sleep 1
 
           speech-dispatcher \
             --run-single \
-            --timeout 0 >/dev/null 2>&1 &
-          sleep 2
+            --timeout 0 &
+          sleep 5
 
-          Xvfb :99 >/dev/null 2>&1 &
+          Xvfb :99 &
           export DISPLAY=:99
           sleep 1
 
@@ -157,7 +157,7 @@ jobs:
           sleep 5
 
           /usr/libexec/at-spi-bus-launcher \
-            --launch-immediately >/dev/null 2>&1 &
+            --launch-immediately &
           sleep 5
 
           ./orca/bin/orca --version
