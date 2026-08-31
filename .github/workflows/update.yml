@@ -25,9 +25,8 @@ jobs:
           version=$(
             curl -fsSL https://download.gnome.org/sources/orca/cache.json |
             jq -r '
-              .[] |
-              select(.version | test("^[0-9]+\\.[0-9]+$")) |
-              .version
+              .[2].orca[]
+              | select(test("^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"))
             ' |
             sort -V |
             tail -1
