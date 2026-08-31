@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  generate:
+  update:
     runs-on: ubuntu-26.04
 
     steps:
@@ -40,9 +40,27 @@ jobs:
           series="${version%.*}"
 
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "series=$series" >> "$GITHUB_OUTPUT"
           echo "url=https://download.gnome.org/sources/orca/${series}/orca-${version}.tar.xz" >> "$GITHUB_OUTPUT"
 
+      - name: Skip if already current
+        id: current
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -f version.txt ]; then
+            current="$(cat version.txt)"
+          else
+            current=""
+          fi
+
+          if [ "$current" = "${{ steps.release.outputs.version }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install build dependencies
+        if: steps.current.outputs.skip != 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -85,12 +103,14 @@ jobs:
             yelp-tools
 
       - name: Download Orca
+        if: steps.current.outputs.skip != 'true'
         run: |
           curl -fsSL \
             "${{ steps.release.outputs.url }}" \
             -o orca.tar.xz
 
       - name: Build and install Orca
+        if: steps.current.outputs.skip != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -113,6 +133,7 @@ jobs:
           meson install -C _build
 
       - name: Initialise Orca defaults
+        if: steps.current.outputs.skip != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -135,7 +156,8 @@ jobs:
           eval "$(dbus-launch --sh-syntax --exit-with-session)"
           sleep 5
 
-          /usr/libexec/at-spi-bus-launcher --launch-immediately >/dev/null 2>&1 &
+          /usr/libexec/at-spi-bus-launcher \
+            --launch-immediately >/dev/null 2>&1 &
           sleep 5
 
           ./orca/bin/orca --version
@@ -147,6 +169,7 @@ jobs:
           cat /tmp/orca.log
 
       - name: List Orca settings
+        if: steps.current.outputs.skip != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -233,6 +256,7 @@ jobs:
             org.gnome.Orca.Voice:/org/gnome/orca/default/voice-sets/primary/system/
 
       - name: Dump Orca default settings
+        if: steps.current.outputs.skip != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -247,6 +271,7 @@ jobs:
           cat default.ini
 
       - name: Cleanup
+        if: steps.current.outputs.skip != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -255,23 +280,26 @@ jobs:
           rm -rf orca.tar.xz
 
       - name: Record version
+        if: steps.current.outputs.skip != 'true'
+        shell: bash
         run: |
           echo "${{ steps.release.outputs.version }}" > version.txt
 
       - name: Commit and create PR
+        if: steps.current.outputs.skip != 'true'
         uses: peter-evans/create-pull-request@v8
         with:
-          commit-message: "feat: add Orca ${{ steps.release.outputs.version }}"
+          commit-message: "feat: update Orca to ${{ steps.release.outputs.version }}"
           committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          branch: orca-initial
+          branch: orca-${{ steps.release.outputs.version }}
           delete-branch: true
-          title: Add Orca ${{ steps.release.outputs.version }}
+          title: Update Orca to ${{ steps.release.outputs.version }}
           body: |
-            Initial Orca installation and default settings.
+            Automated update.
 
             Upstream release:
-            https://download.gnome.org/sources/orca/${{ steps.release.outputs.version }}/orca-${{ steps.release.outputs.version }}.tar.xz
+            https://download.gnome.org/sources/orca/${{ steps.release.outputs.series }}/orca-${{ steps.release.outputs.version }}.tar.xz
           assignees: cmorten
           reviewers: cmorten
           draft: false
