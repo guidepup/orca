@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import net from "node:net";
+import path from "node:path";
 import readline from "node:readline";
 
 const socketPath = process.env.GUIDEPUP_ORCA_SPEECH_SOCKET;
@@ -18,12 +19,14 @@ function replyToSpeechDispatcher(text) {
 
 const clients = new Set();
 
-function broadcast(message) {
-  const data = `${JSON.stringify(message)}\n`;
+function createGuidepupMessage({ type, data }) {
+  return `${JSON.stringify({ type, data })}\n`;
+}
 
+function broadcast(message) {
   for (const socket of clients) {
     if (!socket.destroyed) {
-      socket.write(data);
+      socket.write(message);
     }
   }
 }
@@ -40,8 +43,7 @@ function startSocketServer() {
   const server = net.createServer((socket) => {
     clients.add(socket);
 
-    // TODO: acknowledge the connection
-    // TODO: send when connection closing/errored and closing
+    socket.write(createGuidepupMessage({ type: "ready" }));
 
     socket.on("close", () => {
       clients.delete(socket);
@@ -154,30 +156,21 @@ try {
         break;
       }
 
-      broadcast({
-        type: "speech",
-        data,
-      });
+      broadcast(createGuidepupMessage({ type: "speech", data }));
 
       replyToSpeechDispatcher("200 OK SPEAKING");
       replyToSpeechDispatcher("701 BEGIN");
       replyToSpeechDispatcher("702 END");
     } else if (line === "STOP") {
-      broadcast({
-        type: "stop",
-      });
+      broadcast(createGuidepupMessage({ type: "stop" }));
 
       replyToSpeechDispatcher("703 STOP");
     } else if (line === "PAUSE") {
-      broadcast({
-        type: "pause",
-      });
+      broadcast(createGuidepupMessage({ type: "pause" }));
 
       replyToSpeechDispatcher("704 PAUSE");
     } else if (line === "CANCEL") {
-      broadcast({
-        type: "cancel",
-      });
+      broadcast(createGuidepupMessage({ type: "cancel" }));
 
       replyToSpeechDispatcher("703 STOP");
     } else if (line === "QUIT" || line === "END") {
