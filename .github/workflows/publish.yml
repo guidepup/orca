@@ -19,6 +19,7 @@ jobs:
           mkdir -p ./archive
           cp -a ./orca/. ./archive/
           cp -a ./speechd ./archive/
+          cp ./default.ini ./archive/
           cp ./guidepup.ini ./archive/
           cp ./LICENSE ./archive/
 
