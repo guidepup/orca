@@ -42,7 +42,7 @@ with open(output_file, "w", encoding="utf-8") as out:
 
         path = "".join(path_name)
 
-        out.write(f"[/org/gnome/orca/guidepup/{path}/]\n")
+        out.write(f"[{path}]\n")
 
         for key in schema.findall("key"):
             key_name = key.attrib["name"]
