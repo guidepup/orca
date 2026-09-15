@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_key_bindings" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_profiles"/>
+  <title type="sort">8. Tipkovni prečaci</title>
+  <desc>Dodjeljivanje, promjena i uklanjanje prečaca naredbama</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Tipkovni prečaci</title>
+  <p>Orca ima mnogo naredbi, od kojih su nekima dodijeljeni tipkovni prečaci, a nekima nisu. Orcinim naredbama možete dodijeliti prečace, promijeniti ih ili ukloniti prateći korake u nastavku.</p>
+  <steps>
+    <title>Dodjeljivanje prečaca naredbi bez prečaca</title>
+    <item>
+      <p>Otvorite dijalog <link xref="preferences">Postavke Orce</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na karticu <gui>Tipkovni prečaci</gui>.</p>
+    </item>
+    <item>
+      <p>Strelicama se pomaknite do ćelije koja sadrži naredbu kojoj želite dodijeliti tipkovni prečac.</p>
+    </item>
+    <item>
+      <p>Pomaknite se jednom strelicom udesno. Time će fokus biti postavljen u stupac <gui>Tipkovni prečac</gui>. Pritisnite <key>Return</key>.</p>
+    </item>
+    <item>
+      <p>Pritisnite željenu kombinaciju tipki.</p></item>
+    <item>
+      <p>Pritisnite <key>Return</key> za potvrdu nove kombinacije. Novi tipkovni prečac bit će spremljen, a potvrdni okvir u zadnjem stupcu (stupac <gui>Promijenjeno</gui>) označit će da je tipkovni prečac promijenjen.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Primijeni</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Mijenjanje postojećih prečaca</title>
+    <item>
+      <p>Otvorite dijalog <link xref="preferences">Postavke Orce</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na karticu <gui>Tipkovni prečaci</gui>.</p>
+    </item>
+    <item>
+      <p>Strelicama se pomaknite do ćelije koja sadrži prečac koji želite promijeniti i pritisnite <key>Return</key>.</p>
+    </item>
+    <item>
+        <p>Pritisnite željenu kombinaciju tipki.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>Return</key> za potvrdu nove kombinacije. Novi tipkovni prečac bit će spremljen, a potvrdni okvir u zadnjem stupcu (stupac <gui>Promijenjeno</gui>) označit će da je tipkovni prečac promijenjen.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Primijeni</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Vraćanje izvornih prečaca</title>
+    <item>
+      <p>Otvorite dijalog <link xref="preferences">Postavke Orce</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na karticu <gui>Tipkovni prečaci</gui>.</p>
+    </item>
+    <item>
+      <p>Strelicama se pomaknite do stupca "promijenjeno" povezanog s tim tipkovnim prečacem.</p>
+    </item>
+    <item>
+      <p>Uklonite oznaku iz potvrdnog okvira pritiskom <key>Razmaknica</key>.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Primijeni</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Uklanjanje prečaca s naredbi</title>
+    <item>
+      <p>Otvorite dijalog <link xref="preferences">Postavke Orce</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na karticu <gui>Tipkovni prečaci</gui>.</p>
+    </item>
+    <item>
+      <p>Strelicama se pomaknite do ćelije koja sadrži prečac koji želite izbrisati i pritisnite <key>Return</key>.</p>
+    </item>
+    <item>
+      <p>Kada se od vas zatraži novi tipkovni prečac, pritisnite <key>Delete</key> ili <key>BackSpace</key>. Bit će vam rečeno da je tipkovni prečac uklonjen.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>Return</key> za potvrdu.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Primijeni</gui>.</p>
+    </item>
+  </steps>
+</page>

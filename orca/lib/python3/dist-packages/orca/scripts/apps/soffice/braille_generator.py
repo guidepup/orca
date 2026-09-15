@@ -22,6 +22,7 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from typing import TYPE_CHECKING, Any
 
 from orca import braille, braille_generator, debug
@@ -50,31 +51,33 @@ class BrailleGenerator(braille_generator.BrailleGenerator):
 
         def wrapper(*args, **kwargs):
             result = func(*args, **kwargs)
-            tokens = [f"SOFFICE BRAILLE GENERATOR: {func.__name__}:", result]
+            tokens = ["SOFFICE BRAILLE GENERATOR:", func.__name__, ":", result]
             debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return result
 
         return wrapper
 
     @log_generator_output
-    def _generate_accessible_role(self, obj: Atspi.Accessible, **args) -> list[Any]:
+    def _generate_accessible_role(self, obj: Atspi.Accessible) -> list[Any]:
         if self._script.utilities.is_document(obj):
             return []
 
-        return super()._generate_accessible_role(obj, **args)
+        return super()._generate_accessible_role(obj)
 
     @log_generator_output
-    def _generate_real_table_cell(self, obj: Atspi.Accessible, **args) -> list[Any]:
+    def _generate_table_cell_contents(self, obj: Atspi.Accessible) -> list[Any]:
         if not self._script.utilities.in_document_content(obj):
-            return super()._generate_real_table_cell(obj, **args)
+            return super()._generate_table_cell_contents(obj)
 
         if not AXObject.get_child_count(obj):
-            result = super()._generate_real_table_cell(obj, **args)
+            result = super()._generate_table_cell_contents(obj)
         else:
             result = []
-            args["formatType"] = "focused"
+            original_context = self._context
             for child in AXObject.iter_children(obj):
-                result.extend(self.generate(child, **args))
+                self._context = replace(original_context, prior_obj=child)
+                result.extend(self.generate(child))
+            self._context = original_context
 
         if not AXUtilities.is_spreadsheet_cell(obj):
             return result

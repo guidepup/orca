@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_flat_review" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_orca_find"/>
+    <title type="sort">2. Ravni pregled</title>
+    <desc>Prostorno pregledavanje prozora</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Ravni pregled</title>
+  <p>Orcina značajka ravnog pregleda omogućuje vam prostorno pregledavanje sadržaja aktivnog prozora, i teksta i elemenata sučelja. U tom načinu <app>Orca</app> prozor tretira kao dvodimenzionalni list teksta, zanemarujući svaku hijerarhiju elemenata sučelja ili drugo logičko grupiranje unutar prozora.</p>
+  <p>Kroz taj "spljošteni" sadržaj, poznat i kao kontekst ravnog pregleda, možete se <link xref="commands_flat_review">kretati</link> po redcima, riječima, znakovima i objektima. Osim toga, na objektu koji pregledavate možete izvesti klik lijevom ili desnom tipkom miša. Naposljetku, možete koristiti <link xref="howto_orca_find">Orcino pretraživanje</link>, značajku utemeljenu na ravnom pregledu, za pretraživanje sadržaja aktivnog prozora.</p>
+  <p>Budući da je kontekst ravnog pregleda prostorni prikaz sadržaja aktivnog prozora, stvara se kada prvi put uđete u ravni pregled i sadrži samo one objekte koji su vidljivi. Zbog toga ravnim pregledom nećete moći pristupiti stavkama koje se nalaze u prozoru, ali su trenutačno izvan zaslona. Osim toga, ako se sadržaj prozora sam promijeni, kontekst ravnog pregleda neće se automatski osvježiti. Novi kontekst možete izgraditi tako da ravni pregled isključite i ponovno uključite.</p>
+  <p>Naposljetku, ravni pregled po svojoj je prirodi način koji se ne može koristiti istodobno dok <app>Orca</app> prati fokus. Stoga ćete, ako ste u ravnom pregledu, a zatim koristite navigacijske naredbe aplikacije za pomicanje pokazivača ili prebacivanje fokusa na drugi objekt, automatski izaći iz ravnog pregleda.</p>
+</page>

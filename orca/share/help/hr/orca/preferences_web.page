@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_web" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#application"/>
+    <link type="next" xref="preferences_table_navigation"/>
+    <title type="sort">1. Kretanje po webu</title>
+    <title type="link">Kretanje po webu</title>
+    <desc>Podešavanje Orcine podrške za <app>Firefox</app>, <app>Thunderbird</app> i <app>Chrome</app>/<app>Chromium</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke kretanja po webu</title>
+  <section id="page_navigation">
+    <title>Kretanje po stranici</title>
+    <p>Skupina kontrola <gui>Kretanje po stranici</gui> omogućuje vam prilagodbu načina na koji <app>Orca</app> prikazuje tekst i drugi sadržaj te omogućuje rad s njima.</p>
+    <section id="page_navigation_control_caret">
+      <title>Upravljaj navigacijom pokazivačem teksta</title>
+      <p>Ovaj potvrdni okvir uključuje i isključuje Orcinu navigaciju pokazivačem teksta. Kada je uključena, <app>Orca</app> preuzima nadzor nad pokazivačem dok se strelicama krećete po stranici; kada je isključena, aktivna je preglednikova vlastita navigacija pokazivačem.</p>
+      <p>Zadana vrijednost: označeno</p>
+      <note style="tip">
+        <title>Ova se postavka može mijenjati u hodu</title>
+        <p>Za promjenu ove postavke u hodu, bez njezinog spremanja, koristite <keyseq><key>Orca modifikator</key><key>F12</key></keyseq>.</p>
+       </note>
+    </section>
+    <section id="page_navigation_focus_caret">
+      <title>Automatski način fokusa tijekom navigacije pokazivačem teksta</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će automatski uključiti način fokusa kada naredbama navigacije pokazivačem teksta dođete do polja obrasca. Primjerice, pritisak tipke <key>Down</key> omogućio bi vam ulazak u polje za unos, no nakon toga bi Orca prešla u način fokusa te bi sljedećim pritiscima tipke <key>Down</key> upravljao web preglednik, a ne Orca. Ako ovaj potvrdni okvir nije označen, <app>Orca</app> bi i dalje upravljala onime što se događa kada pritisnete <key>Down</key>, čime je omogućeno da strelicom izađete iz polja za unos i nastavite čitati.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+      <note style="tip">
+        <title>Ručno prebacivanje između načina pregledavanja i načina fokusa</title>
+        <p>Za početak ili prekid rada s fokusiranim poljem obrasca koristite <keyseq><key>Orca modifikator</key><key>A</key></keyseq> za prebacivanje između načina pregledavanja i načina fokusa.</p>
+       </note>
+    </section>
+    <section id="page_navigation_structural">
+      <title>Omogući strukturnu navigaciju</title>
+      <p>Ovaj potvrdni okvir uključuje i isključuje Orcinu <link xref="howto_structural_navigation">strukturnu navigaciju</link>. Strukturna navigacija omogućuje vam kretanje po elementima kao što su naslovi, poveznice i polja obrasca.</p>
+      <p>Zadana vrijednost: označeno</p>
+      <note style="tip">
+        <title>Ova se postavka može mijenjati u hodu</title>
+        <p>Za promjenu ove postavke u hodu, bez njezinog spremanja, koristite <keyseq><key>Orca modifikator</key><key>Z</key></keyseq>.</p>
+       </note>
+    </section>
+    <section id="page_navigation_focus_structural">
+      <title>Automatski način fokusa tijekom strukturne navigacije</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će automatski uključiti način fokusa kada naredbama strukturne navigacije dođete do polja obrasca. Primjerice, pritisak tipke <key>E</key> za prelazak na sljedeće polje za unos premjestio bi fokus na njega i ujedno uključio način fokusa, tako da bi sljedeći pritisak tipke <key>E</key> u to polje upisao slovo "e". Ako ovaj potvrdni okvir nije označen, <app>Orca</app> će vas ostaviti u načinu pregledavanja, a sljedeći pritisak tipke <key>E</key> premjestio bi vas na sljedeće polje za unos na stranici.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+      <note style="tip">
+        <title>Ručno prebacivanje između načina pregledavanja i načina fokusa</title>
+        <p>Za početak ili prekid rada s fokusiranim poljem obrasca koristite <keyseq><key>Orca modifikator</key><key>A</key></keyseq> za prebacivanje između načina pregledavanja i načina fokusa.</p>
+       </note>
+    </section>
+    <section id="page_navigation_focus_native">
+      <title>Automatski način fokusa tijekom preglednikove navigacije</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će automatski uključiti način fokusa kada preglednikovim vlastitim navigacijskim naredbama dođete do polja obrasca. Primjerice, pritisak tipke <key>Tab</key> za prelazak na sljedeće polje za unos premjestio bi fokus na njega i ujedno uključio način fokusa, tako da bi sljedeći pritisak tipke <key>E</key> u to polje upisao slovo "e". Ako ovaj potvrdni okvir nije označen, <app>Orca</app> će vas ostaviti u načinu pregledavanja, a sljedeći pritisak tipke <key>E</key> premjestio bi vas na sljedeće polje za unos na stranici.</p>
+      <p>Zadana vrijednost: označeno</p>
+      <note style="tip">
+        <title>Ručno prebacivanje između načina pregledavanja i načina fokusa</title>
+        <p>Za početak ili prekid rada s fokusiranim poljem obrasca koristite <keyseq><key>Orca modifikator</key><key>A</key></keyseq> za prebacivanje između načina pregledavanja i načina fokusa.</p>
+       </note>
+    </section>
+    <section id="page_navigation_speak">
+      <title>Automatski počni izgovarati stranicu kada se prvi put učita</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će nad novootvorenom web stranicom ili porukom e-pošte izvesti naredbu Izgovori sve.</p>
+      <p>Zadana vrijednost: označeno za Firefox; nije označeno za Thunderbird</p>
+    </section>
+    <section id="page_navigation_summary">
+      <title>Prikaži sažetak stranice kada se prvi put učita</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će sažeto iznijeti pojedinosti o novootvorenoj web stranici ili poruci e-pošte, kao što su broj naslova, orijentira i poveznica.</p>
+      <p>Zadana vrijednost: označeno za Firefox; nije označeno za Thunderbird</p>
+    </section>
+    <section id="page_navigation_layout_mode">
+      <title>Omogući način rasporeda za sadržaj</title>
+      <p>Ako je ovaj potvrdni okvir označen, Orcina navigacija pokazivačem teksta poštovat će raspored sadržaja na zaslonu i prikazivati cijeli redak, uključujući sve poveznice ili polja obrasca u tom retku. Ako ovaj potvrdni okvir nije označen, <app>Orca</app> će objekte poput poveznica i polja obrasca tretirati kao da se nalaze u zasebnim redcima, i pri prikazu i pri navigaciji.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+  </section>
+  <section id="table_options">
+    <title>Mogućnosti za tablice</title>
+    <note>
+      <p>Da biste saznali više o Orcinim mogućnostima za kretanje unutar tablica, pogledajte <link xref="preferences_table_navigation">Postavke navigacije tablicama</link>.</p>
+    </note>
+  </section>
+  <section id="find_options">
+    <title>Mogućnosti pretraživanja</title>
+    <p>Skupina kontrola <gui>Mogućnosti pretraživanja</gui> omogućuje vam prilagodbu načina na koji <app>Orca</app> prikazuje rezultate pretraživanja provedenog ugrađenom funkcijom pretraživanja u aplikaciji.</p>
+    <section id="find_options_speak_during_find">
+      <title>Izgovori rezultate tijekom pretraživanja</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će pročitati redak koji odgovara vašem trenutačnom upitu za pretraživanje.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="find_options_speak_changed_lines_during_find">
+      <title>Izgovori samo promijenjene retke tijekom pretraživanja</title>
+      <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> neće prikazati pronađeni redak ako je riječ o istom retku kao kod prethodnog podudaranja. Ova je mogućnost osmišljena da spriječi "brbljavost" u retku s više pojavljivanja niza koji tražite.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="find_options_minimum_match_length">
+      <title>Najmanja duljina pronađenog teksta</title>
+      <p>U ovom okretnom polju, koje se može uređivati, možete odrediti broj znakova koji se moraju podudarati prije nego što <app>Orca</app> najavi pronađeni redak. I ova je mogućnost osmišljena da spriječi "brbljavost", jer ima mnogo podudaranja kada tek počnete tipkati niz koji tražite.</p>
+      <p>Zadana vrijednost: 4</p>
+    </section>
+  </section>
+</page>

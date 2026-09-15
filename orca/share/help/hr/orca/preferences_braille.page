@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_braille" xml:lang="hr">
+  <info>
+    <title type="sort">3. Brajica</title>
+    <title type="link">Brajica</title>
+    <desc>Podešavanje Orcine podrške za brajični redak</desc>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_key_echo"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke brajice</title>
+  <section id="braillesupport">
+    <title>Omogući podršku za brajicu</title>
+    <p>Ovaj potvrdni okvir određuje hoće li <app>Orca</app> koristiti brajični redak. Ako BrlTTY nije pokrenut, <app>Orca</app> će to elegantno riješiti i neće komunicirati s brajičnim retkom.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+    <note style="tip">
+      <p>Ako BrlTTY podesite naknadno, morate ponovno pokrenuti <app>Orcu</app> kako biste mogli koristiti brajicu.</p>
+    </note>
+  </section>
+  <section id="braillewordwrap">
+    <title>Omogući prelamanje riječi</title>
+    <p>Ako je <gui>Omogući prelamanje riječi</gui> označeno, <app>Orca</app> će prilagoditi tekst tako da se na brajičnom retku prikazuju samo cijele riječi. Ako nije označeno, <app>Orca</app> će koristiti sve ćelije na retku kako bi se odjednom prikazalo više teksta.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="contractedbraille">
+    <title>Omogući kratkopisnu brajicu</title>
+    <p>Orca podržava kratkopisnu brajicu putem projekta liblouis. Budući da mnoge distribucije uključuju liblouis, vjerojatno ćete u programu <app>Orca</app> automatski imati pristup podršci za kratkopisnu brajicu.</p>
+    <p>Za omogućivanje kratkopisne brajice na sustavu na kojem je instaliran liblouis provjerite je li označen potvrdni okvir <gui>Omogući kratkopisnu brajicu</gui>. Zatim iz kombiniranog okvira <gui>Tablica kratkopisa</gui> odaberite željenu tablicu prijevoda.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="rolenames">
+    <title>Skraćeni nazivi uloga</title>
+    <p>Ovaj potvrdni okvir određuje način na koji se prikazuju nazivi uloga i može se koristiti za štednju prostora na brajičnom retku. Primjerice, ako fokus ima klizač, bit će prikazana riječ "klizač" ako skraćeni nazivi uloga nisu označeni; ako jesu označeni, umjesto toga bit će prikazano "klzč".</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="eolindicator">
+    <title>Onemogući simbol kraja retka</title>
+    <p>Označavanje ovog potvrdnog okvira govori programu <app>Orca</app> da na kraju retka teksta ne prikazuje niz "$l".</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="verbosity">
+    <title>Opširnost</title>
+    <p>Ova skupina izbornih gumba određuje količinu informacija koja će se u pojedinim situacijama prikazati na brajici. Primjerice, ako je postavljena na opširno, prikazuju se informacije o tipkovnom prečacu i nazivu uloge. Te se informacije u sažetom načinu ne prikazuju.</p>
+    <p>Zadana vrijednost: <gui>Opširno</gui></p>
+  </section>
+  <section id="selectionandhyperlink">
+    <title>Oznake odabira i hiperpoveznica</title>
+    <p>Skupine izbornih gumba <gui>Oznaka odabira</gui> i <gui>Oznaka hiperpoveznice</gui> omogućuju vam podešavanje Orcinog ponašanja pri prikazivanju odabranog teksta i hiperpoveznica. Po zadanom će <app>Orca</app>, kada naiđe na bilo što od toga, taj tekst na vašem brajičnom retku "podcrtati" točkicama 7 i 8. Ako želite, oznaku možete promijeniti tako da bude samo točkica 7, samo točkica 8 ili da je uopće nema.</p>
+    <p>Zadana vrijednost: <gui>Točkice 7 i 8</gui></p>
+    <note style="tip">
+      <title>Oznake svojstava teksta</title>
+      <p>Ako želite, svojstva teksta mogu se označavati i na brajici. Uključivanje te značajke i odabir svojstava koja vas zanimaju obavlja se na <link xref="preferences_text_attributes"> kartici <gui>Svojstva teksta</gui></link> dijaloga postavki.</p>
+    </note>
+  </section>
+  <section id="flashMessageSettings">
+    <title>Postavke bljeskajućih poruka</title>
+    <p>Bljeskajuće su poruke po svojoj prirodi slične obavijestima ili najavama: kratko se vrijeme prikazuju na vašem brajičnom retku, nakon čega se vraća izvorni sadržaj brajičnog retka. <app>Orca</app> ima nekoliko postavki kojima možete upravljati prikazom bljeskajućih poruka.</p>
+    <section id="flashMessageSettings_enable">
+      <title>Omogući bljeskajuće poruke</title>
+      <p>Ako je <gui>Omogući bljeskajuće poruke</gui> označeno, <app>Orca</app> će vam poruke prikazivati na brajici. Ako želite da se Orcine poruke samo izgovaraju, uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="flashMessageSettings_detailed">
+      <title>Poruke su detaljne</title>
+      <p>Ako je <gui>Poruke su detaljne</gui> označeno, <app>Orca</app> će vam na brajici prikazivati detaljne poruke. Primjerice, ako koristite Orcinu naredbu za promjenu odjeka, <app>Orca</app> bi mogla prikazati "Odjek postavljen na riječ". Ako želite kraće poruke, kao što je samo "riječ", uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="flashMessageSettings_persistent">
+      <title>Poruke su trajne</title>
+      <p>Kao što je gore navedeno, bljeskajuće se poruke prikazuju samo kratko vrijeme. Ako želite da poruke ostanu prikazane dok ne izvedete radnju koja uzrokuje osvježavanje vašeg retka, označite potvrdni okvir <gui>Poruke su trajne</gui>.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="flashMessageSettings_duration">
+      <title>Trajanje (sek)</title>
+      <p>Vrijeme koje će <app>Orca</app> pričekati prije uklanjanja poruke i vraćanja izvornog sadržaja vašeg retka možete postaviti u okretnom polju <gui> Trajanje (sek)</gui>. Imajte na umu da će vrijednost te postavke biti zanemarena ako ste uključili trajne bljeskajuće poruke.</p>
+      <p>Zadana vrijednost: 5</p>
+    </section>
+  </section>
+</page>

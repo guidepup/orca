@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_flat_review" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_find"/>
+    <link type="guide" xref="commands#reviewing_screen_contents"/>
+    <link type="seealso" xref="howto_flat_review"/>
+    <title type="sort">1. Ravni pregled</title>
+    <title type="link">Ravni pregled</title>
+    <desc>Naredbe za prostorni pregled prozora</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe ravnog pregleda</title>
+  <p>Orcine naredbe <link xref="howto_flat_review">ravnog pregleda</link> namijenjene su prostornom pregledavanju elemenata prikazanih na zaslonu. Također omogućuju čitanje trenutačnog retka, riječi i znaka pri kretanju kroz tekst dokumenta. Većini tih naredbi dodijeljeni su tipkovni prečaci. Pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link> za informacije o tome kako dodijeliti prečace naredbama bez prečaca.</p>
+  <section id="line">
+    <title>Naredbe za pregled po redcima</title>
+    <list>
+      <item>
+        <p>Prvi redak (početni položaj):</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP 7</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Ctrl</key><key>U</key></keyseq></p></item>
+        </list>
+      </item>
+      <item>
+        <p>Prethodni redak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 7</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>U</key></keyseq></p></item>
+        </list>
+      </item>
+      <item>
+        <p>Trenutačni redak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 8</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>I</key></keyseq></p></item>
+        </list>
+      </item>
+        <item><p>Slovkaj trenutačni redak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 8</key></keyseq> (dvostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>I</key></keyseq> (dvostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item><p>Fonetski slovkaj trenutačni redak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 8</key></keyseq> (trostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>I</key></keyseq> (trostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item><p>Sljedeći redak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 9</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>O</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Zadnji redak (krajnji položaj):</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP 9</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Ctrl</key><key>O</key></keyseq></p></item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="word">
+    <title>Naredbe za pregled po riječima</title>
+    <list>
+      <item><p>Riječ iznad:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP 4</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Ctrl</key><key>J</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Prethodna riječ:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 4</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>J</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Trenutačna riječ:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 5</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>K</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Slovkaj trenutačnu riječ:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 5</key></keyseq> (dvostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>K</key></keyseq> (dvostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item><p>Fonetski slovkaj trenutačnu riječ:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 5</key></keyseq> (trostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>K</key></keyseq> (trostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item><p>Sljedeća riječ:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 6</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>L</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Riječ ispod:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP 6</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Ctrl</key><key>L</key></keyseq></p></item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="character">
+    <title>Naredbe za pregled po znakovima</title>
+    <list>
+      <item><p>Prethodni znak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 1</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>M</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Trenutačni znak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 2</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Comma</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Izgovori trenutačni znak fonetski:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 2</key></keyseq> (dvostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Comma</key></keyseq> (dvostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item><p>Izgovori Unicode vrijednost trenutačnog znaka:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 2</key></keyseq> (trostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Comma</key></keyseq> (trostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item><p>Sljedeći znak:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>KP 3</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Period</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Zadnji znak u trenutačnom retku:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP 1</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Ctrl</key><key>M</key></keyseq></p></item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="other">
+    <title>Dodatne naredbe</title>
+    <list>
+      <item><p>Uključi/isključi ravni pregled (osvježava kontekst ravnog pregleda):</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP Subtract</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>P</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Pregledaj trenutačnu stavku/element:</p>
+        <list>
+          <item><p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP 5</key></keyseq></p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Ctrl</key><key>K</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Koristi Izgovori sve za pregled trenutačnog dijaloga ili prozora:</p>
+        <list>
+          <item><p>Stolno računalo: <key>KP Plus</key> (dvostruki pritisak)</p></item>
+          <item><p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Semicolon</key></keyseq> (dvostruki pritisak)</p></item>
+        </list>
+      </item>
+      <item>
+      <p>Kopiraj sadržaj pod ravnim pregledom u međuspremnik: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Dodaj sadržaj pod ravnim pregledom u međuspremnik: (nije dodijeljeno)</p>
+      </item>
+      <item><p>Premjesti ravni pregled dolje lijevo: (nije dodijeljeno)</p></item>
+      <item><p>Prikaži sadržaj ravnog pregleda: (nije dodijeljeno)</p></item>
+      <item><p>Uključi/isključi ograničavanje ravnog pregleda na trenutačni objekt: (nije dodijeljeno)</p></item>
+    </list>
+  </section>
+</page>

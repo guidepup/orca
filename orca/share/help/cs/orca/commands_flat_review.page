@@ -182,9 +182,9 @@
       <item>
         <p>Připojit obsah pod plošným náhledem ke stávajícímu obsahu ve schránce: (bez klávesové zkratky)</p>
       </item>
-      <item><p>Move flat review to the bottom left: (Unbound)</p></item>
-      <item><p>Show flat review contents: (Unbound)</p></item>
-      <item><p>Toggle restricting flat review to the current object: (Unbound)</p></item>
+      <item><p>Přesunout plošný náhled vlevo dolů: (bez klávesové zkratky)</p></item>
+      <item><p>Zobrazit obsah plošného náhledu: (bez klávesové zkratky)</p></item>
+      <item><p>Přepnout omezený plošný náhled na aktuální objekt: (bez klávesové zkratky)</p></item>
     </list>
   </section>
 </page>

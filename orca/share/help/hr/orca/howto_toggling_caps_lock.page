@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_toggling_caps_lock" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_key_bindings"/>
+    <title type="sort">7. CapsLock u rasporedu za prijenosno računalo</title>
+    <desc>Njegovo uključivanje i isključivanje kada je <key>Orca modifikator</key></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>CapsLock u rasporedu za prijenosno računalo</title>
+  <p>Orca ima dva rasporeda tipkovnice: za stolno i za prijenosno računalo. Odabrani raspored utječe na to koja se tipka koristi kao Orca modifikator. Ako koristite raspored za prijenosno računalo, zadani Orca modifikator bit će <key>CapsLock</key>. Ako koristite Orcin raspored za prijenosno računalo, a želite uključiti ili isključiti <key>CapsLock</key>, to možete učiniti dvostrukim pritiskom tipke <key>CapsLock</key> (zahtijeva at-spi2 inačicu 2.32 ili noviju) ili sljedećim koracima:</p>
+  <steps>
+    <title>Uključivanje i isključivanje tipke CapsLock u rasporedu za prijenosno računalo</title>
+    <item>
+      <p>Pritisnite naredbu za zaobilaženje, <keyseq><key>Orca modifikator</key><key>BackSpace</key> </keyseq>, kako biste programu <app>Orca</app> rekli da sljedeću naredbu treba zanemariti.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>CapsLock</key> za promjenu njegovog zaključanog stanja.</p>
+    </item>
+  </steps>
+</page>

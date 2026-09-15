@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_tables" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_forms"/>
+    <title type="sort">4. Tablice</title>
+    <desc>Kretanje i postavljanje dinamičkih zaglavlja</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Tablice</title>
+  <p><app>Orca</app> nudi nekoliko značajki osmišljenih posebno za poboljšanje pristupa tablicama na web stranicama i u drugim dokumentima: podesivo čitanje ćelije ili retka, <link xref="howto_structural_navigation">strukturnu navigaciju</link> i dinamička zaglavlja.</p>
+  <section id="cell_row">
+    <title>Čitanje ćelije ili retka</title>
+    <p>Zamislite pregledavanje popisa poruka u ulaznoj pošti. Kako bi Orca najavila pošiljatelja, predmet, datum i prisutnost privitaka, bilo bi potrebno da <app>Orca</app> izgovori cijeli redak. S druge strane, pri kretanju po redcima u proračunskoj tablici slušanje cijelog retka možda nije poželjno, makar samo zbog velikog broja ćelija u svakom retku. U tom biste slučaju željeli da <app>Orca</app> izgovori samo ćeliju koja ima fokus. Slične se situacije pojavljuju i u tablicama u dokumentima.</p>
+    <p><app>Orca</app> vam omogućuje da za tablice u grafičkom sučelju, tablice u dokumentima i proračunske tablice zasebno odredite treba li čitati samo ćeliju ili cijeli redak. Budući da su te postavke međusobno neovisne, ne morate odabrati jedan način čitanja tablica koji bi odgovarao svim vrstama tablica.</p>
+    <p>Svaku Orcinu postavku čitanja tablica možete postaviti za cijeli program <app>Orca</app>, ali i za svaku aplikaciju zasebno. Kako se to radi opisano je u vodiču o <link xref="preferences">Orcinim dijalozima postavki</link>. Postavke se nalaze na <link xref="preferences_speech"> kartici <gui>Govor</gui></link>.</p>
+    <p>Naposljetku, postoji i Orcina naredba koja vam omogućuje da u hodu promijenite čita li se ćelija ili redak za trenutačno aktivnu tablicu: <keyseq><key>Orca modifikator</key><key>F11</key></keyseq>.</p>
+  </section>
+  <section id="structural_navigation">
+    <title>Strukturna navigacija</title>
+    <p>Orcine <link xref="commands_structural_navigation#tables">naredbe strukturne navigacije za tablice</link> omogućuju vam da brzo pronađete tablice, odmah skočite na prvu ili zadnju ćeliju tablice te se pomaknete na sljedeću ćeliju u bilo kojem smjeru.</p>
+    <p>Dok se strukturnom navigacijom krećete među tablicama i unutar njih, <app>Orca</app> će najavljivati dodatne pojedinosti koje vam pomažu razumjeti vaš položaj, kao što su dimenzije tablice u koju ste upravo ušli i činjenica da ste u smjeru u kojem se krećete došli do ruba tablice.</p>
+    <p>Osim toga, <app>Orca</app> nudi podesive <link xref="preferences_table_navigation">mogućnosti prikazivanja</link> koje rade zajedno sa strukturnom navigacijom i omogućuju vam da odredite hoće li se prikazivati koordinate ćelija, označavati spajanje više ćelija i najavljivati zaglavlja ćelija.</p>
+    <note style="tip">
+      <title>Ne zaboravite uključiti strukturnu navigaciju!</title>
+      <p>Ovisno o tome gdje se nalazite, možda ćete morati izričito uključiti strukturnu navigaciju prije nego što je možete koristiti. Da biste saznali više, pročitajte <link xref="howto_structural_navigation#toggling_required"> kada je uključivanje strukturne navigacije potrebno.</link></p>
+    </note>
+  </section>
+  <section id="dynamic_headers">
+    <title>Dinamička zaglavlja</title>
+    <p>Mnoge tablice na koje ćete naići tijekom čitanja imaju ćelije koje služe kao zaglavlje retka ili stupca. Teško je reći je li tvorac te tablice te ćelije ispravno označio kao zaglavlja. U mnogim je slučajevima tekst jednostavno oblikovan tako da bude veći i/ili podebljan. Čak i ako je tablica ispravno označena, to nije jamstvo da će aplikacija ili radni okvir taj tekst izložiti pomoćnim tehnologijama kao informaciju o zaglavlju. Orcina podrška za dinamička zaglavlja omogućuje vam da prevladate te izazove.</p>
+    <steps>
+      <title>Postavljanje zaglavlja stupaca</title>
+      <item>
+        <p>Pomaknite se na redak koji sadrži sva zaglavlja stupaca.</p>
+      </item>
+      <item>
+        <p>Pritisnite <keyseq><key>Orca modifikator</key><key>R</key></keyseq> kako biste programu <app>Orca</app> rekli da je trenutačni redak onaj sa zaglavljima.</p>
+      </item>
+    </steps>
+    <steps>
+      <title>Postavljanje zaglavlja redaka</title>
+      <item>
+        <p>Pomaknite se na stupac koji sadrži sva zaglavlja redaka.</p>
+      </item>
+      <item>
+        <p>Pritisnite <keyseq><key>Orca modifikator</key><key>C</key></keyseq> kako biste programu <app>Orca</app> rekli da je trenutačni stupac onaj sa zaglavljima.</p>
+      </item>
+    </steps>
+    <p>Nakon što ste postavili zaglavlja stupaca ili zaglavlja redaka, primijetit ćete da će <app>Orca</app>, dok se krećete među ćelijama, prikazivati svako zaglavlje koje se promijenilo. Drugim riječima, <app>Orca</app> neće iznova prikazivati zaglavlje stupca dok se krećete gore ili dolje unutar trenutačnog stupca. Isto tako, neće iznova prikazivati zaglavlje retka dok se krećete lijevo ili desno unutar trenutačnog retka. Međutim, ako promijenite redak, a zaglavlja redaka postoje, bit će prikazano zaglavlje povezano s novim retkom. A ako promijenite stupac, a zaglavlja stupaca postoje, bit će prikazano zaglavlje povezano s novim stupcem.</p>
+    <p>Za uklanjanje zaglavlja jednostavno dvaput pritisnite naredbu kojom ste ih postavili. Dakle, dvostruki pritisak <keyseq><key>Orca modifikator</key><key>R</key></keyseq> govori programu <app>Orca</app> da zaglavlja stupaca ne postoje. Dvostruki pritisak <keyseq><key>Orca modifikator</key><key>C</key></keyseq> govori programu <app>Orca</app> da zaglavlja redaka ne postoje.</p>
+  </section>
+</page>

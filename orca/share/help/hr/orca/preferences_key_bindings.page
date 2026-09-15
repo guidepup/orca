@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_key_bindings" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_pronunciation"/>
+    <link type="seealso" xref="howto_key_bindings"/>
+    <title type="sort">6. Tipkovni prečaci</title>
+    <title type="link">Tipkovni prečaci</title>
+    <desc>Podešavanje Orcinih tipkovnih prečaca</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke tipkovnih prečaca</title>
+  <section id="orca_modifier_keys">
+    <title>Orca modifikatorske tipke</title>
+    <p>Kombinirani okvir <gui>Modifikatorske tipke čitača zaslona</gui> omogućuje vam da odaberete koja će tipka ili tipke služiti kao Orca modifikator. Dostupne mogućnosti su:</p>
+    <list>
+      <item>
+        <p><gui>KP_Insert</gui> (ista tipka kao <key>0</key> na numeričkoj tipkovnici)</p></item>
+      <item><p><gui>Insert</gui></p></item>
+      <item><p><gui>Insert, KP_Insert</gui></p></item>
+      <item><p><gui>Caps_Lock</gui></p></item>
+    </list>
+  </section>
+  <section id="key_bindings_table">
+    <title>Tablica tipkovnih prečaca</title>
+    <p>Tablica tipkovnih prečaca sadrži popis Orcinih radnji i tipki koje su im dodijeljene.</p>
+    <list>
+      <item>
+        <p>Stupac <gui>Naredba</gui> sadrži opis Orcine naredbe koja će se izvesti.</p>
+      </item>
+      <item>
+        <p>Stupac <gui>Tipkovni prečac</gui> sadrži tipkovni prečac trenutačno dodijeljen toj Orcinoj naredbi. Vrijednost tog stupca možete promijeniti pritiskom tipke <key>Return</key>, pritiskom tipki za novi prečac i ponovnim pritiskom tipke <key>Return</key>.</p>
+      </item>
+      <item>
+        <p>Stupac <gui>Promijenjeno</gui> služi i kao oznaka onoga što je promijenjeno i kao način za vraćanje zadanih prečaca povezanih s tom naredbom.</p>
+      </item>
+    </list>
+    <p>Ispod popisa Orcinih tipkovnih prečaca pronaći ćete skupinu naredbi bez dodijeljenog prečaca. To su naredbe za koje smatramo da će nekim korisnicima biti vrlo korisne, ali većini korisnika neće trebati. Umjesto da za takve naredbe "potrošimo" tipkovni prečac, ostavili smo ih po zadanom nedodijeljenima. Na kraju popisa nalaze se brajični prečaci, za korištenje s brajičnim retkom.</p>
+  </section>
+</page>

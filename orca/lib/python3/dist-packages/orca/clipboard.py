@@ -37,8 +37,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Atspi, Gdk, Gtk
 
 from . import (
-    cmdnames,
-    command_manager,
+    clipboard_command_definitions,
     dbus_service,
     debug,
     guilabels,
@@ -49,12 +48,14 @@ from . import (
     script_manager,
 )
 from .ax_utilities import AXUtilities
+from .extension import Extension
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
     from dasbus.client.proxy import InterfaceProxy
 
+    from .command import Command
     from .scripts import default
 
 
@@ -96,8 +97,8 @@ class _ClipboardManager:
     def _on_contents_changed(self, *args: tuple[Any, ...], **kwargs: dict[str, Any]) -> None:
         """Notifies the registered callback that the contents changed."""
 
-        msg = f"{self._name}: Contents changed. {args} {kwargs}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = [self._name, ": Contents changed.", args, kwargs]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         self._contents = self._get_contents()
         self._change_callback(self._contents)
 
@@ -144,21 +145,23 @@ class _ClipboardManagerFallback(_ClipboardManager):
             return ""
 
         debug_string = result.replace("\n", "\\n")
-        msg = f"FALLBACK: Clipboard contents: {debug_string}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["FALLBACK: Clipboard contents:", debug_string]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
     def set_contents(self, text: str) -> None:
         """Sets the contents of the clipboard to text."""
 
-        msg = f"FALLBACK: Setting clipboard contents to: {text}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["FALLBACK: Setting clipboard contents to:", text]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         clipboard = Gtk.Clipboard.get(Gdk.Atom.intern("CLIPBOARD", False))
         clipboard.set_text(text, -1)
 
 
 class _ClipboardManagerGPaste(_ClipboardManager):
     """Class for interacting with the clipboard via GPaste."""
+
+    _DBUS_TIMEOUT_MS = 1000
 
     def __init__(self, change_callback: Callable[[str], None]) -> None:
         super().__init__("GPASTE", change_callback)
@@ -181,27 +184,37 @@ class _ClipboardManagerGPaste(_ClipboardManager):
                 "/org/gnome/GPaste",
                 "org.freedesktop.DBus.Properties",
             )
-            self._original_active_state = self._props_proxy.Get("org.gnome.GPaste2", "Active")
-        except DBusError as error:
-            msg = f"CLIPBOARD PRESENTER: Could not access GPaste interface: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            self._original_active_state = self._props_proxy.Get(
+                "org.gnome.GPaste2",
+                "Active",
+                timeout=self._DBUS_TIMEOUT_MS,
+            )
+        except (DBusError, TimeoutError) as error:
+            tokens = ["CLIPBOARD PRESENTER: Could not access GPaste interface:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            self._gpaste_proxy = None
+            self._props_proxy = None
+            self._bus = None
             return
 
         try:
-            self._original_active_state = self._props_proxy.Get("org.gnome.GPaste2", "Active")
             if not self._original_active_state:
                 msg = "CLIPBOARD PRESENTER: GPaste is not active. Enabling Tracking."
                 debug.print_message(debug.LEVEL_INFO, msg, True)
-                self._gpaste_proxy.Track(True)
-                new_state = self._props_proxy.Get("org.gnome.GPaste2", "Active")
-                msg = f"CLIPBOARD PRESENTER: Is active now: {bool(new_state)}"
-                debug.print_message(debug.LEVEL_INFO, msg, True)
+                self._gpaste_proxy.Track(True, timeout=self._DBUS_TIMEOUT_MS)
+                new_state = self._props_proxy.Get(
+                    "org.gnome.GPaste2",
+                    "Active",
+                    timeout=self._DBUS_TIMEOUT_MS,
+                )
+                tokens = ["CLIPBOARD PRESENTER: Is active now:", bool(new_state)]
+                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
             self._signal_subscription = self._gpaste_proxy.Update.connect(self._on_contents_changed)
             self._is_active = True
-        except DBusError as error:
-            msg = f"CLIPBOARD PRESENTER: Could not connect to GPaste signals: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+        except (DBusError, TimeoutError) as error:
+            tokens = ["CLIPBOARD PRESENTER: Could not connect to GPaste signals:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             self._gpaste_proxy = None
             self._props_proxy = None
             self._bus = None
@@ -221,10 +234,18 @@ class _ClipboardManagerGPaste(_ClipboardManager):
         if not self._original_active_state:
             msg = "CLIPBOARD PRESENTER: Restoring inactive state by disabling tracking."
             debug.print_message(debug.LEVEL_INFO, msg, True)
-            self._gpaste_proxy.Track(False)
-            new_state = self._props_proxy.Get("org.gnome.GPaste2", "Active")
-            msg = f"CLIPBOARD PRESENTER: Is active now: {bool(new_state)}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            try:
+                self._gpaste_proxy.Track(False, timeout=self._DBUS_TIMEOUT_MS)
+                new_state = self._props_proxy.Get(
+                    "org.gnome.GPaste2",
+                    "Active",
+                    timeout=self._DBUS_TIMEOUT_MS,
+                )
+                tokens = ["CLIPBOARD PRESENTER: Is active now:", bool(new_state)]
+                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            except (DBusError, TimeoutError) as error:
+                tokens = ["CLIPBOARD PRESENTER: Could not restore GPaste state:", error]
+                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
         self._gpaste_proxy = None
         self._props_proxy = None
@@ -237,10 +258,19 @@ class _ClipboardManagerGPaste(_ClipboardManager):
         if self._gpaste_proxy is None:
             return ""
 
-        result = self._gpaste_proxy.GetElementAtIndex(0)[1]
+        try:
+            result = self._gpaste_proxy.GetElementAtIndex(
+                0,
+                timeout=self._DBUS_TIMEOUT_MS,
+            )[1]
+        except (DBusError, TimeoutError) as error:
+            tokens = ["GPASTE: Could not get clipboard contents:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            return ""
+
         debug_string = result.replace("\n", "\\n")
-        msg = f"GPASTE: Clipboard contents: {debug_string}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["GPASTE: Clipboard contents:", debug_string]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
     def set_contents(self, text: str) -> None:
@@ -249,7 +279,11 @@ class _ClipboardManagerGPaste(_ClipboardManager):
         if self._gpaste_proxy is None:
             return
 
-        self._gpaste_proxy.Add(text)
+        try:
+            self._gpaste_proxy.Add(text, timeout=self._DBUS_TIMEOUT_MS)
+        except (DBusError, TimeoutError) as error:
+            tokens = ["GPASTE: Could not set clipboard contents:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
 
 class _ClipboardManagerKlipper(_ClipboardManager):
@@ -271,8 +305,8 @@ class _ClipboardManagerKlipper(_ClipboardManager):
             # Test if the service is actually available by calling a simple method
             self._klipper_proxy.getClipboardContents()
         except DBusError as error:
-            msg = f"CLIPBOARD PRESENTER: Could not access klipper interface: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["CLIPBOARD PRESENTER: Could not access klipper interface:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return
 
         try:
@@ -281,8 +315,8 @@ class _ClipboardManagerKlipper(_ClipboardManager):
             )
             self._is_active = True
         except DBusError as error:
-            msg = f"CLIPBOARD PRESENTER: Could not connect to klipper signal: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["CLIPBOARD PRESENTER: Could not connect to klipper signal:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             self._klipper_proxy = None
             self._bus = None
 
@@ -304,8 +338,8 @@ class _ClipboardManagerKlipper(_ClipboardManager):
 
         result = self._klipper_proxy.getClipboardContents()
         debug_string = result.replace("\n", "\\n")
-        msg = f"KLIPPER: Clipboard contents: {debug_string}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["KLIPPER: Clipboard contents:", debug_string]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
     def set_contents(self, text: str) -> None:
@@ -314,49 +348,25 @@ class _ClipboardManagerKlipper(_ClipboardManager):
         if self._klipper_proxy is None:
             return
 
-        msg = f"KLIPPER: Setting clipboard contents to: {text}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["KLIPPER: Setting clipboard contents to:", text]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         self._klipper_proxy.setClipboardContents(text)
 
 
-class ClipboardPresenter:
+class ClipboardPresenter(Extension):
     """Manages clipboard-related functionality."""
+
+    GROUP_LABEL = guilabels.KB_GROUP_CLIPBOARD
 
     def __init__(self) -> None:
         self._event_listener: Atspi.EventListener = Atspi.EventListener.new(self._listener)
         self._last_clipboard_update_text: str = ""
         self._last_clipboard_update_time: float = time.time()
         self._manager: _ClipboardManager | None = None
-        self._initialized: bool = False
+        super().__init__()
 
-        msg = "CLIPBOARD PRESENTER: Registering D-Bus commands."
-        debug.print_message(debug.LEVEL_INFO, msg, True)
-        controller = dbus_service.get_remote_controller()
-        controller.register_decorated_module("ClipboardPresenter", self)
-
-    def set_up_commands(self) -> None:
-        """Sets up commands with CommandManager."""
-
-        if self._initialized:
-            return
-        self._initialized = True
-
-        manager = command_manager.get_manager()
-        group_label = guilabels.KB_GROUP_CLIPBOARD
-
-        manager.add_command(
-            command_manager.KeyboardCommand(
-                "present_clipboard_contents",
-                self.present_clipboard_contents,
-                group_label,
-                cmdnames.CLIPBOARD_PRESENT_CONTENTS,
-                desktop_keybinding=None,
-                laptop_keybinding=None,
-            ),
-        )
-
-        msg = "CLIPBOARD PRESENTER: Commands set up."
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+    def _get_commands(self) -> list[Command]:
+        return clipboard_command_definitions.get_commands(self)
 
     @dbus_service.command
     def present_clipboard_contents(
@@ -441,8 +451,8 @@ class ClipboardPresenter:
 
         result = self._manager.get_contents()
         debug_string = result.replace("\n", "\\n")
-        msg = f"CLIPBOARD PRESENTER: Current contents: {debug_string}"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["CLIPBOARD PRESENTER: Current contents:", debug_string]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
     def activate(self) -> None:
@@ -471,8 +481,8 @@ class ClipboardPresenter:
 
         old_text = self._manager.get_contents()
         new_text = f"{old_text}{separator}{text}"
-        msg = f"CLIPBOARD PRESENTER: Appending '{text}'. New contents: '{new_text}'."
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["CLIPBOARD PRESENTER: Appending '", text, "'. New contents: '", new_text, "'."]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         self._manager.set_contents(new_text)
 
     def set_text(self, text: str) -> None:
@@ -483,8 +493,8 @@ class ClipboardPresenter:
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return
 
-        msg = f"CLIPBOARD PRESENTER: Setting text to '{text}'."
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["CLIPBOARD PRESENTER: Setting text to '", text, "'."]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         self._manager.set_contents(text)
 
     def is_clipboard_text_changed_event(self, event: Atspi.Event) -> bool:
@@ -518,8 +528,8 @@ class ClipboardPresenter:
     def _present_clipboard_contents_change(self, string: str) -> None:
         """Presents the clipboard contents change."""
 
-        msg = f"CLIPBOARD PRESENTER: Contents changed to: '{string}'"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["CLIPBOARD PRESENTER: Contents changed to: '", string, "'"]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
         if (
             string == self._last_clipboard_update_text

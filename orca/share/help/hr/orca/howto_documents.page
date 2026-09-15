@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_documents" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_text_attributes"/>
+    <title type="sort">1. Dokumenti</title>
+    <desc>Čitanje sadržaja</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Dokumenti</title>
+  <p>Za čitanje sadržaja bilo kojeg dokumenta koristite ugrađeni način navigacije pokazivačem teksta u aplikaciji. Dok se krećete kroz tekst dokumenta, <app>Orca</app> će prikazivati vaš novi položaj. Zbog toga vam je vjerojatno već poznato kako se dokument čita pomoću programa <app>Orca</app>. Primjerice:</p>
+  <list>
+    <item>
+      <p>Koristite <key>Left</key> i <key>Right</key> za kretanje i čitanje po znakovima.</p>
+    </item>
+    <item>
+      <p>Koristite <keyseq><key>Ctrl</key><key>Left</key></keyseq> i <keyseq><key>Ctrl</key><key>Right</key></keyseq> za kretanje i čitanje po riječima.</p>
+    </item>
+    <item>
+      <p>Koristite <key>Up</key> i <key>Down</key> za kretanje i čitanje po redcima.</p>
+    </item>
+    <item>
+      <p>Koristite <key>Shift</key> u kombinaciji s gornjim naredbama za odabir teksta i poništavanje odabira.</p>
+    </item>
+  </list>
+  <note style="tip">
+    <title>Omogućivanje navigacije pokazivačem teksta u aplikaciji</title>
+    <p>U svim aplikacijama navigacija pokazivačem teksta nije po zadanom omogućena. U mnogim GNOME aplikacijama navigaciju pokazivačem možete uključiti i isključiti pritiskom tipke <key>F7</key>.</p>
+  </note>
+  <p>Osim čitanja dokumenta navigacijom pokazivačem teksta, može vam biti korisno pročitati i slovkati trenutačni tekst te dobiti njegovu Unicode vrijednost. To možete učiniti pomoću Orcine <link xref="howto_flat_review">značajke ravnog pregleda</link>.</p>
+  <p>Naposljetku, kako bi <app>Orca</app> izgovorila cijeli dokument počevši od trenutačnog položaja, koristite naredbu Izgovori sve. Nju, kao i potpuniji popis Orcinih naredbi za pristup tekstu dokumenta, možete pronaći u vodiču <link xref="commands_reading">Naredbe čitanja</link>.</p>
+</page>

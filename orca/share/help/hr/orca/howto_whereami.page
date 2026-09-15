@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_whereami" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_flat_review"/>
+    <title type="sort">1. Gdje sam</title>
+    <desc>Saznavanje vašeg položaja</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Gdje sam</title>
+  <p>Uz zasebne naredbe za čitanje naslovne trake i trake stanja, Orca nudi dvije naredbe Gdje sam koje ovise o kontekstu: osnovnu naredbu Gdje sam i detaljnu naredbu Gdje sam. Osnovna naredba Gdje sam podržana je za sve objekte. Detaljna naredba Gdje sam podržana je samo za one objekte za koje postoji velika količina informacija koje biste možda željeli znati, ali vjerojatno ne želite znati u svakom trenutku.</p>
+  <p>Najbolji način da se upoznate s onime što će naredba Gdje sam prikazati jest da isprobate <link xref="commands_where_am_i">naredbe Gdje sam</link>. Ipak, kako biste bolje razumjeli koliko Orcina značajka Gdje sam ovisi o kontekstu, razmotrite sljedeće:</p>
+  <p>Za većinu elemenata sučelja bit će vam rečena barem oznaka i/ili naziv, vrsta ili uloga elementa te pristupno slovo i/ili tipka prečaca, ako postoje. Osim toga:</p>
+  <list>
+    <item>
+      <p>Ako je element tekst i izvedete osnovnu naredbu Gdje sam, bit će vam rečen trenutačni redak ako tekst nije odabran. Ako je pak tekst odabran, osnovna naredba Gdje sam reći će vam koji je tekst odabran. Detaljna naredba Gdje sam unutar teksta uključit će i svojstva teksta.</p>
+    </item>
+    <item>
+      <p>Ako element može biti označen, kao što je slučaj s potvrdnim okvirima i izbornim gumbima, bit će uključeno i stanje označenosti.</p>
+    </item>
+    <item>
+      <p>Ako je element popis ili objekt sličan popisu, kao što su kombinirani okvir, skupina izbornih gumba ili popis kartica, bit će uključen i položaj trenutačne stavke.</p>
+    </item>
+    <item>
+      <p>Ako je element hijerarhijski, kao što je stablo, i nalazite se na čvoru koji se može proširiti, bit će vam rečeno je li taj čvor proširen ili nije. A ako je proširen, bit će vam rečeno i koliko podređenih stavki sadrži. Osim toga, bit će navedena i razina ugniježđenosti.</p>
+    </item>
+    <item>
+      <p>Ako je element traka napretka ili klizač, bit će vam rečen trenutačni postotak.</p>
+    </item>
+    <item>
+      <p>Ako je element ikona unutar skupine ikona, osnovna naredba Gdje sam uključit će objekt u kojem se nalazite, stavku na kojoj se nalazite i broj odabranih stavki. Kod detaljne naredbe Gdje sam bit će vam rečeno i koje su stavke odabrane.</p>
+    </item>
+    <item>
+      <p>Ako se nalazite na poveznici, bit će uključena i vrsta poveznice (ista stranica, druga stranica, FTP poveznica itd.).</p>
+    </item>
+    <item>
+      <p>Ako se nalazite u ćeliji tablice, bit će uključene koordinate te ćelije i zaglavlja ćelija.</p>
+    </item>
+    <item>
+      <p>Ako se nalazite u provjeri pravopisa aplikacije za koju <app>Orca</app> pruža poboljšanu podršku, osnovna naredba Gdje sam ponovit će pogrešku u skladu s vašim <link xref="preferences_spellcheck">postavkama provjere pravopisa</link>. Detaljna naredba Gdje sam učinit će da <app>Orca</app> prikaže sve pojedinosti o pogrešci.</p>
+    </item>
+  </list>
+  <p>I tako dalje. Ponovimo, cilj je Orcine naredbe Gdje sam pružiti vam pojedinosti koje najvjerojatnije želite znati o objektu u kojem se trenutačno nalazite. Kako biste isprobali naredbu Gdje sam, pogledajte popis <link xref="commands_where_am_i">naredbi Gdje sam</link>.</p>
+</page>

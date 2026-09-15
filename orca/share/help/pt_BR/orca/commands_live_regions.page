@@ -46,10 +46,10 @@
       <p>Monitora regiões dinâmicas: <keyseq><key>Tecla Modificadora do Orca</key><key>Barra invertida</key></keyseq></p>
     </item>
     <item>
-      <p>Avança configuração da polidez da região ativa: (Sem atalho definido)</p>
+      <p>Avança configuração da polidez da região ativa: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Desativa o nível de polidez padrão: (Sem atalho definido)</p>
+      <p>Desativa o nível de polidez padrão: (sem atalho definido)</p>
     </item>
     <item>
       <p>Vai para a região dinâmica seguinte/anterior na ordem de leitura do documento: <keyseq><key>D</key></keyseq>/<keyseq><key>Shift</key><key>D</key></keyseq></p>

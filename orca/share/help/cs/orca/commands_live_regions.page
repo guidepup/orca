@@ -19,25 +19,19 @@
   <p>Následující příkazy můžete použít pro přístup k dynamicky aktualizovanému obsahu na webových stránkách, který dostaly podporu zpřístupnění přes ARIA.</p>
   <list>
     <item>
-      <p>
-        Monitor live regions:
-        <keyseq><key>Orca Modifier</key><key>Backslash</key></keyseq>
-      </p>
+      <p>Sledovat živé oblasti: <keyseq><key>Modifikátor Orca</key><key>\</key></keyseq></p>
     </item>
     <item>
-      <p>Advance live region politeness setting: (Unbound)</p>
+      <p>Přepnout na další úroveň chování živé oblasti: (bez klávesové zkratky)</p>
     </item>
     <item>
-      <p>Set default politeness level to off: (Unbound)</p>
+      <p>Nastavit výchozí chování živé oblasti na vypnuto</p>
     </item>
     <item>
-      <p>
-        Go to next/previous live region in the document's reading order:
-        <keyseq><key>D</key></keyseq>/<keyseq><key>Shift</key><key>D</key></keyseq>
-      </p>
+      <p>Přejít na následující/předchozí živou oblast v pořadí čtení dokumentu: <keyseq><key>D</key></keyseq>/<keyseq><key>Shift</key><key>D</key></keyseq></p>
     </item>
     <item>
-      <p>Review the next/previous saved live region message: (Unbound)</p>
+      <p>Náhled následující/předchozí uložené živé oblasti: (bez klávesové zkratky)</p>
     </item>
     <item>
       <p>Přejít na poslední živou oblast, která provedla oznámení: <key>Y</key></p>

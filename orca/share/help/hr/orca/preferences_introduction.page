@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_introduction" xml:lang="hr">
+  <info>
+    <title type="sort">0. Uvod u Orcine postavke</title>
+    <title type="link">Uvod u Orcine postavke</title>
+    <link type="guide" xref="preferences"/>
+    <link type="next" xref="preferences_general"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Uvod u Orcine postavke</title>
+  <section id="orca">
+    <title>Postavke Orce</title>
+    <p>Orcine postavke omogućuju vam prilagodbu funkcionalnosti programa <app>Orca</app> koja se odnosi na sve aplikacije. Primjer Orcine postavke je odjek, jer se odjek odnosi na sve aplikacije.</p>
+    <p>Imajte na umu da se Orcine postavke mogu prilagoditi za svaku aplikaciju zasebno. Primjerice, možete postaviti da zadani odjek bude po riječima, a zatim za Pidgin postaviti da odjeka nema. Nakon toga bi <app>Orca</app> uvijek ponavljala svaku riječ koju upišete, osim kada se nalazite u Pidginu.</p>
+    <note style="tip">
+      <title>Tipkovni prečaci za otvaranje dijaloga postavki</title>
+      <list>
+        <item>
+          <p><keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>: Orcine postavke</p>
+        </item>
+        <item>
+          <p><keyseq><key>Ctrl</key><key>Orca modifikator</key><key>Razmaknica</key> </keyseq>: Orcine postavke za trenutačnu aplikaciju</p>
+        </item>
+      </list>
+    </note>
+  </section>
+  <section id="application_unique">
+    <title>Postavke jedinstvene za aplikaciju</title>
+      <p>Za razliku od Orcinih postavki, postoje i postavke jedinstvene za pojedinu aplikaciju. Te vam postavke omogućuju prilagodbu funkcionalnosti programa <app>Orca</app> koja se primjenjuje samo u određenim okruženjima, kao što su web stranice ili aplikacije za čavrljanje. Zbog toga ćete te mogućnosti pronaći samo u dijalozima postavki specifičnima za aplikaciju i to samo za one aplikacije na koje se te mogućnosti odnose.</p>
+  </section>
+</page>

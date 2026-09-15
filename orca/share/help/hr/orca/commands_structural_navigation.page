@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_structural_navigation" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_table"/>
+    <link type="guide" xref="commands#reading_documents"/>
+    <link type="seealso" xref="howto_forms"/>
+    <title type="sort">2. Strukturna navigacija</title>
+    <title type="link">Strukturna navigacija</title>
+    <desc>Naredbe za navigaciju po elementima</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe strukturne navigacije</title>
+  <p>Sljedeće naredbe možete koristiti za kretanje po naslovima, poveznicama i drugim elementima u aplikacijama za koje <app>Orca</app> podržava strukturnu navigaciju.</p>
+  <list>
+    <item>
+      <p>Omogući/onemogući tipke strukturne navigacije: <keyseq><key>Orca modifikator</key><key>Z</key></keyseq></p>
+    </item>
+  </list>
+  <section id="headings">
+    <title>Naslovi</title>
+      <list>
+        <item>
+          <p>Sljedeći i prethodni naslov: <keyseq><key>H</key></keyseq> i <keyseq><key>Shift</key><key>H</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis naslova: <keyseq><key>Alt</key><key>Shift</key><key>H</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni naslov 1. razine: <keyseq><key>1</key></keyseq> i <keyseq><key>Shift</key><key>1</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prikaži popis naslova 1. razine: <keyseq><key>Alt</key><key>Shift</key><key>1</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni naslov 2. razine: <keyseq><key>2</key></keyseq> i <keyseq><key>Shift</key><key>2</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis naslova 2. razine: <keyseq><key>Alt</key><key>Shift</key><key>2</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni naslov 3. razine: <keyseq><key>3</key></keyseq> i <keyseq><key>Shift</key><key>3</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis naslova 3. razine: <keyseq><key>Alt</key><key>Shift</key><key>3</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni naslov 4. razine: <keyseq><key>4</key></keyseq> i <keyseq><key>Shift</key><key>4</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis naslova 4. razine: <keyseq><key>Alt</key><key>Shift</key><key>4</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni naslov 5. razine: <keyseq><key>5</key></keyseq> i <keyseq><key>Shift</key><key>5</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis naslova 5. razine: <keyseq><key>Alt</key><key>Shift</key><key>5</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni naslov 6. razine: <keyseq><key>6</key></keyseq> i <keyseq><key>Shift</key><key>6</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis naslova 6. razine: <keyseq><key>Alt</key><key>Shift</key><key>6</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+    <section id="forms">
+      <title>Obrasci</title>
+      <list>
+        <item>
+          <p>Sljedeće i prethodno polje obrasca: <keyseq><key>F</key></keyseq> i <keyseq><key>Shift</key><key>F</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis polja obrasca: <keyseq><key>Alt</key><key>Shift</key><key>F</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni gumb: <keyseq><key>B</key></keyseq> i <keyseq><key>Shift</key><key>B</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis gumba: <keyseq><key>Alt</key><key>Shift</key><key>B</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni kombinirani okvir: <keyseq><key>C</key></keyseq> i <keyseq><key>Shift</key><key>C</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis kombiniranih okvira: <keyseq><key>Alt</key><key>Shift</key><key>C</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeće i prethodno polje za unos: <keyseq><key>E</key></keyseq> i <keyseq><key>Shift</key><key>E</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis polja za unos: <keyseq><key>Alt</key><key>Shift</key><key>E</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni izborni gumb: <keyseq><key>R</key></keyseq> i <keyseq><key>Shift</key><key>R</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prikaži popis izbornih gumba: <keyseq><key>Alt</key><key>Shift</key><key>R</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Sljedeći i prethodni potvrdni okvir: <keyseq><key>X</key></keyseq> i <keyseq><key>Shift</key><key>X</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prikaži popis potvrdnih okvira: <keyseq><key>Alt</key><key>Shift</key><key>X</key></keyseq></p>
+        </item> 
+      </list>
+    </section>
+    <section id="links">
+    <title>Poveznice</title>
+      <list>
+        <item>
+          <p>Sljedeća i prethodna poveznica: <keyseq><key>K</key></keyseq> i <keyseq><key>Shift</key><key>K</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prikaži popis poveznica: <keyseq><key>Alt</key><key>Shift</key><key>K</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeća i prethodna neposjećena poveznica: <keyseq><key>U</key></keyseq> i <keyseq><key>Shift</key><key>U</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis neposjećenih poveznica: <keyseq><key>Alt</key><key>Shift</key><key>U</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeća i prethodna posjećena poveznica: <keyseq><key>V</key></keyseq> i <keyseq><key>Shift</key><key>V</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis posjećenih poveznica: <keyseq><key>Alt</key><key>Shift</key><key>V</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+    <section id="lists">
+      <title>Popisi</title>
+      <list>
+        <item>
+          <p>Sljedeći i prethodni popis: <keyseq><key>L</key></keyseq> i <keyseq><key>Shift</key><key>L</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis popisa: <keyseq><key>Alt</key><key>Shift</key><key>L</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeća i prethodna stavka popisa: <keyseq><key>I</key></keyseq> i <keyseq><key>Shift</key><key>I</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis stavki popisa: <keyseq><key>Alt</key><key>Shift</key><key>I</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+    <section id="tables">
+      <title>Tablice</title>
+      <list>
+        <item>
+          <p>Sljedeća i prethodna tablica: <keyseq><key>T</key></keyseq> i <keyseq><key>Shift</key><key>T</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis tablica: <keyseq><key>Alt</key><key>Shift</key><key>T</key></keyseq></p>
+        </item>
+        <item>
+          <p>Ćelija lijevo: <keyseq><key>Alt</key><key>Shift</key><key>Left</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Ćelija desno: <keyseq><key>Alt</key><key>Shift</key><key>Right</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Ćelija iznad: <keyseq><key>Alt</key><key>Shift</key><key>Up</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Ćelija ispod: <keyseq><key>Alt</key><key>Shift</key><key>Down</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prva ćelija u tablici: <keyseq><key>Alt</key><key>Shift</key><key>Home</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Zadnja ćelija u tablici: <keyseq><key>Alt</key><key>Shift</key><key>End</key></keyseq></p>
+        </item> 
+      </list>
+    </section>
+    <section id="text_blocks">
+      <title>Tekstni blokovi</title>
+      <list>
+        <item>
+          <p>Sljedeći i prethodni odlomak: <keyseq><key>P</key></keyseq> i <keyseq><key>Shift</key><key>P</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis odlomaka: <keyseq><key>Alt</key><key>Shift</key><key>P</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni blok citata: <keyseq><key>Q</key></keyseq> i <keyseq><key>Shift</key><key>Q</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis blokova citata: <keyseq><key>Alt</key><key>Shift</key><key>Q</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni "veliki objekt": <keyseq><key>O</key></keyseq> i <keyseq><key>Shift</key><key>O</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis "velikih objekata": <keyseq><key>Alt</key><key>Shift</key><key>O</key></keyseq></p>
+        </item>
+       </list>
+    </section>
+    <section id="other">
+      <title>Ostali elementi</title>
+      <list>
+        <item>
+          <p>Sljedeći i prethodni orijentir: <keyseq><key>M</key></keyseq> i <keyseq><key>Shift</key><key>M</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis orijentira: <keyseq><key>Alt</key><key>Shift</key><key>M</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeći i prethodni razdjelnik: <keyseq><key>S</key></keyseq> i <keyseq><key>Shift</key><key>S</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Sljedeći i prethodni "element koji se može kliknuti": <keyseq><key>A</key></keyseq> i <keyseq><key>Shift</key><key>A</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Prikaži popis "elemenata koji se mogu kliknuti": <keyseq><key>Alt</key><key>Shift</key><key>A</key></keyseq></p>
+        </item>
+        <item>
+          <p>Sljedeća i prethodna slika: <keyseq><key>G</key></keyseq> i <keyseq><key>Shift</key><key>G</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prikaži popis slika: <keyseq><key>Alt</key><key>Shift</key><key>G</key></keyseq></p>
+        </item>
+        <item>
+          <p>Početak i kraj trenutačnog spremnika: <keyseq><key>Shift</key><key>Comma</key></keyseq> i <keyseq><key>Comma</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+</page>

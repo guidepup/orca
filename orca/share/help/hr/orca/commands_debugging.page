@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_debugging" xml:lang="hr">
+  <info>
+    <link type="guide" xref="commands#troubleshooting"/>
+    <title type="sort">1. Otklanjanje grešaka</title>
+    <title type="link">Otklanjanje grešaka</title>
+    <desc>Naredbe za rješavanje problema</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe za otklanjanje grešaka</title>
+  <p>Razvijatelji od vas mogu zatražiti podatke za otklanjanje grešaka kako bi lakše pronašli uzrok problema na koji ste naišli. Sljedećoj naredbi nije dodijeljen tipkovni prečac. Ako ga trebate dodijeliti, pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link>.</p>
+  <list>
+    <item>
+      <p>Snimi snimku stanja za otklanjanje grešaka: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Prijeđi na sljedeću razinu otklanjanja grešaka: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Očisti AT-SPI predmemoriju za trenutačnu aplikaciju: (nije dodijeljeno)</p>
+    </item>
+  </list>
+</page>

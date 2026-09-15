@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_chat" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#application"/>
+    <link type="next" xref="preferences_spellcheck"/>
+    <title type="sort">3. Čavrljanje</title>
+    <title type="link">Čavrljanje</title>
+    <desc>Podešavanje Orcine podrške za izravno dopisivanje i IRC</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke čavrljanja</title>
+  <p>Sljedeće mogućnosti omogućuju vam prilagodbu ponašanja programa <app>Orca</app> pri pristupu klijentima za izravno dopisivanje i internetsko čavrljanje.</p>
+  <section id="speak_name">
+    <title>Izgovori naziv sobe za čavrljanje</title>
+    <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će dolaznim porukama dodati naziv sobe ili sugovornika od kojeg su stigle, osim ako su stigle iz trenutačno fokusiranog razgovora.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="announce_typing">
+    <title>Najavi kada sugovornici tipkaju</title>
+    <p>Ako je ovaj potvrdni okvir označen i ako <app>Orca</app> ima dovoljno informacija koje pokazuju da vaš sugovornik tipka, <app>Orca</app> će najavljivati promjene stanja tipkanja.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="message_histories">
+    <title>Osiguraj zasebne povijesti poruka po sobi za čavrljanje</title>
+    <p>Ako je ovaj potvrdni okvir označen, Orcine naredbe za pregled nedavnih poruka odnosit će se samo na trenutačno fokusirani razgovor. U protivnom će povijest sadržavati najnovije poruke bez obzira na to iz kojeg su razgovora stigle.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="speak_messages_from">
+    <title>Izgovori poruke iz</title>
+    <p>Ova skupina izbornih gumba omogućuje vam da odredite u kojim će vam okolnostima <app>Orca</app> prikazati dolaznu poruku. Vaši su izbori:</p>
+    <list>
+      <item>
+        <p><gui>Svi kanali</gui></p>
+      </item>
+      <item>
+        <p><gui>Kanal samo ako je njegov prozor aktivan</gui></p>
+      </item>
+      <item>
+        <p><gui>Svi kanali kada je bilo koji prozor čavrljanja aktivan</gui></p>
+      </item>
+    </list>
+    <p>Zadana vrijednost: svi kanali</p>
+  </section>
+</page>

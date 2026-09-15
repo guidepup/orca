@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_time_date_notifications" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_profiles"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <link type="seealso" xref="howto_notifications"/>
+    <title type="sort">4. Vrijeme, datum i obavijesti</title>
+    <title type="link">Vrijeme, datum i obavijesti</title>
+    <desc>Naredbe za dobivanje vremena, datuma i poruka obavijesti</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe za vrijeme, datum i obavijesti</title>
+  <p>Sljedeće naredbe možete koristiti za dobivanje trenutačnog vremena i datuma te za pregled prethodno prikazanih poruka obavijesti:</p>
+  <section id="time_and_date">
+    <title>Dobivanje vremena i datuma</title>
+    <list>
+      <item>
+        <p>Prikaži vrijeme: <keyseq><key>Orca modifikator</key><key>T</key></keyseq></p>
+      </item>
+      <item>
+        <p>Prikaži datum: <keyseq><key>Orca modifikator</key><key>T</key></keyseq> (dvostruki pritisak)</p>
+      </item>
+    </list>
+  </section>
+  <section id="notifications">
+    <title>Pregled poruka obavijesti</title>
+    <p><app>Orca</app> ima tri naredbe bez dodijeljenog prečaca za pristup prethodno prikazanim <link xref="howto_notifications">porukama obavijesti</link>. Pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link> za informacije o tome kako tim naredbama dodijeliti tipkovne prečace.</p>
+    <list>
+      <item>
+        <p>Prikaži zadnju (najnoviju) poruku obavijesti: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Prikaži prethodnu poruku obavijesti: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Prikaži sljedeću poruku obavijesti: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Prikaži popis svih poruka obavijesti: (nije dodijeljeno)</p>
+      </item>
+    </list>
+  </section>
+</page>

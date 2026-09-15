@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_live_regions" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_chat"/>
+    <link type="guide" xref="commands#accessing_dynamic_information"/>
+    <link type="seealso" xref="howto_live_regions"/>
+    <title type="sort">1. Žive regije</title>
+    <title type="link">Žive regije</title>
+    <desc>Naredbe za pristup živim regijama na webu</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe živih regija</title>
+  <p>Sljedeće naredbe možete koristiti za pristup dinamički osvježavanom sadržaju na web stranicama koji je učinjen pristupačnim pomoću ARIA-e.</p>
+  <list>
+    <item>
+      <p>Nadziri žive regije: <keyseq><key>Orca modifikator</key><key>Backslash</key></keyseq></p>
+    </item>
+    <item>
+      <p>Prijeđi na sljedeću postavku uljudnosti žive regije: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Postavi zadanu razinu uljudnosti na isključeno: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Idi na sljedeću/prethodnu živu regiju u redoslijedu čitanja dokumenta: <keyseq><key>D</key></keyseq>/<keyseq><key>Shift</key><key>D</key></keyseq></p>
+    </item>
+    <item>
+      <p>Pregledaj sljedeću/prethodnu spremljenu poruku žive regije: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Idi na zadnju živu regiju koja je nešto najavila: <keyseq><key>Y</key></keyseq></p>
+    </item>
+</list>
+</page>

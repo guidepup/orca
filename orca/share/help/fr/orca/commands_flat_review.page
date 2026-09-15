@@ -224,9 +224,9 @@
       <item>
         <p>Ajouter le contenu sous examen global dans le presse-papiers : (non liée)</p>
       </item>
-      <item><p>Move flat review to the bottom left: (Unbound)</p></item>
-      <item><p>Show flat review contents: (Unbound)</p></item>
-      <item><p>Toggle restricting flat review to the current object: (Unbound)</p></item>
+      <item><p>Déplacer l’examen global en bas à gauche : (non liée)</p></item>
+      <item><p>Afficher le contenu sous examen global : (non lié)</p></item>
+      <item><p>Restreindre l’examen global à l’objet courant : (non liée)</p></item>
     </list>
   </section>
 </page>

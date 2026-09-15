@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_setting_up_orca" xml:lang="hr">
+<info>
+  <link type="seealso" xref="preferences"/>
+  <link type="guide" xref="index#getting_started"/>
+  <link type="next" xref="howto_the_orca_modifier"/>
+  <title type="sort">4. Orcine postavke</title>
+  <title type="link">Postavljanje</title>
+    <desc>Postavljanje programa <app>Orca</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Orcine postavke</title>
+
+      <p>Ako želite podesiti <app>Orcu</app>, otvorite dijalog <link xref="preferences">Postavke</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq> unutar bilo koje pristupačne aplikacije. Umjesto toga, u prozoru terminala ili u dijalogu <gui>Pokreni</gui> možete upisati <cmd>orca</cmd> nakon čega slijedi <cmd>-s</cmd> ili <cmd>--setup</cmd> te zatim pritisnuti <key>Return</key>.</p>
+</page>

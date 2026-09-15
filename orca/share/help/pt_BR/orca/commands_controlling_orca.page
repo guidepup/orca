@@ -44,10 +44,7 @@
     <p>Os comandos a seguir podem ser usados para entrar nas preferências do <app>Orca</app>, sair do <app>Orca</app> e ignorar comandos do <app>Orca</app> para evitar conflito de atalhos com o aplicativo que está sendo acessado.</p>
     <list>
       <item>
-        <p>
-          Toggle <app>Orca</app> on and off in supported desktop environments:
-          <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.
-        </p>
+        <p>Ativa ou desativa o <app>Orca</app> em ambientes de área de trabalho compatíveis: <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
         <note style="tip">
            <p>Se você estiver usando o <app>Orca</app> em outro ambiente de desktop no qual não há comando para ativar e desativá-lo, você pode achar útil o comando para sair do <app>Orca</app>. Este comando não tem atalho de teclado definido por padrão. Consulte <link xref="howto_key_bindings">Associações de teclas</link> para obter informações sobre como vincular comandos a um atalho de teclado.</p>
         </note>
@@ -59,34 +56,31 @@
         <p>Preferências do Orca para o aplicativo atual: <keyseq><key>Ctrl</key><key>Tecla Modificadora do Orca</key><key>barra de espaço</key></keyseq>.</p>
       </item>
       <item>
-        <p>
-          Toggle all Orca command keys:
-          <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq>
-        </p>
+        <p>Ativa/desativa todas as teclas de comando do Orca: <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq></p>
       </item>
       <item>
-        <p>Toggle keyboard layout: (Unbound)</p>
+        <p>Alterna a disposição de teclado: (sem atalho definido)</p>
       </item>
       <item>
-        <p>Circular para o próximo nível de eco de tecla: (Sem atalho definido)</p>
+        <p>Circular para o próximo nível de eco de tecla: (sem atalho definido)</p>
       </item>
       <item>
-        <p>Quit the screen reader: (Unbound)</p>
+        <p>Encerra o leitor de tela: (sem atalho definido)</p>
       </item>
     </list>
   </section>
   <section id="braille_keyboard_bindings">
     <title>Comandos Braille</title>
-    <p>The following commands can be used to control and customize Orca's braille output.</p>
+    <p>Os comandos a seguir podem ser usados para controlar e personalizar a saída em Braille do Orca.</p>
     <list>
       <item>
-        <p>Pan the braille display to the left: (Unbound)</p>
+        <p>Varre a linha Braille para a esquerda: (sem atalho definido)</p>
       </item>
       <item>
-        <p>Pan the braille display to the right: (Unbound)</p>
+        <p>Varre a linha Braille para a direita: (sem atalho definido)</p>
       </item>
       <item>
-        <p>Turn contracted braille on and off: (Unbound)</p>
+        <p>Ativa ou desativa o Braille contraído: (sem atalho definido)</p>
       </item>
     </list>
   </section>

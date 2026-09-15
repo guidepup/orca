@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_profiles" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_documents"/>
+    <title type="sort">9. Profili</title>
+    <desc>Održavanje više postava</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Profili</title>
+  <p>Orcini profili omogućuju vam spremanje i učitavanje više različitih postava, tako da brzo možete pristupiti postavkama koje su vam potrebne.</p>
+  <steps>
+    <title>Spremanje novog profila</title>
+    <item>
+      <p>Otvorite dijaloški okvir <link xref="preferences">Postavke Orce</link>.</p>
+    </item>
+    <item>
+      <p>Promijenite postavke koje želite.</p>
+    </item>
+    <item>
+      <p>Na kartici <gui>Općenito</gui> pritisnite gumb <gui>Spremi kao</gui>.</p>
+    </item>
+    <item>
+      <p>U dijaloškom okviru <gui>Spremi profil kao</gui> koji se pojavi upišite naziv novog profila.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>U redu</gui> u dijaloškom okviru <gui>Spremi profil kao</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Učitavanje postojećeg profila</title>
+    <item>
+      <p>Otvorite dijaloški okvir <link xref="preferences">Postavke Orce</link>.</p>
+    </item>
+    <item>
+      <p>Na kartici <gui>Općenito</gui> odaberite profil koji želite učitati iz kombiniranog okvira <gui>Aktivni profil</gui>.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Učitaj</gui>.</p>
+    </item>
+    <item>
+      <p>Od vas će se tražiti potvrda. Pritisnite gumb <gui>Da</gui>.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>U redu</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Promjena postojećeg profila</title>
+    <item>
+      <p>Slijedite gore opisane korake za učitavanje profila koji želite promijeniti.</p>
+    </item>
+    <item>
+      <p>Slijedite gore opisane korake za spremanje novog profila.</p>
+    </item>
+    <item>
+      <p>Kada se od vas zatraži naziv novog profila, upišite isti naziv kao i naziv trenutačnog profila. Kada pritisnete gumb <gui>U redu</gui>, bit će vam rečeno da postoji sukob naziva.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Da</gui> kako biste potvrdili da postojeći profil želite prepisati novim postavkama.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Promjena postavke <gui>Profil pri pokretanju</gui></title>
+    <item>
+      <p>Otvorite dijaloški okvir <link xref="preferences">Postavke Orce</link>.</p>
+    </item>
+    <item>
+      <p>Na kartici <gui>Općenito</gui> odaberite profil koji želite učitati iz kombiniranog okvira <gui>Profil pri pokretanju</gui>.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>U redu</gui>. Sljedeći put kada pokrenete <app>Orcu</app>, koristit će se novoodabrani profil.</p>
+    </item>
+  </steps>
+</page>

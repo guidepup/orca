@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_where_am_i" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_time_date_notifications"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <link type="seealso" xref="howto_whereami"/>
+    <title type="sort">3. Gdje sam</title>
+    <title type="link">Gdje sam</title>
+    <desc>Naredbe za saznavanje vašeg položaja</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe Gdje sam</title>
+  <p>Orcina značajka Gdje sam daje vam pojedinosti o trenutačnom položaju ovisno o kontekstu. Primjerice, u tablicama će vam Gdje sam dati pojedinosti o ćeliji tablice u kojoj se nalazite, a u tekstu će prikazati trenutačni redak zajedno s tekstom koji je odabran. Potpuni popis onoga što <app>Orca</app> može prikazati možete pronaći u <link xref="howto_whereami">Uvodu u Gdje sam</link>.</p>
+  <p><app>Orca</app> nudi sljedeće naredbe Gdje sam:</p>
+  <list>
+    <item>
+      <p>Izvedi osnovnu naredbu Gdje sam:</p>
+      <list>
+        <item>
+          <p>Stolno računalo: <key>KP Enter</key></p>
+        </item>
+        <item>
+          <p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Return</key></keyseq></p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Izvedi detaljnu naredbu Gdje sam:</p>
+      <list>
+        <item>
+          <p>Stolno računalo: <key>KP Enter</key> (dvostruki pritisak)</p>
+        </item>
+        <item>
+          <p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Return</key></keyseq> (dvostruki pritisak)</p>
+        </item>
+      </list>
+    </item>
+  </list>
+  <p>Uz zasebne naredbe Gdje sam, <app>Orca</app> ima i dodatne naredbe za dobivanje informacija o trenutačnom položaju:</p>
+  <list>
+    <item>
+      <p>Prikaži naslovnu traku:</p>
+      <list>
+        <item>
+          <p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP Enter</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Slash</key></keyseq></p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Prikaži traku stanja:</p>
+      <list>
+        <item>
+          <p>Stolno računalo: <keyseq><key>Orca modifikator</key><key>KP Enter</key></keyseq> (dvostruki pritisak)</p>
+        </item>
+        <item>
+          <p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Slash</key></keyseq> (dvostruki pritisak)</p>
+        </item>
+        <item>
+          <p>Prikaži veličinu i položaj trenutačnog objekta u pikselima: (nije dodijeljeno)</p>
+        </item>
+      </list>
+    </item>
+  </list>
+</page>

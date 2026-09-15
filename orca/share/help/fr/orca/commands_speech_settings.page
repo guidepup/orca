@@ -57,7 +57,7 @@
       <mal:years>2024</mal:years>
     </mal:credit>
   </info>
-  <title>Speech And Verbosity Settings Commands</title>
+  <title>Commandes pour paramétrer la synthèse vocale et la verbosité</title>
   <p>Les commandes suivantes peuvent être utilisées pour personnaliser la synthèse vocale d’<app>Orca</app>. Vous remarquerez que certaines de ces commandes sont « non liées ». Consultez <link xref="howto_key_bindings">Modifier les combinaisons de touches</link> pour en apprendre plus sur la façon de lier ces commandes à des combinaisons de touches.</p>
   <list>
     <item>
@@ -103,7 +103,7 @@
       <p>Monter le son : (non liée)</p>
     </item>
     <item>
-      <p>Cycle to the next speech synthesizer: (Unbound)</p>
+      <p>Activer le synthétiseur vocal suivant : (non liée)</p>
     </item>
   </list>
 </page>

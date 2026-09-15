@@ -1,0 +1,1 @@
+[{name: simple-determinant,tag: determinant,match: "not(*[1][self::m:mtr])",replace: [{T: định thức},{test: {if: "$Verbosity!='Terse'",then: [{T: của}]}},{x: "*[1]"}]},{name: subscripted-norm,tag: subscripted-norm,match: ".",replace: [{T: định mức},{x: "*[2]"},{test: {if: "$Verbosity!='Terse'",then: [{T: của}]}},{x: "*[1]"}]}]

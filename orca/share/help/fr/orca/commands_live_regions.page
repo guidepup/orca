@@ -61,25 +61,19 @@
   <p>Les commandes suivantes peuvent être utilisées pour accéder à du contenu mis à jour dynamiquement sur des pages web rendues accessibles grâce à ARIA.</p>
   <list>
     <item>
-      <p>
-        Monitor live regions:
-        <keyseq><key>Orca Modifier</key><key>Backslash</key></keyseq>
-      </p>
+      <p>Surveiller les zones dynamiques : <keyseq><key>Touche de modification d’Orca</key><key>Barre oblique inversée</key></keyseq></p>
     </item>
     <item>
-      <p>Advance live region politeness setting: (Unbound)</p>
+      <p>Avancer le paramètre de politesse de zone dynamique : (non liée)</p>
     </item>
     <item>
-      <p>Set default politeness level to off: (Unbound)</p>
+      <p>Désactiver le niveau de politesse par défaut : (non liée)</p>
     </item>
     <item>
-      <p>
-        Go to next/previous live region in the document's reading order:
-        <keyseq><key>D</key></keyseq>/<keyseq><key>Shift</key><key>D</key></keyseq>
-      </p>
+      <p>Aller à la zone dynamique précédente ou suivante dans l’ordre de lecture du document : <keyseq><key>D</key></keyseq> ou <keyseq><key>Maj</key><key>D</key></keyseq></p>
     </item>
     <item>
-      <p>Review the next/previous saved live region message: (Unbound)</p>
+      <p>Examiner le message enregistré précédent ou suivant de la zone dynamique : (non liée)</p>
     </item>
     <item>
       <p>Aller à la dernière zone dynamique qui a effectué une annonce : <keyseq><key>Y</key></keyseq></p>

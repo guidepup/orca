@@ -22,13 +22,16 @@
 
 """Utilities for finding accessible objects via the collection interface."""
 
+from __future__ import annotations
+
 import inspect
 import time
-from collections.abc import Callable
 
 import gi
 
 gi.require_version("Atspi", "2.0")
+from typing import TYPE_CHECKING
+
 from gi.repository import Atspi
 
 from . import debug
@@ -37,6 +40,9 @@ from .ax_utilities_action import AXUtilitiesAction
 from .ax_utilities_debugging import AXUtilitiesDebugging
 from .ax_utilities_role import AXUtilitiesRole
 from .ax_utilities_state import AXUtilitiesState
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class AXUtilitiesCollection:
@@ -55,8 +61,14 @@ class AXUtilitiesCollection:
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
         matches = list(filter(pred, matches))
-        msg = f"AXUtilitiesCollection: {len(matches)} matches found in {time.time() - start:.4f}s"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = [
+            "AXUtilitiesCollection:",
+            len(matches),
+            "matches found in",
+            round(time.time() - start, 4),
+            "s",
+        ]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return matches
 
     @staticmethod
@@ -224,6 +236,16 @@ class AXUtilitiesCollection:
         )
 
     @staticmethod
+    def find_all_annotations(
+        root: Atspi.Accessible,
+        pred: Callable[[Atspi.Accessible], bool] | None = None,
+    ) -> list[Atspi.Accessible]:
+        """Returns all descendants of root with an annotation-related role."""
+
+        roles = AXUtilitiesRole.get_annotation_roles()
+        return AXUtilitiesCollection.find_all_with_role(root, roles, pred)
+
+    @staticmethod
     def find_all_block_quotes(
         root: Atspi.Accessible,
         pred: Callable[[Atspi.Accessible], bool] | None = None,
@@ -296,14 +318,15 @@ class AXUtilitiesCollection:
 
         def is_match(obj):
             result = AXUtilitiesAction.has_action(obj, "click")
-            tokens = [
-                "AXUtilitiesCollection:",
-                obj,
-                AXUtilitiesDebugging.actions_as_string(obj),
-                "has click Action:",
-                result,
-            ]
-            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            if debug.debugLevel <= debug.LEVEL_INFO:
+                tokens = [
+                    "AXUtilitiesCollection:",
+                    obj,
+                    AXUtilitiesDebugging.actions_as_string(obj),
+                    "has click Action:",
+                    result,
+                ]
+                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             if not result:
                 return False
             return pred is None or pred(obj)
@@ -395,14 +418,15 @@ class AXUtilitiesCollection:
 
         def is_match(obj):
             result = AXUtilitiesAction.has_action(obj, "click-ancestor")
-            tokens = [
-                "AXUtilitiesCollection:",
-                obj,
-                AXUtilitiesDebugging.actions_as_string(obj),
-                "has click-ancestor Action:",
-                result,
-            ]
-            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            if debug.debugLevel <= debug.LEVEL_INFO:
+                tokens = [
+                    "AXUtilitiesCollection:",
+                    obj,
+                    AXUtilitiesDebugging.actions_as_string(obj),
+                    "has click-ancestor Action:",
+                    result,
+                ]
+                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             if not result:
                 return False
             return pred is None or pred(obj)
@@ -607,6 +631,16 @@ class AXUtilitiesCollection:
             roles.append(Atspi.Role.DESCRIPTION_TERM)
         if include_tabs:
             roles.append(Atspi.Role.PAGE_TAB)
+        return AXUtilitiesCollection.find_all_with_role(root, roles, pred)
+
+    @staticmethod
+    def find_all_math(
+        root: Atspi.Accessible,
+        pred: Callable[[Atspi.Accessible], bool] | None = None,
+    ) -> list[Atspi.Accessible]:
+        """Returns all descendants of root with the math role"""
+
+        roles = [Atspi.Role.MATH]
         return AXUtilitiesCollection.find_all_with_role(root, roles, pred)
 
     @staticmethod

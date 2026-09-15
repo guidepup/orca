@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_orca_find" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_mouse_review"/>
+    <title type="sort">3. Orcino pretraživanje</title>
+    <desc>Traženje objekata u prozoru</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Orcino pretraživanje</title>
+  <p>Orcina značajka pretraživanja pretraga je utemeljena na <link xref="howto_flat_review">ravnom pregledu</link> koja vam pomaže brzo pronaći objekte vidljive na zaslonu unutar trenutačnog prozora.</p>
+  <note style="tip">
+    <title>Pokretanje Orcinog pretraživanja</title>
+      <p>Za otvaranje Orcinog dijaloga <gui>Pronađi</gui> koristite sljedeću naredbu, ovisno o odabranom <link xref="howto_keyboard_layout">rasporedu tipkovnice</link>:</p>
+      <list>
+        <item>
+          <p>Stolno računalo: <keyseq><key>KP Delete</key></keyseq></p>
+        </item>
+        <item>
+          <p>Prijenosno računalo: <keyseq><key>Orca modifikator</key><key>Left Bracket</key></keyseq></p>
+        </item>
+      </list>
+      <p>Za popis dodatnih radnji koje možete izvesti pogledajte <link xref="commands_find">naredbe Orcinog pretraživanja</link></p>
+  </note>
+  <p>Kada pokrenete Orcino pretraživanje, naći ćete se u dijaloškom okviru.</p>
+  <p>Ovdje možete odrediti sljedeće stavke:</p>
+  <list>
+    <item>
+      <p>Tekst koji se traži</p>
+    </item>
+    <item>
+      <p>Mjesto od kojeg pretraživanje počinje, a koje može biti trenutačni položaj ili vrh prozora</p>
+      <p>Zadana vrijednost postavke <gui>Počni od</gui>: <gui>Trenutačni položaj</gui></p>
+    </item>
+    <item>
+      <p>Treba li pri traženju podudaranja uzimati u obzir veličinu slova</p>
+      <p>Zadana vrijednost postavke <gui>Podudaranje veličine slova</gui>: nije označeno</p>
+    </item>
+    <item>
+      <p>Treba li podudaranja ograničiti na ona koja odgovaraju cijeloj riječi ili izrazu</p>
+      <p>Zadana vrijednost postavke <gui>Podudaranje samo cijele riječi</gui>: nije označeno</p>
+    </item>
+    <item>
+      <p>Treba li pretraživanje sljedeće podudaranje tražiti prema dolje i/ili udesno ili prema gore i/ili ulijevo.</p>
+      <p>Zadana vrijednost postavke <gui>Traži unatrag</gui>: nije označeno</p>
+    </item>
+    <item>
+      <p>Treba li se pretraživanje vratiti na vrh/dno prozora ako od početnog položaja u smjeru pretraživanja nije pronađeno podudaranje.</p>
+      <p>Zadana vrijednost postavke <gui>Kruži</gui>: označeno</p>
+    </item>
+  </list>
+  <p>Nakon što ste izveli pretraživanje, možete brzo potražiti sljedeće ili prethodno podudaranje bez povratka u Orcin dijalog za pretraživanje.</p>
+  <p>Budući da je riječ o značajki <link xref="howto_flat_review">ravnog pregleda</link>, kada se pronađe podudaranje, ravni pregled bit će automatski uključen, a pronađena stavka ili tekst postat će trenutačna stavka pregleda. Imajte na umu da se fokus unutar aplikacije neće promijeniti, kao ni položaj pokazivača teksta. Ako trebate učiniti bilo što od toga, pogledajte <link xref="commands_mouse">Orcine naredbe vezane uz miš/pokazivač</link>.</p>
+</page>

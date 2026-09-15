@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="introduction" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_setting_up_orca"/>
+    <title type="sort">1. Dobro došli u Orcu</title>
+    <desc>Predstavljamo čitač zaslona <app>Orca</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Dobro došli u Orcu</title>
+  <p><app>Orca</app> je slobodan, otvorenog kôda, prilagodljiv i proširiv čitač zaslona koji omogućuje pristup grafičkoj radnoj površini putem govora i brajičnog retka.</p>
+  <p><app>Orca</app> radi s aplikacijama i radnim okvirima koji podržavaju Assistive Technology Service Provider Interface (AT-SPI), primarnu infrastrukturu pomoćnih tehnologija za Linux i Solaris. Aplikacije i radni okviri koji podržavaju AT-SPI uključuju Gtk+, Qt, Java Swing, LibreOffice, Gecko, WebKitGtk i Chrome/Chromium.</p>
+  <section id="launching">
+    <title>Pokretanje programa <app>Orca</app></title>
+    <p>Za pokretanje programa <app>Orca</app>:</p>
+    <list>
+      <item>
+        <p>Način na koji ćete podesiti da se <app>Orca</app> automatski pokreće kao vaš željeni čitač zaslona ovisi o radnom okruženju koje koristite.</p>
+      </item>
+      <item>
+        <p>Za uključivanje i isključivanje programa <app>Orca</app> u GNOME-u pritisnite <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
+      </item>
+      <item>
+        <p>Upišite <cmd>orca</cmd>, zajedno s neobaveznim parametrima, u prozoru terminala ili u dijalogu <gui>Pokreni</gui> i zatim pritisnite <key>Return</key>.</p>
+      </item>
+    </list>
+  </section>
+    <section id="loadtime">
+      <title>Mogućnosti pri pokretanju</title>
+      <p>Sljedeće mogućnosti možete navesti pri pokretanju programa <app>Orca</app> u prozoru terminala ili u dijalogu <gui>Pokreni</gui>:</p>
+      <list>
+        <item>
+          <p><cmd>-h</cmd>, <cmd>--help</cmd>: Prikaži poruku pomoći</p>
+        </item>
+        <item>
+          <p><cmd>-v</cmd>, <cmd>--version</cmd>: Prikaži inačicu programa <app>Orca</app></p>
+        </item>
+        <item>
+          <p><cmd>-s</cmd>, <cmd>--setup</cmd>: Postavi korisničke postavke</p>
+        </item>
+        <item>
+          <p><cmd>-u</cmd>, <cmd>--user-prefs=<em>dirname</em></cmd>: Koristi <em>dirname</em> kao alternativni direktorij za korisničke postavke</p>
+        </item>
+        <item>
+          <p><cmd>-e</cmd>, <cmd>--enable=<em>option</em></cmd>: Prisili korištenje mogućnosti, pri čemu <em>option</em> može biti nešto od sljedećeg:</p>
+          <list>
+            <item><p><cmd>speech</cmd></p></item>
+            <item><p><cmd>braille</cmd></p></item>
+            <item><p><cmd>braille-monitor</cmd></p></item>
+          </list>
+        </item>
+        <item>
+          <p><cmd>-d</cmd>, <cmd>--disable=<em>option</em></cmd>: Spriječi korištenje mogućnosti, pri čemu <em>option</em> može biti nešto od sljedećeg:</p>
+          <list>
+            <item><p><cmd>speech</cmd></p></item>
+            <item><p><cmd>braille</cmd></p></item>
+            <item><p><cmd>braille-monitor</cmd></p></item>
+          </list>
+        </item>
+        <item>
+            <p><cmd>-p</cmd>, <cmd>--profile=<em>filename</em></cmd>: Uvezi profil iz zadane datoteke Orcinog profila</p>
+        </item>
+        <item>
+          <p><cmd>-r</cmd>, <cmd>--replace</cmd>: Zamijeni trenutačno pokrenutu <app>Orcu</app></p>
+        </item>
+        <item>
+          <p><cmd>-l</cmd>, <cmd>--list-apps</cmd>: Ispiši poznate pokrenute aplikacije</p>
+        </item>
+        <item>
+          <p><cmd>--debug</cmd>: Pošalji izlaz za otklanjanje grešaka u debug-YYYY-MM-DD-HH:MM:SS.out</p>
+        </item>
+        <item>
+          <p><cmd>--debug-file=<em>filename</em></cmd>: Pošalji izlaz za otklanjanje grešaka u navedenu datoteku</p>
+        </item>
+      </list>
+    </section>
+
+</page>

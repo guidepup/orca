@@ -41,13 +41,13 @@
   <p>Você pode ser solicitado pelos desenvolvedores a fornecer algumas informações de depuração para ajudá-los a identificar a origem de um problema que você está enfrentando. O comando a seguir não está "vinculado" a um atalho de de teclado. Se você precisar vinculá-lo, consulte <link xref="howto_key_bindings">Associações de teclas</link>.</p>
   <list>
     <item>
-      <p>Capture snapshot for debugging: (Unbound)</p>
+      <p>Captura instantânea para depuração: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Alterna para o próximo nível de depuração: (Sem atalho definido)</p>
+      <p>Alterna para o próximo nível de depuração: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Clear the AT-SPI cache for the current application: (Unbound)</p>
+      <p>Limpa o cache do AT-SPI para o aplicativo atual: (sem atalho definido)</p>
     </item>
   </list>
 </page>

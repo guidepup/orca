@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_forms" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reading"/>
+     <link type="next" xref="howto_live_regions"/>
+    <title type="sort">5. Ispunjavanje obrazaca</title>
+    <desc>Pristup elementima sučelja ugrađenima u dokumente</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Ispunjavanje obrazaca</title>
+  <p>Kada pomoću programa <app>Orca</app> radite s web stranicama i drugim dokumentima, radite sa samim dokumentom, a ne s njegovom međuspremljenom kopijom. Orcin način pregledavanja i način fokusa omogućuju vam prebacivanje između čitanja i ispunjavanja obrazaca.</p>
+  <section id="navigating_amongst_form_fields">
+    <title>Kretanje među poljima obrasca</title>
+    <p>Za kretanje među poljima obrasca imate nekoliko mogućnosti:</p>
+    <list>
+      <item>
+        <p>Koristite <key>Tab</key> i <keyseq><key>Shift</key><key>Tab</key></keyseq> za kretanje među objektima koji mogu primiti fokus, bez obzira na njihovu vrstu.</p>
+      </item>
+      <item>
+        <p>Koristite Orcine <link xref="commands_structural_navigation#forms"> naredbe strukturne navigacije za obrasce</link>.</p>
+      </item>
+      <item>
+        <p>Ovisno o obrascu i aplikaciji, za dolazak do pojedinog polja obrasca možda ćete moći koristiti i tipke sa strelicama.</p>
+      </item>
+   </list>
+   <note style="tip">
+     <p>Kako biste Orcine naredbe navigacije pokazivačem teksta ili strukturne navigacije mogli koristiti za dolazak do polja obrasca, morate biti u načinu pregledavanja. Ako se nalazite u načinu fokusa, na način pregledavanja možete se prebaciti pritiskom <keyseq><key>Orca modifikator</key><key>A</key></keyseq>.</p>
+   </note>
+  </section>
+  <section id="exiting_form_fields">
+    <title>Izlazak iz polja obrasca</title>
+    <p>Za izlazak iz polja obrasca imate nekoliko mogućnosti:</p>
+    <list>
+      <item>
+        <p>Koristite <key>Tab</key>/<keyseq><key>Shift</key><key>Tab</key></keyseq> ako želite napustiti trenutačno fokusirano polje obrasca i prijeći na sljedeći/prethodni objekt koji može primiti fokus, bez obzira na njegovu vrstu.</p>
+      </item>
+      <item>
+        <p>Koristite Orcine <link xref="commands_structural_navigation#forms"> naredbe strukturne navigacije za obrasce</link> za prelazak na sljedeće ili prethodno polje obrasca.</p>
+      </item>
+      <item>
+        <p>Ovisno o obrascu i aplikaciji, za izlazak iz pojedinog polja obrasca možda ćete moći koristiti i tipke sa strelicama.</p>
+      </item>
+    </list>
+   <note style="tip">
+     <p>Kako biste Orcine naredbe navigacije pokazivačem teksta ili strukturne navigacije mogli koristiti za izlazak iz polja obrasca, morate biti u načinu pregledavanja. Ako se nalazite u načinu fokusa, na način pregledavanja možete se prebaciti pritiskom <keyseq><key>Orca modifikator</key><key>A</key></keyseq>.</p>
+   </note>
+  </section>
+</page>
