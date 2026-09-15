@@ -22,7 +22,7 @@
     <mal:credit xmlns:mal="http://projectmallard.org/1.0/" type="translator copyright">
       <mal:name>Christian Kirbach</mal:name>
       <mal:email>Christian.Kirbach@googlemail.com</mal:email>
-      <mal:years>2011, 2016, 2017, 2018</mal:years>
+      <mal:years>2011, 2016, 2017, 2018,2026</mal:years>
     </mal:credit>
   
     <mal:credit xmlns:mal="http://projectmallard.org/1.0/" type="translator copyright">
@@ -47,13 +47,7 @@
   <p>Ein dynamischer Bereich ist ein dynamisch aktualisierter Teil einer Webseite, zum Beispiel eine Tabelle mit Spielergebnissen aus dem Sport, eine Liste aktueller Börsenkurse, ein Chat-Protokoll oder Benachrichtigungen einer Seite, die Sie gerade lesen. Während dynamische Bereiche recht häufig aktualisiert werden, sind vollständig erfassbare Webseiten mit dynamischen Bereichen eher selten anzutreffen. Dieses Problem wird aktiv von einer Reihe von Organisationen diskutiert.</p>
   <section id="politeness_levels">
     <title>Höflichkeitsstufen für dynamische Bereiche</title>
-    <p>
-      Live regions have an associated "politeness" level which is set by the
-      author as a means to convey the importance of the information and to
-      suggest when users should be informed by their assistive technology of
-      updates made within that region. Live regions can be "off", "polite", or
-      "assertive."
-    </p>
+    <p>Dynamische Bereiche verfügen über eine zugeordnete Stufe der Höflichkeit („politeness“), die vom Autor festgelegt wird, um die Wichtigkeit der Informationen zu vermitteln und zu empfehlen, wann Benutzer von ihrer assistierenden Technologie über Aktualisierungen innerhalb dieses Bereichs informiert werden sollten. Dynamische Bereiche  können „aus“ (off), „höflich“ (polite) oder „bestimmend“ (assertive) sein</p>
   </section>
   <section id="orca_support">
     <title>Unterstützung für dynamische Bereiche durch <app>Orca</app></title>

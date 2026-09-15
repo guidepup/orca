@@ -44,12 +44,10 @@
     <p>O comando a seguir não possui atalho de teclado vinculado. Se desejar vinculá-lo, consulte <link xref="howto_key_bindings">Associações de teclas</link>.</p>
     <list>
       <item>
-        <p>Alterna para o próximo perfil: (Sem atalho definido)</p>
+        <p>Alterna para o próximo perfil: (sem atalho definido)</p>
       </item>
       <item>
-        <p>
-          Present the current profile: (Unbound)
-        </p>
+        <p>Apresenta o perfil atual: (sem atalho definido)</p>
       </item>
     </list>
 </page>

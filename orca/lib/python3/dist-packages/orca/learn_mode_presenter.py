@@ -32,54 +32,36 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gdk, GObject, Gtk
 
 from . import (
-    cmdnames,
+    ax_device_manager,
     command_manager,
     debug,
     guilabels,
     input_event,
-    input_event_manager,
     keybindings,
+    learn_mode_presenter_command_definitions,
     messages,
+    orca_gui_helpers,
     presentation_manager,
-    script_manager,
 )
+from .extension import Extension
 
 if TYPE_CHECKING:
+    from .command import BrailleCommand, Command, KeyboardCommand
     from .scripts import default
 
 
-class LearnModePresenter:
+class LearnModePresenter(Extension):
     """Provides implementation of learn mode"""
+
+    GROUP_LABEL = guilabels.KB_GROUP_LEARN_MODE
 
     def __init__(self) -> None:
         self._is_active: bool = False
         self._gui: CommandListGUI | None = None
-        self._initialized: bool = False
+        super().__init__()
 
-    def set_up_commands(self) -> None:
-        """Sets up commands with CommandManager."""
-
-        if self._initialized:
-            return
-        self._initialized = True
-
-        manager = command_manager.get_manager()
-        group_label = guilabels.KB_GROUP_LEARN_MODE
-        kb = keybindings.KeyBinding("h", keybindings.ORCA_MODIFIER_MASK)
-
-        manager.add_command(
-            command_manager.KeyboardCommand(
-                "enterLearnModeHandler",
-                self.start,
-                group_label,
-                cmdnames.ENTER_LEARN_MODE,
-                desktop_keybinding=kb,
-                laptop_keybinding=kb,
-            ),
-        )
-
-        msg = "LEARN MODE PRESENTER: Commands set up."
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+    def _get_commands(self) -> list[Command]:
+        return learn_mode_presenter_command_definitions.get_commands(self)
 
     def is_active(self) -> bool:
         """Returns True if we're in learn mode"""
@@ -103,11 +85,11 @@ class LearnModePresenter:
         presenter.speak_message(messages.LEARN_MODE_START_SPEECH)
         presenter.present_braille_message(messages.LEARN_MODE_START_BRAILLE)
 
-        input_event_manager.get_manager().grab_keyboard("Entering learn mode")
+        ax_device_manager.get_manager().grab_keyboard("Entering learn mode")
         msg = "LEARN MODE PRESENTER: Is now active"
         debug.print_message(debug.LEVEL_INFO, msg, True)
         self._is_active = True
-        command_manager.get_manager().set_learn_mode_active(True)
+        command_manager.get_manager().set_modal_handler(self)
         return True
 
     def quit(
@@ -125,23 +107,30 @@ class LearnModePresenter:
         presenter = presentation_manager.get_manager()
         presenter.present_message(messages.LEARN_MODE_STOP)
 
-        input_event_manager.get_manager().ungrab_keyboard("Exiting learn mode")
+        ax_device_manager.get_manager().ungrab_keyboard("Exiting learn mode")
         msg = "LEARN MODE PRESENTER: Is now inactive"
         debug.print_message(debug.LEVEL_INFO, msg, True)
         self._is_active = False
-        command_manager.get_manager().set_learn_mode_active(False)
+        command_manager.get_manager().clear_modal_handler(self)
+        return True
+
+    def will_handle_event(  # pylint: disable=unused-argument
+        self,
+        script: default.Script,
+        event: input_event.KeyboardEvent,
+        command: KeyboardCommand | None = None,
+    ) -> bool:
+        """Returns True; learn mode claims every key while active."""
+
         return True
 
     def handle_event(
         self,
+        script: default.Script,
         event: input_event.KeyboardEvent,
-        command: command_manager.KeyboardCommand | None = None,
+        command: KeyboardCommand | None = None,
     ) -> bool:
         """Handles the keyboard event in learn mode."""
-
-        script = script_manager.get_manager().get_active_script()
-        if script is None:
-            return False
 
         presentation_manager.get_manager().present_key_event(event)
 
@@ -152,11 +141,15 @@ class LearnModePresenter:
             self.quit(script, event)
             return True
 
-        if event.keyval_name == "F1" and not event.modifiers:
+        if event.keyval_name == "F1" and not (
+            event.modifiers & keybindings.NON_LOCKING_MODIFIER_MASK
+        ):
             self.show_help(script, event)
             return True
 
-        if event.keyval_name == "F2" and not event.modifiers:
+        if event.keyval_name == "F2" and not (
+            event.modifiers & keybindings.NON_LOCKING_MODIFIER_MASK
+        ):
             self.list_orca_shortcuts(script, event)
             return True
 
@@ -171,7 +164,7 @@ class LearnModePresenter:
         self,
         script: default.Script,
         event: input_event.BrailleEvent,
-        command: command_manager.BrailleCommand | None,
+        command: BrailleCommand | None,
     ) -> bool:
         """Handles braille event in learn mode. Returns True if command should not execute."""
 
@@ -190,20 +183,29 @@ class LearnModePresenter:
         return True
 
     def list_orca_shortcuts(self, script: default.Script, event: input_event.KeyboardEvent) -> bool:
-        """Shows a simple gui listing Orca's bound commands."""
+        """Shows a simple gui listing Orca's keyboard commands."""
 
-        items = 0
-        commands_by_group: dict[str, list[command_manager.KeyboardCommand]] = {}
-        for cmd in command_manager.get_manager().get_all_keyboard_commands():
-            keybinding = cmd.get_keybinding()
-            if keybinding is None:
+        commands_by_group: dict[str, list[KeyboardCommand]] = {}
+        for cmd in command_manager.get_manager().get_user_visible_keyboard_commands():
+            if not cmd.get_description():
                 continue
 
             if cmd.get_group_label() not in commands_by_group:
                 commands_by_group[cmd.get_group_label()] = []
             commands_by_group[cmd.get_group_label()].append(cmd)
-            items += 1
 
+        for commands in commands_by_group.values():
+            commands.sort(key=lambda cmd: (cmd.is_transient(), cmd.get_description().lower()))
+
+        def group_sort_key(group: str) -> tuple[int, str]:
+            if group == guilabels.KB_GROUP_SCREEN_READER_MANAGEMENT:
+                return (0, group)
+            return (1, group.lower())
+
+        commands_by_group = dict(
+            sorted(commands_by_group.items(), key=lambda item: group_sort_key(item[0]))
+        )
+        items = sum(len(commands) for commands in commands_by_group.values())
         title = messages.shortcuts_found_orca(items)
         if not commands_by_group:
             presentation_manager.get_manager().present_message(title)
@@ -239,7 +241,7 @@ class CommandListGUI:
         script: default.Script,
         title: str,
         column_headers: list[str],
-        commands_dict: dict[str, list[command_manager.KeyboardCommand]],
+        commands_dict: dict[str, list[KeyboardCommand]],
     ) -> None:
         self._script: default.Script = script
         self._model: Gtk.TreeStore | None = None
@@ -249,38 +251,17 @@ class CommandListGUI:
         self,
         title: str,
         column_headers: list[str],
-        commands_dict: dict[str, list[command_manager.KeyboardCommand]],
+        commands_dict: dict[str, list[KeyboardCommand]],
     ) -> Gtk.Dialog:
         """Creates the commands-list dialog."""
 
-        dialog = Gtk.Dialog(
+        dialog, tree = orca_gui_helpers.create_tree_view_dialog(
             title,
-            None,
-            Gtk.DialogFlags.MODAL,
-            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE),
+            column_headers=column_headers,
+            default_size=(1000, 800),
         )
-        dialog.set_default_size(1000, 800)
-
-        grid = Gtk.Grid()
-        content_area = dialog.get_content_area()
-        content_area.add(grid)
-
-        scrolled_window = Gtk.ScrolledWindow()
-        grid.add(scrolled_window)  # pylint: disable=no-member
-
-        tree = Gtk.TreeView()
-        tree.set_hexpand(True)
-        tree.set_vexpand(True)
-        scrolled_window.add(tree)  # pylint: disable=no-member
 
         cols = len(column_headers) * [GObject.TYPE_STRING]
-        for i, header in enumerate(column_headers):
-            cell = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(header, cell, text=i)
-            tree.append_column(column)
-            if header:
-                column.set_sort_column_id(i)
-
         self._model = Gtk.TreeStore(*cols)
 
         for group, commands in commands_dict.items():

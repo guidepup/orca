@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_controlling_orca" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_where_am_i"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <title type="sort">1. Upravljanje Orcom i učenje njezinog korištenja</title>
+    <title type="link">Upravljanje Orcom i učenje njezinog korištenja</title>
+    <desc>Naredbe za rad s programom <app>Orca</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Upravljanje Orcom i učenje njezinog korištenja</title>
+  <section id="controlling">
+    <title>Naredbe za upravljanje programom <app>Orca</app></title>
+    <p>Sljedeće naredbe možete koristiti za otvaranje dijaloga postavki programa <app>Orca</app>, uključivanje i isključivanje programa <app>Orca</app> te za zaobilaženje Orcinih naredbi radi izbjegavanja sukoba prečaca unutar aplikacije kojoj pristupate.</p>
+    <list>
+      <item>
+        <p>Uključivanje i isključivanje programa <app>Orca</app> u podržanim radnim okruženjima: <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
+        <note style="tip">
+           <p>Ako program <app>Orca</app> koristite u drugom radnom okruženju u kojem ne postoji naredba za njegovo uključivanje i isključivanje, korisna vam može biti naredba za izlaz iz programa <app>Orca</app>. Toj naredbi po zadanom nije dodijeljen tipkovni prečac. Pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link> za informacije o tome kako dodijeliti prečace naredbama bez prečaca.</p>
+        </note>
+      </item>
+      <item>
+        <p>Dijalog <link xref="preferences">Postavke Orce</link>: <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+      </item>
+      <item>
+        <p>Dijalog Orcinih postavki za aplikaciju u fokusu: <keyseq><key>Ctrl</key><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+      </item>
+      <item>
+        <p>Uključi/isključi sve Orcine naredbene tipke: <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq></p>
+      </item>
+      <item>
+        <p>Promijeni raspored tipkovnice: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Prijeđi na sljedeću razinu odjeka tipki: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Izađi iz čitača zaslona: (nije dodijeljeno)</p>
+      </item>
+    </list>
+  </section>
+  <section id="braille_keyboard_bindings">
+    <title>Brajične naredbe</title>
+    <p>Sljedeće naredbe možete koristiti za upravljanje Orcinim brajičnim ispisom i njegovu prilagodbu.</p>
+    <list>
+      <item>
+        <p>Pomakni brajični redak ulijevo: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Pomakni brajični redak udesno: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Uključi i isključi kratkopisnu brajicu: (nije dodijeljeno)</p>
+      </item>
+    </list>
+  </section>
+  <section id="learning">
+    <title>Naredbe za učenje korištenja programa <app>Orca</app></title>
+    <p>U načinu učenja <app>Orca</app> će najaviti svaku tipku koju pritisnete zajedno s pripadajućom naredbom programa <app>Orca</app> na koju je ta tipka vezana. U tom načinu možete dobiti i popis prečaca sa svim naredbama programa <app>Orca</app> koje možete koristiti.</p>
+    <list>
+      <item>
+        <p>Ulazak u način učenja: <keyseq><key>Orca modifikator</key><key>H</key></keyseq></p>
+      </item>
+      <item>
+        <p>Izlazak iz načina učenja: <keyseq><key>Esc</key></keyseq></p>
+      </item>
+    </list>
+  </section>
+</page>

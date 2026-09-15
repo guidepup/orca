@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_mouse_review" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_notifications"/>
+    <title type="sort">4. Pregled mišem</title>
+    <desc>Korištenje pokazivača za pregledavanje zaslona</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Pregled mišem</title>
+  <p>Orcina značajka pregleda mišem čini da <app>Orca</app> prikazuje objekt koji se nalazi ispod pokazivača miša. Za razliku od Orcine značajke <link xref="howto_flat_review">ravnog pregleda</link>, pregled mišem nije ograničen na aktivni prozor; umjesto toga, <app>Orca</app> će, dok pomičete miša, pokušati odrediti koji se pristupačni objekt, ako ga ima, vizualno nalazi ispod pokazivača. Ako ste pokazivač pomaknuli iznad pristupačnog objekta koji ima informacije za prikaz, <app>Orca</app> će vam prikazati taj objekt i njegove informacije.</p>
+  <p>Budući da uključivanje pregleda mišem čini da <app>Orca</app> osluškuje, a zatim obrađuje sve promjene položaja pokazivača miša, ta je značajka po zadanom onemogućena. Ako želite da bude uvijek uključena, označite potvrdni okvir <gui>Izgovori objekt ispod miša</gui> koji se nalazi na <link xref="preferences_general">kartici Općenito Orcinog dijaloga postavki</link>. Osim toga, na <link xref="preferences_key_bindings">kartici Tipkovni prečaci</link> istog dijaloga pronaći ćete naredbu bez dodijeljenog prečaca pod nazivom <gui>Uključi/isključi način pregleda mišem</gui>. Dodjeljivanjem prečaca toj naredbi, kako je opisano u <link xref="howto_key_bindings">Uvodu u tipkovne prečace</link>, možete uključivati i isključivati pregled mišem prema potrebi.</p>
+  <note style="tip">
+    <title>Zadane postavke i tipkovni prečaci međusobno su neovisni</title>
+    <p>Imajte na umu da možete odabrati hoće li pregled mišem uvijek biti uključen ili ne, a da ga i dalje uključujete i isključujete dodjeljivanjem prečaca naredbi <gui>Uključi/isključi način pregleda mišem</gui> i njezinim korištenjem. Nije ga potrebno uključiti kako biste ga mogli uključivati i isključivati, jer su postavke i tipkovni prečaci međusobno neovisni.</p>
+  </note>
+</page>

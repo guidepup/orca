@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_live_regions" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_whereami"/>
+    <title type="sort">6. Žive regije</title>
+    <desc>Rad s dinamičkim web sadržajem</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Žive regije</title>
+  <p>Živa regija dio je web stranice koji se dinamički osvježava, kao što su tablica sportskih statistika, popis trenutačnih cijena dionica, zapis čavrljanja ili upozorenje koje prikazuje stranica koju čitate. Iako se žive regije pojavljuju prilično često, potpuno pristupačne web stranice sa živim regijama susreću se rjeđe. Na rješavanju tog problema aktivno radi niz organizacija.</p>
+  <section id="politeness_levels">
+    <title>Razine uljudnosti živih regija</title>
+    <p>Žive regije imaju pripadajuću razinu "uljudnosti" koju postavlja autor kako bi prenio važnost informacije i predložio kada bi pomoćna tehnologija trebala obavijestiti korisnike o promjenama unutar te regije. Žive regije mogu biti "isključene", "uljudne" ili "odlučne".</p>
+  </section>
+  <section id="orca_support">
+    <title>Orcina podrška za žive regije</title>
+    <p>Budući da se možda nećete slagati s razinom uljudnosti koju je odredio autor stranice koju pregledavate, <app>Orca</app> nudi niz <link xref="commands_live_regions">naredbi za žive regije</link> kojima možete promijeniti razinu bilo koje ili svih regija na stranici. Osim toga, možete:</p>
+    <list>
+      <item>
+        <p>uključiti ili isključiti podršku za žive regije</p>
+      </item>
+      <item>
+        <p>prostorno skočiti na sljedeću i prethodnu živu regiju</p>
+      </item>
+      <item>
+        <p>skočiti na zadnju živu regiju koja je prikazala informaciju</p>
+      </item>
+      <item>
+        <p>pregledati zadnjih devet prikazanih poruka živih regija</p>
+    </item>
+    </list>
+  </section>
+</page>

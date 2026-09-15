@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_profiles" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_speech_settings"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <link type="seealso" xref="howto_profiles"/>
+    <title type="sort">5. Profili</title>
+    <title type="link">Profili</title>
+    <desc>Naredbe za pristup spremljenim postavkama</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe profila</title>
+    <p>Profili vam omogućuju spremanje i učitavanje više različitih postava, tako da brzo možete pristupiti postavkama koje su vam potrebne.</p>
+    <p>Sljedećoj naredbi nije dodijeljen tipkovni prečac. Ako ga želite dodijeliti, pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link>.</p>
+    <list>
+      <item>
+        <p>Prijeđi na sljedeći profil: (nije dodijeljeno)</p>
+      </item>
+      <item>
+        <p>Prikaži trenutačni profil: (nije dodijeljeno)</p>
+      </item>
+    </list>
+</page>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_spellcheck" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#application"/>
+    <title type="sort">4. Provjera pravopisa</title>
+    <title type="link">Provjera pravopisa</title>
+    <desc>Podešavanje Orcine podrške za provjeru pravopisa</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke provjere pravopisa</title>
+  <p><app>Orca</app> nastoji pružiti dosljedno korisničko iskustvo pri radu s alatima za provjeru pravopisa u aplikacijama. Za aplikacije za koje je ta poboljšana podrška osigurana pronaći ćete nekoliko mogućnosti koje možete podesiti kako biste dobili razinu opširnosti koja vam najbolje odgovara.</p>
+  <note style="tip">
+    <title>Možete imati i sažete i opširne informacije o provjeri pravopisa</title>
+    <p>Ako pri korištenju provjere pravopisa obično želite vrlo malu opširnost, ali povremeno trebate detaljne informacije o pojedinoj pogrešci, te mogućnosti možete isključiti. Kada zatrebate dodatne pojedinosti, jednostavno upotrijebite Orcinu detaljnu naredbu <link xref="howto_whereami">Gdje sam</link> kako bi <app>Orca</app> prikazala trenutačnu pogrešku kao da su sve te mogućnosti uključene.</p>
+  </note>
+  <section id="spell_error">
+    <title>Slovkaj pogrešku</title>
+    <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će pogrešno napisanu riječ nakon izgovaranja i slovkati.</p>
+    <p>Zadana vrijednost: označeno</p>
+  </section>
+  <section id="spell_suggestion">
+    <title>Slovkaj prijedlog</title>
+    <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će predloženi ispravak nakon izgovaranja i slovkati.</p>
+    <p>Zadana vrijednost: označeno</p>
+  </section>
+  <section id="error_context">
+    <title>Prikaži kontekst pogreške</title>
+    <p>Ako je ovaj potvrdni okvir označen, <app>Orca</app> će izgovoriti rečenicu ili redak iz dokumenta u kojem je pogreška pronađena.</p>
+    <p>Zadana vrijednost: označeno</p>
+  </section>
+</page>

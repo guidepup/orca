@@ -22,10 +22,10 @@
 import os
 
 # $ORCA_VERSION
-version     = "50.2"
+version     = "51.0"
 
 # The revision if built from git; otherwise an empty string
-revision = "993c3a3"
+revision = "f480429"
 
 # "--prefix" parameter used when configuring the build.
 prefix      = "/home/runner/work/orca/orca/orca"
@@ -38,3 +38,6 @@ datadir = os.path.join('/home/runner/work/orca/orca/orca','share')
 
 # The directory where we could find liblouis translation tables.
 tablesdir = ""
+
+# The directory where MathCAT Rules are installed (empty if MathCAT not built).
+mathcat_rules_dir = "/home/runner/work/orca/orca/orca/share/mathcat/Rules"

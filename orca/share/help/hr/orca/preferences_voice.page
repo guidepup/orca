@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_voice" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_speech"/>
+    <title type="sort">2.0 Glas</title>
+    <title type="link">Glas</title>
+    <desc>Podešavanje glasa koji koristi <app>Orca</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke glasa</title>
+  <section id="voice_type_settings">
+    <title>Postavke vrste glasa</title>
+    <section id="voice_type">
+      <title>Vrsta glasa</title>
+      <p>Ovaj kombinirani okvir omogućuje vam korištenje različitih glasova, kako biste bolje razlikovali velika slova i tekst s poveznicom od ostalog teksta te tekst na zaslonu od teksta koji dodaje <app>Orca</app>.</p>
+      <note style="tip">
+        <title>Podešavanje više glasova</title>
+        <p>Za svaki glas koji želite podesiti najprije odaberite glas u kombiniranom okviru <gui>Vrsta glasa</gui>. Zatim podesite osobu, brzinu, visinu tona i glasnoću koji će se koristiti za taj glas.</p>
+      </note>
+    </section>
+    <section id="speech_system">
+      <title>Sustav govora</title>
+      <p>Ovaj kombinirani okvir omogućuje vam da odaberete željeni sustav govora među onima koje ste instalirali, kao što je Speech Dispatcher.</p>
+    </section>
+    <section id="speech_synthesizer">
+      <title>Govorni sintetizator</title>
+      <p>Ovaj kombinirani okvir omogućuje vam da odaberete govorni sintetizator koji će se koristiti s odabranim sustavom govora.</p>
+    </section>
+    <section id="person">
+      <title>Osoba</title>
+      <p>Ovaj kombinirani okvir omogućuje vam da odaberete koja će se "osoba" ili "govornik" koristiti s odabranim glasom. Primjerice, možda želite da po zadanom govori David, a da hiperpoveznice izgovara Alice. Imajte na umu da ono što ćete pronaći u kombiniranom okviru <gui>Osoba</gui> ovisi o tome koje ste govorne sintetizatore instalirali.</p>
+    </section>
+    <section id="capitalization_style">
+      <title>Način izgovaranja velikih slova</title>
+      <p>Ovaj kombinirani okvir omogućuje vam da odaberete koje načine označavanja velikih slova iz Speech Dispatchera želite koristiti uz Orcin glas za velika slova. Mogućnosti, koje su imenovane prema nazivlju Speech Dispatchera, jesu:</p>
+     <list>
+       <item><p><gui>Icon</gui>: Reproducira ton</p></item>
+       <item><p><gui>Spell</gui>: Izgovara riječ "veliko"</p></item>
+       <item><p><gui>None</gui></p></item>
+    </list>
+    <note style="tip">
+      <title>Ova se postavka može mijenjati u hodu</title>
+      <p><app>Orca</app> ima i naredbu za kruženje kroz dostupne načine izgovaranja velikih slova. Za više informacija pogledajte <link xref="commands_speech_settings"> Naredbe za postavke govora</link>.</p>
+    </note>
+    <p>Zadana vrijednost: nikakav</p>
+    </section>
+    <section id="rate_pitch_and_volume">
+      <title>Brzina, visina tona i glasnoća</title>
+      <p>Ova tri lijevo-desna klizača omogućuju vam dodatnu prilagodbu zvuka osobe koju ste upravo odabrali.</p>
+    </section>
+  </section>
+  <section id="global_voice_settings">
+  <title>Opće postavke glasa</title>
+    <section id="pauses">
+      <title>Podijeli govor na dijelove odvojene stankama</title>
+      <p>Ovisno o uključenim postavkama govora, <app>Orca</app> može imati poprilično toga za reći o pojedinom objektu, primjerice njegov naziv, ulogu, stanje, pristupno slovo, poduku i tako dalje. Označavanje potvrdnog okvira <gui>Podijeli govor na dijelove odvojene stankama</gui> učinit će da <app>Orca</app> između svakog od tih dijelova informacija umetne kratke stanke.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="numbers_as_digits">
+      <title>Izgovori brojeve po znamenkama</title>
+      <p>Označavanje potvrdnog okvira <gui>Izgovori brojeve po znamenkama</gui> učinit će da <app>Orca</app> broj poput "123" rastavi na pojedinačne znamenke ("1", "2" i "3") prije nego što ga proslijedi govornom sintetizatoru.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+  </section>
+</page>

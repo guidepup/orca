@@ -19,28 +19,22 @@
   <p>Následující příkazy lze použít k přístupu k informacím v klientech rychlé komunikace a IRC podporovaných čtečkou <app>Orca</app>. Všimněte si, že několik těchto příkazů nemá přiřazenou klávesovou zkratku. Jak jim nějakou přiřadit najdete v kapitole <link xref="howto_key_bindings">Změna klávesových zkratek</link>.</p>
   <list>
     <item>
-      <p>
-        Present previous chat room message: (Unbound)
-      </p>
+      <p>Prezentovat předchozí zprávu v diskuzní místnosti: (bez klávesové zkratky)</p>
     </item>
     <item>
-      <p>
-        Present next chat room message: (Unbound)
-      </p>
+      <p>Prezentovat následující zprávu v diskuzní místnosti: (bez klávesové zkratky)</p>
     </item>
     <item>
       <p>Povolit/zakázat oznamování názvu místnosti spolu se zprávou: (bez klávesové zkratky)</p>
     </item>
     <item>
-      <p>
-        Toggle chat room specific message histories: (unbound)
-      </p>
+      <p>Přepnout historii zpráv specifické místnosti: (bez klávesové zkratky)</p>
     </item>
     <item>
       <p>Povolit/zakázat oznámení, že kamarád zveřejňuje stav: (bez klávesové zkratky)</p>
     </item>
     <item>
-      <p>Toggle room name presentation: (Unbound)</p>
+      <p>Přepnout prezentování názvu místnosti: (bez klávesové zkratky)</p>
     </item>
   </list>
 </page>

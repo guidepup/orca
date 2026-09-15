@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_text_attributes" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_web"/>
+    <link type="seealso" xref="howto_text_attributes"/>
+    <title type="sort">8. Svojstva teksta</title>
+    <title type="link">Svojstva teksta</title>
+    <desc>Podešavanje toga koje se oblikovanje prikazuje</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke svojstava teksta</title>
+  <p>Pojam "svojstva teksta" odnosi se na sva slova, stil, poravnanje i drugo oblikovanje povezano s pojedinim znakom ili nizom znakova. Orcina kartica <gui>Svojstva teksta</gui> omogućuje vam da odredite koja će svojstva teksta <app>Orca</app> prikazivati govorom, kojim će ih redoslijedom prikazivati i koja će označavati na brajici.</p>
+  <section id="table">
+    <title>Tablica svojstava teksta</title>
+    <p>U tablici svojstava teksta određujete koja će se svojstva prikazivati, a koja neće i pod kojim uvjetima. Svaki se redak sastoji od četiri stupca.</p>
+    <list>
+      <item>
+        <p><gui>Naziv svojstva</gui>: Naziv svojstva teksta.</p>
+      </item>
+      <item>
+        <p><gui>Izgovori</gui>: Označite ovaj potvrdni okvir ako želite da <app>Orca</app> izgovori to svojstvo kada pritisnete <keyseq><key>Orca modifikator</key><key>F</key></keyseq>.</p>
+      </item>
+      <item>
+        <p><gui>Označi na brajici</gui>: Označite ovaj potvrdni okvir ako želite da <app>Orca</app> to svojstvo "podcrta" na vašem brajičnom retku.</p>
+      </item>
+      <item>
+        <p><gui>Prikaži osim ako</gui>: Ovo polje koje se može uređivati omogućuje vam da odredite kada uključeno svojstvo nije zanimljivo.</p>
+        <p>Primjerice, svojstvo teksta "podcrtano" po zadanom ima vrijednost "nikakvo". To uzrokuje da vas <app>Orca</app> obavještava o podcrtanom tekstu sve dok je tekst doista podcrtan. Ako želite da se to svojstvo uvijek izgovara, bez obzira na to je li tekst podcrtan ili nije, stupac <gui>Prikaži osim ako</gui> za podcrtano treba biti prazan. Osim toga, provjerite je li stupac <gui>Izgovori</gui> za podcrtano označen.</p>
+      </item>
+    </list>
+  </section>
+  <section id="reset">
+     <title>Poništavanje promjena</title>
+     <p>Ispod popisa svojstava teksta nalazi se gumb <gui>Vrati izvorno</gui> (<keyseq><key>Alt</key><key>R</key></keyseq>) koji će vrijednosti u tablici vratiti na one kakve su bile kada je dijalog prvi put prikazan.</p>
+  </section>
+  <section id="rearranging">
+     <title>Promjena redoslijeda prikazivanja</title>
+     <p>Kada prvi put prikažete karticu <gui>Svojstva teksta</gui>, sva su uključena svojstva smještena na vrh tablice, i to redoslijedom kojim će se izgovarati. Postoje četiri gumba kojima možete promijeniti redoslijed prikazivanja.</p>
+    <list>
+      <item>
+        <p><gui>Premjesti na vrh</gui> (<keyseq><key>Alt</key><key>T</key></keyseq>): premješta odabrano svojstvo na vrh popisa.</p>
+      </item>
+      <item>
+        <p><gui>Premjesti gore</gui> (<keyseq><key>Alt</key><key>U</key></keyseq>): premješta odabrano svojstvo jedan redak prema gore.</p>
+      </item>
+      <item>
+        <p><gui>Premjesti dolje</gui> (<keyseq><key>Alt</key><key>D</key></keyseq>): premješta odabrano svojstvo jedan redak prema dolje.</p>
+      </item>
+      <item>
+        <p><gui>Premjesti na dno</gui> (<keyseq><key>Alt</key><key>B</key></keyseq>): premješta odabrano svojstvo na dno popisa.</p>
+      </item>
+    </list>
+  </section>
+  <section id="braille_indicator">
+    <title>Mogućnosti podešavanja brajičnog "podcrtavanja" za oblikovanje</title>
+    <p>Ispod gumba nalazi se skupina izbornih gumba <gui>Brajična oznaka</gui>. Ovdje možete odabrati ćeliju ili ćelije kojima će se označavati tekst koji ima barem jedno od navedenih svojstava.</p>
+    <list>
+      <item>
+        <p><gui>Nikakva</gui>: Ne podcrtavaj svojstva teksta na brajici (zadano)</p>
+      </item>
+      <item>
+        <p><gui>Točkica 7</gui>: Podcrtaj svojstva teksta samo točkicom 7</p>
+      </item>
+      <item>
+        <p><gui>Točkica 8</gui>: Podcrtaj svojstva teksta samo točkicom 8</p>
+      </item>
+      <item>
+        <p><gui>Točkice 7 i 8</gui>: Podcrtaj svojstva teksta i točkicom 7 i točkicom 8</p>
+      </item>
+    </list>
+  </section>
+</page>

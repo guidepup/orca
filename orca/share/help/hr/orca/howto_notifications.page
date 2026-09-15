@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_notifications" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <title type="sort">5. Obavijesti</title>
+    <desc>Čitanje prethodno primljenih poruka</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Obavijesti</title>
+  <p>GNOME radna površina sadrži "područje obavijesti" koje aplikacije mogu koristiti za prikazivanje informacija korisniku. Primjeri obavijesti su dolazne poruke čavrljanja, pojedinosti o pjesmi koju vaš medijski uređaj počinje reproducirati te upozorenja da je razina baterije niska.</p>
+  <p>Budući da je obavijestima namjena prikazati informacije korisnicima bez prekidanja onoga što korisnik radi, te se poruke obično pojavljuju i nestaju relativno brzo. Također ne mogu primiti fokus. Iako će vam <app>Orca</app> te poruke prikazivati kako pristižu, prelako je slučajno prekinuti Orcinu najavu nastavkom tipkanja ili promjenom fokusa. Zbog toga <app>Orca</app> ima tri naredbe kojima možete pristupiti prethodno prikazanim porukama obavijesti:</p>
+  <list>
+    <item>
+      <p>Prikaži zadnju (najnoviju) poruku obavijesti</p>
+    </item>
+    <item>
+      <p>Prikaži prethodnu poruku obavijesti</p>
+    </item>
+    <item>
+      <p>Prikaži popis svih poruka obavijesti</p>
+    </item>
+  </list>
+  <p>Prve dvije naredbe namijenjene su ponajprije brzom pristupu poruci koju ste upravo primili. Zadnja je naredba najmoćnija jer pohranjuje povijest vaših poruka obavijesti.</p>
+  <p>Kada uđete u popis poruka obavijesti, bit će vam rečena veličina popisa i ponuđeni sljedeći izbori:</p>
+  <list>
+    <item><p>Pritisnite H za pomoć.</p></item>
+    <item><p>Koristite Up, Down, Home ili End za kretanje po popisu.</p></item>
+    <item><p>Pritisnite Escape za izlazak.</p></item>
+    <item><p>Pritisnite Space za ponavljanje zadnje pročitane poruke.</p></item>
+    <item><p>Pritisnite jednu znamenku za čitanje određene poruke.</p></item>
+  </list>
+  <p>Imajte na umu da se najnovija primljena poruka nalazi na vrhu popisa.</p>
+  <p>Svakoj Orcinoj naredbi za pregled obavijesti po zadanom nije dodijeljen prečac. Bilo kojoj od njih ili svima možete dodijeliti prečac ili prečace po vlastitom izboru. Kako to učiniti opisano je u <link xref="howto_key_bindings">Uvodu u tipkovne prečace</link>.</p>
+</page>

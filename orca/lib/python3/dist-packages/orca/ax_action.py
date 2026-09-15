@@ -20,6 +20,8 @@
 
 """Wrapper for the Atspi.Action interface."""
 
+from __future__ import annotations
+
 import re
 
 import gi
@@ -43,8 +45,8 @@ class AXAction:
         try:
             count = Atspi.Action.get_n_actions(obj)
         except GLib.GError as error:
-            msg = f"AXAction: Exception in get_n_actions: {error}"
-            AXObject.handle_error(obj, error, msg)
+            tokens = ["AXAction: Exception in get_n_actions:", error]
+            AXObject.handle_error(obj, error, tokens)
             return 0
 
         return count
@@ -61,65 +63,75 @@ class AXAction:
         return name
 
     @staticmethod
-    def get_action_name(obj: Atspi.Accessible, i: int) -> str:
+    def get_action_name(obj: Atspi.Accessible, i: int, n_actions: int | None = None) -> str:
         """Returns the name of obj's action at index i."""
 
-        if not 0 <= i < AXAction.get_n_actions(obj):
+        if n_actions is None:
+            n_actions = AXAction.get_n_actions(obj)
+        if not 0 <= i < n_actions:
             return ""
 
         try:
             name = Atspi.Action.get_action_name(obj, i)
         except GLib.GError as error:
-            msg = f"AXAction: Exception in get_action_name: {error}"
-            AXObject.handle_error(obj, error, msg)
+            tokens = ["AXAction: Exception in get_action_name:", error]
+            AXObject.handle_error(obj, error, tokens)
             return ""
 
         return AXAction.normalize_action_name(name)
 
     @staticmethod
-    def get_action_description(obj: Atspi.Accessible, i: int) -> str:
+    def get_action_description(obj: Atspi.Accessible, i: int, n_actions: int | None = None) -> str:
         """Returns the description of obj's action at index i."""
 
-        if not 0 <= i < AXAction.get_n_actions(obj):
+        if n_actions is None:
+            n_actions = AXAction.get_n_actions(obj)
+        if not 0 <= i < n_actions:
             return ""
 
         try:
             description = Atspi.Action.get_action_description(obj, i)
         except GLib.GError as error:
-            msg = f"AXAction: Exception in get_action_description: {error}"
-            AXObject.handle_error(obj, error, msg)
+            tokens = ["AXAction: Exception in get_action_description:", error]
+            AXObject.handle_error(obj, error, tokens)
             return ""
 
         return description
 
     @staticmethod
-    def get_action_localized_name(obj: Atspi.Accessible, i: int) -> str:
+    def get_action_localized_name(
+        obj: Atspi.Accessible, i: int, n_actions: int | None = None
+    ) -> str:
         """Returns the localized name of obj's action at index i."""
 
-        if not 0 <= i < AXAction.get_n_actions(obj):
+        if n_actions is None:
+            n_actions = AXAction.get_n_actions(obj)
+        if not 0 <= i < n_actions:
             return ""
 
         try:
             name = Atspi.Action.get_localized_name(obj, i)
         except GLib.GError as error:
-            msg = f"AXAction: Exception in get_action_localized_name: {error}"
-            AXObject.handle_error(obj, error, msg)
+            tokens = ["AXAction: Exception in get_action_localized_name:", error]
+            AXObject.handle_error(obj, error, tokens)
             return ""
 
         return name
 
     @staticmethod
-    def get_action_key_binding(obj: Atspi.Accessible, i: int) -> str:
+    def get_action_key_binding(obj: Atspi.Accessible, i: int, n_actions: int | None = None) -> str:
         """Returns the key binding string of obj's action at index i."""
 
-        if not 0 <= i < AXAction.get_n_actions(obj):
+        if n_actions is None:
+            n_actions = AXAction.get_n_actions(obj)
+        if not 0 <= i < n_actions:
             return ""
 
         try:
             keybinding = Atspi.Action.get_key_binding(obj, i)
         except GLib.GError as error:
-            msg = f"AXAction: Exception in get_action_key_binding: {error}"
-            AXObject.handle_error(obj, error, msg)
+            tokens = ["AXAction: Exception in get_action_key_binding:", error]
+            AXObject.handle_error(obj, error, tokens)
             return ""
 
         # GTK4 does this.
@@ -139,8 +151,8 @@ class AXAction:
         try:
             result = Atspi.Action.do_action(obj, i)
         except GLib.GError as error:
-            msg = f"AXAction: Exception in do_action: {error}"
-            AXObject.handle_error(obj, error, msg)
+            tokens = ["AXAction: Exception in do_action:", error]
+            AXObject.handle_error(obj, error, tokens)
             return False
 
         return result

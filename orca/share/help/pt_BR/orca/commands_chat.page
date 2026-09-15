@@ -43,28 +43,22 @@
   <p>Os comandos a seguir podem ser usados para acessar as informações em clientes de mensageiros instantâneos e IRC com suporte pelo <app>Orca</app>. Você notará que vários destes comandos “sem atalhos definidos”. Veja <link xref="howto_key_bindings">Associações de teclas</link> para informações de como vincular estes comandos a teclas de atalho.</p>
   <list>
     <item>
-      <p>
-        Present previous chat room message: (Unbound)
-      </p>
+      <p>Apresenta a mensagem anterior da sala de bate-papo: (sem atalho definido)</p>
     </item>
     <item>
-      <p>
-        Present next chat room message: (Unbound)
-      </p>
+      <p>Apresenta a próxima mensagem da sala de bate-papo: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Habilita/desabilita o anúncio do nome da sala com mensagens: (Sem atalho definido)</p>
+      <p>Habilita/desabilita o anúncio do nome da sala com mensagens: (sem atalho definido)</p>
     </item>
     <item>
-      <p>
-        Toggle chat room specific message histories: (unbound)
-      </p>
+      <p>Ativa/desativa os históricos de mensagens específicos de cada sala de bate-papo: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Habilita/desabilita o anúncio do status de digitação de amigos: (Sem atalho definido)</p>
+      <p>Habilita/desabilita o anúncio do estado de digitação de amigos: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Toggle room name presentation: (Unbound)</p>
+      <p>Ativa/desativa a apresentação do nome da sala: (sem atalho definido)</p>
     </item>
   </list>
 </page>

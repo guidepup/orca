@@ -28,6 +28,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from . import (
+    ax_cache_manager,
     braille_generator,
     chat_presenter,
     debug,
@@ -47,6 +48,38 @@ if TYPE_CHECKING:
     from gi.repository import Atspi
 
     from . import label_inference
+    from .generator import PresentationReason
+
+
+class _ScriptCache:
+    """Provides script-instance access to manager-backed cached values."""
+
+    QUEUED_EVENTS = "Script.queued-events"
+
+    def __init__(self) -> None:
+        self._manager = ax_cache_manager.get_manager()
+        self._manager.register_cache(
+            self,
+            self.QUEUED_EVENTS,
+            lifetime=ax_cache_manager.Lifetime.OWNER,
+            clear_on_demand=ax_cache_manager.ClearPolicy.PRESERVE,
+            clear_interval_seconds=None,
+        )
+        self._queued_events_cache = self._manager.get_cache(self, self.QUEUED_EVENTS)
+
+    def record_queued_event(self, event: Atspi.Event) -> None:
+        """Records the latest queued event of its type."""
+
+        if self._queued_events_cache is not None:
+            self._queued_events_cache.put(event.type, event)
+
+    def get_queued_event(self, event_type: str) -> Atspi.Event | None:
+        """Returns the latest queued event of type."""
+
+        if self._queued_events_cache is None:
+            return None
+
+        return self._queued_events_cache.get(event_type, None)
 
 
 class Script:
@@ -58,7 +91,7 @@ class Script:
         self.name = f"{self.app_name or 'default'} (module={self.__module__})"
         self.present_if_inactive: bool = True
         self.run_find_command_on: Atspi.Accessible | None = None
-        self.event_cache: dict = {}
+        self._cache = _ScriptCache()
 
         self.listeners = self.get_listeners()
         self.utilities = self.get_utilities()
@@ -79,11 +112,21 @@ class Script:
         )
         self._default_caret_navigation_enabled: bool = False
 
-        msg = f"SCRIPT: {self.name} initialized"
-        debug.print_message(debug.LEVEL_INFO, msg, True)
+        tokens = ["SCRIPT:", self.name, "initialized"]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    def record_queued_event(self, event: Atspi.Event) -> None:
+        """Records the latest queued event of its type."""
+
+        self._cache.record_queued_event(event)
+
+    def get_queued_event(self, event_type: str) -> Atspi.Event | None:
+        """Returns the latest queued event of type."""
+
+        return self._cache.get_queued_event(event_type)
 
     def get_listeners(self) -> dict[str, Callable]:
         """Returns a dictionary of the event listeners for this script."""
@@ -352,8 +395,20 @@ class Script:
         """Callback for window:destroy accessibility events."""
         return True
 
-    def present_object(self, obj: Atspi.Accessible, **args) -> None:
+    def present_object(
+        self,
+        obj: Atspi.Accessible,
+        offset: int | None = None,
+        prior_obj: Atspi.Accessible | None = None,
+        generate_speech: bool = True,
+        generate_braille: bool = True,
+        reason: PresentationReason | None = None,
+    ) -> None:
         """Presents the current object."""
 
-    def update_braille(self, obj: Atspi.Accessible, **args) -> None:
+    def update_braille(
+        self,
+        obj: Atspi.Accessible,
+        offset: int | None = None,
+    ) -> None:
         """Updates the braille display to show obj."""

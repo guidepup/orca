@@ -23,8 +23,11 @@
 
 """Utilities for accessibility debugging."""
 
+from __future__ import annotations
+
 import inspect
 import pprint
+import re
 import types
 from typing import Any
 
@@ -47,12 +50,20 @@ class AXUtilitiesDebugging:
         if not string:
             return ""
 
+        original_length = len(string)
+        original_string = string
         string = string.replace("\n", "\\n").replace("\ufffc", "[OBJ]")
-        if len(string) < 100:
+        if original_length < 100:
             return string
 
-        words = string.split()
-        string = f"{' '.join(words[:5])} ... {' '.join(words[-5:])} ({len(string)} chars.)"
+        words = list(re.finditer(r"\S+", string))
+        if len(words) > 10:
+            string = f"{string[: words[4].end()]} ... {string[words[-5].start() :]}"
+        else:
+            start = original_string[:40].replace("\n", "\\n").replace("\ufffc", "[OBJ]")
+            end = original_string[-40:].replace("\n", "\\n").replace("\ufffc", "[OBJ]")
+            string = f"{start} ... {end}"
+        string += f" ({original_length} chars.)"
         return string
 
     @staticmethod
@@ -65,7 +76,7 @@ class AXUtilitiesDebugging:
             result += f": '{AXUtilitiesDebugging._format_string(name)}'"
         if not result:
             result = "DEAD"
-        return f"[{result} ({hex(id(obj))})] "
+        return f"[{result} ({hex(id(obj))})]"
 
     @staticmethod
     def _function_as_string(obj: types.FunctionType) -> str:
@@ -79,13 +90,17 @@ class AXUtilitiesDebugging:
     def as_string(obj: Any) -> str:
         """Turns obj into a human-consumable string."""
 
+        return AXUtilitiesDebugging._as_string(obj, False)
+
+    @staticmethod
+    def _as_string(obj: Any, format_strings: bool) -> str:
+        """Turns obj into a human-consumable string, optionally formatting string values."""
+
         if isinstance(obj, Atspi.Accessible):
             string = AXUtilitiesDebugging._accessible_as_string(obj)
 
         elif isinstance(obj, Atspi.Event):
-            any_data = AXUtilitiesDebugging._format_string(
-                AXUtilitiesDebugging.as_string(obj.any_data),
-            )
+            any_data = AXUtilitiesDebugging._as_string(obj.any_data, True)
             string = (
                 f"{obj.type} for {AXUtilitiesDebugging.as_string(obj.source)} in "
                 f"{AXUtilitiesApplication.application_as_string(obj.source)} "
@@ -107,11 +122,19 @@ class AXUtilitiesDebugging:
         elif isinstance(obj, Atspi.Rect):
             string = f"(x:{obj.x}, y:{obj.y}, width:{obj.width}, height:{obj.height})"
 
-        elif isinstance(obj, (list, set)):
-            string = f"[{', '.join(map(AXUtilitiesDebugging.as_string, obj))}]"
+        elif isinstance(obj, inspect.FrameInfo):
+            module_name = inspect.getmodulename(obj.filename) or "<unknown>"
+            string = f"{module_name}.{obj.function}:{obj.lineno}"
+
+        elif isinstance(obj, (list, set, tuple)):
+            values = (AXUtilitiesDebugging._as_string(value, format_strings) for value in obj)
+            string = f"[{', '.join(values)}]"
 
         elif isinstance(obj, dict):
-            stringified = {key: AXUtilitiesDebugging.as_string(value) for key, value in obj.items()}
+            stringified = {
+                key: AXUtilitiesDebugging._as_string(value, format_strings)
+                for key, value in obj.items()
+            }
             formatter = pprint.PrettyPrinter(width=150)
             string = f"{formatter.pformat(stringified)}"
 
@@ -123,15 +146,13 @@ class AXUtilitiesDebugging:
             string = f"{module}.{obj.__func__.__qualname__}"
 
         elif isinstance(obj, types.FrameType):
-            module_name = inspect.getmodulename(obj.f_code.co_filename)
+            module_name = inspect.getmodulename(obj.f_code.co_filename) or "<unknown>"
             string = f"{module_name}.{obj.f_code.co_name}"
-
-        elif isinstance(obj, inspect.FrameInfo):
-            module_name = inspect.getmodulename(obj.filename) or "<unknown>"
-            string = f"{module_name}.{obj.function}:{obj.lineno}"
 
         else:
             string = str(obj)
+            if format_strings:
+                string = AXUtilitiesDebugging._format_string(string)
 
         return string
 
@@ -140,9 +161,10 @@ class AXUtilitiesDebugging:
         """Returns information about the actions as a string."""
 
         results = []
-        for i in range(AXAction.get_n_actions(obj)):
-            result = AXAction.get_action_name(obj, i)
-            keybinding = AXAction.get_action_key_binding(obj, i)
+        n_actions = AXAction.get_n_actions(obj)
+        for i in range(n_actions):
+            result = AXAction.get_action_name(obj, i, n_actions)
+            keybinding = AXAction.get_action_key_binding(obj, i, n_actions)
             if keybinding:
                 result += f" ({keybinding})"
             results.append(result)
@@ -198,7 +220,7 @@ class AXUtilitiesDebugging:
             result = AXObject.get_role_name(acc)
             name = AXObject.get_name(acc)
             if name:
-                result += f": '{name}'"
+                result += f": '{AXUtilitiesDebugging._format_string(name)}'"
             if not result:
                 result = "DEAD"
             return f"[{result}]"

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_chat" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_debugging"/>
+    <link type="guide" xref="commands#accessing_dynamic_information"/>
+    <link type="seealso" xref="preferences_chat"/>
+    <title type="sort">2. Čavrljanje</title>
+    <title type="link">Čavrljanje</title>
+    <desc>Naredbe za korištenje s klijentima za izravno dopisivanje i IRC</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe čavrljanja</title>
+  <p>Sljedeće naredbe možete koristiti za pristup informacijama u klijentima za izravno dopisivanje i internetsko čavrljanje (IRC) koje podržava <app>Orca</app>. Primijetit ćete da nekim od tih naredbi nije dodijeljen prečac. Pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link> za informacije o tome kako tim naredbama dodijeliti tipkovne prečace.</p>
+  <list>
+    <item>
+      <p>Prikaži prethodnu poruku sobe za čavrljanje: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Prikaži sljedeću poruku sobe za čavrljanje: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Omogući/onemogući najavu naziva sobe uz poruke: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Uključi/isključi zasebne povijesti poruka po sobi za čavrljanje: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Omogući/onemogući najavu stanja tipkanja sugovornika: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Uključi/isključi prikazivanje naziva sobe: (nije dodijeljeno)</p>
+    </item>
+  </list>
+</page>

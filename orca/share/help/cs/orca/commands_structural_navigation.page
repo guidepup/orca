@@ -73,11 +73,7 @@
       <title>Formuláře</title>
       <list>
         <item>
-          <p>
-            Next and previous form field:
-            <keyseq><key>F</key></keyseq> and
-            <keyseq><key>Shift</key><key>F</key></keyseq>
-          </p>
+          <p>Následující a předchozí formulářové pole: <keyseq><key>F</key></keyseq> a <keyseq><key>Shift</key><key>F</key></keyseq></p>
         </item> 
         <item>
           <p>Zobrazit seznam polí formuláře: <keyseq><key>Alt</key><key>Shift</key><key>F</key></keyseq></p>

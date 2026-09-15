@@ -21,6 +21,8 @@
 
 """Wrapper for the Atspi.Component interface."""
 
+from __future__ import annotations
+
 import gi
 
 gi.require_version("Atspi", "2.0")
@@ -43,8 +45,8 @@ class AXComponent:
         try:
             point = Atspi.Component.get_position(obj, Atspi.CoordType.WINDOW)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in get_position: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in get_position:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return -1, -1
 
         if point is None:
@@ -64,10 +66,12 @@ class AXComponent:
         try:
             rect = Atspi.Component.get_extents(obj, Atspi.CoordType.WINDOW)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in get_rect: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in get_rect:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return Atspi.Rect()
 
+        tokens = ["AXComponent: Rect of", obj, "is", rect]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return rect
 
     @staticmethod
@@ -80,8 +84,8 @@ class AXComponent:
         try:
             point = Atspi.Component.get_size(obj, Atspi.CoordType.WINDOW)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in get_position: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in get_position:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return -1, -1
 
         if point is None:
@@ -105,11 +109,11 @@ class AXComponent:
         try:
             result = Atspi.Component.contains(obj, x, y, Atspi.CoordType.WINDOW)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in object_contains_point: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in object_contains_point:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return False
 
-        tokens = ["AXComponent: ", obj, f"contains point {x}, {y}: {result}"]
+        tokens = ["AXComponent: ", obj, "contains point", x, ",", y, ":", result]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
@@ -123,11 +127,11 @@ class AXComponent:
         try:
             result = Atspi.Component.get_accessible_at_point(obj, x, y, Atspi.CoordType.WINDOW)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in get_child_at_point: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in get_child_at_point:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return None
 
-        tokens = ["AXComponent: Child of", obj, f"at {x}, {y} is", result]
+        tokens = ["AXComponent: Child of", obj, "at", x, ",", y, "is", result]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
@@ -141,11 +145,11 @@ class AXComponent:
         try:
             result = Atspi.Component.scroll_to_point(obj, Atspi.CoordType.WINDOW, x, y)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in scroll_object_to_point: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in scroll_object_to_point:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return False
 
-        tokens = ["AXComponent: Scrolled", obj, f"to {x}, {y}:", result]
+        tokens = ["AXComponent: Scrolled", obj, "to", x, ",", y, ":", result]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
@@ -159,10 +163,10 @@ class AXComponent:
         try:
             result = Atspi.Component.scroll_to(obj, location)
         except GLib.GError as error:
-            msg = f"AXComponent: Exception in scroll_object_to_location: {error}"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
+            tokens = ["AXComponent: Exception in scroll_object_to_location:", error]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return False
 
-        tokens = ["AXComponent: Scrolled", obj, "to", location, f": {result}"]
+        tokens = ["AXComponent: Scrolled", obj, "to", location, ":", result]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result

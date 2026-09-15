@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_keyboard_layout" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_toggling_caps_lock"/>
+    <title type="sort">6. Raspored tipkovnice</title>
+    <desc>Odabir rasporeda za stolno ili prijenosno računalo</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Raspored tipkovnice</title>
+  <p>Orca ima dva rasporeda tipkovnice: za stolno računalo (tj. s numeričkom tipkovnicom) i za prijenosno računalo. Odabrani raspored utječe na to koja se tipka koristi kao Orca modifikator.</p>
+  <list>
+    <item>
+      <p>Ako koristite raspored za prijenosno računalo, zadani Orca modifikator bit će <key>CapsLock</key></p>
+    </item>
+    <item>
+      <p>Ako koristite raspored za stolno računalo, Orca modifikator bit će i <key>Insert</key> i <key>KP_Insert</key>, pri čemu je potonja ista tipka kao <key>KP_0</key>.</p>
+    </item>
+  </list>
+  <p>Raspored također određuje tipkovne prečace povezane s nizom Orcinih naredbi, osobito u područjima ravnog pregleda, naredbe Gdje sam i naredbe Izgovori sve.</p>
+  <steps>
+    <title>Promjena rasporeda tipkovnice</title>
+    <item>
+      <p>Otvorite dijalog <link xref="preferences">Postavke Orce</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na skupinu izbornih gumba <gui>Raspored tipkovnice</gui>.</p>
+    </item>
+    <item>
+      <p>Strelicama odaberite željeni raspored.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Primijeni</gui>.</p>
+    </item>
+  </steps>
+</page>

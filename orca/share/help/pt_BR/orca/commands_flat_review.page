@@ -206,9 +206,9 @@
       <item>
         <p>Anexar o conteúdo em revisão plana à área de transferência: (Sem atalho definido)</p>
       </item>
-      <item><p>Move flat review to the bottom left: (Unbound)</p></item>
-      <item><p>Show flat review contents: (Unbound)</p></item>
-      <item><p>Toggle restricting flat review to the current object: (Unbound)</p></item>
+      <item><p>Move a revisão plana para o canto inferior esquerdo: (sem atalho definido)</p></item>
+      <item><p>Mostrar conteúdo de revisão plana: (sem atalho definido)</p></item>
+      <item><p>Ativa/desativa a restrição da revisão plana ao objeto atual: (Sem atalho definido)</p></item>
     </list>
   </section>
 </page>

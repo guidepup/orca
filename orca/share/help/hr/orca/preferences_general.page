@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_general" xml:lang="hr">
+  <info>
+    <title type="sort">1. Općenito</title>
+    <title type="link">Općenito</title>
+    <desc>Podešavanje osnovnih ponašanja programa <app>Orca</app></desc>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_voice"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Opće postavke</title>
+  <section id="keyboardlayout">
+    <info>
+      <desc>Mogućnost u dijaloškom okviru postavki za odabir Orcinog rasporeda tipkovnice koji će se koristiti, za stolno ili prijenosno računalo.</desc>
+    </info>
+    <title>Raspored tipkovnice</title>
+    <p>Skupina izbornih gumba <gui>Raspored tipkovnice</gui> omogućuje vam da odredite radite li na tipkovnici stolnog računala (tj. s numeričkom tipkovnicom) ili prijenosnog računala. Odabrani raspored određuje i <key>Orca modifikator</key> i niz tipkovnih prečaca za izvođenje Orcinih naredbi.</p>
+    <p>Zadana vrijednost: <gui>Stolno računalo</gui></p>
+  </section>
+  <section id="presenttooltips">
+    <info>
+      <desc>Mogućnost u dijaloškom okviru postavki za uključivanje prikazivanja skočnih opisa koji se pojavljuju kada mišem prijeđete preko objekta.</desc>
+    </info>
+    <title>Prikaži skočne opise</title>
+    <p>Kada je označena, ova mogućnost govori programu <app>Orca</app> da prikazuje informacije o skočnim opisima kada se oni pojave zbog prelaska mišem. Posebne radnje kojima se skočni opisi prisilno prikazuju, kao što je pritisak <keyseq> <key>Ctrl</key><key>F1</key></keyseq> kada objekt ima fokus, uvijek će rezultirati prikazom skočnih opisa, bez obzira na ovu postavku.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="objectundermouse">
+    <info>
+      <desc>Mogućnost u dijaloškom okviru postavki za uključivanje prikazivanja objekta ispod pokazivača miša.</desc>
+    </info>
+    <title>Izgovori objekt ispod miša</title>
+    <p>Kada je označena, ova mogućnost govori programu <app>Orca</app> da prikazuje informacije o objektu ispod pokazivača miša dok ga pomičete po zaslonu, koristeći Orcinu značajku <link xref="howto_mouse_review">pregleda mišem</link>.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="timeanddate">
+    <info>
+      <desc>Mogućnosti u dijaloškom okviru postavki za prilagodbu oblika vremena i datuma koje koristi <app>Orca</app>.</desc>
+    </info>
+    <title>Oblik vremena i oblik datuma</title>
+    <p>Kombinirani okviri <gui>Oblik vremena</gui> i <gui>Oblik datuma</gui> omogućuju vam da odredite kako će <app>Orca</app> izgovarati i na brajici prikazivati vrijeme i datum.</p>
+    <p>Zadana vrijednost: za oboje se koristi oblik iz lokalnih postavki sustava</p>
+  </section>
+  <section id="navigation_in_say_all">
+    <info>
+      <desc>Mogućnosti u dijaloškom okviru postavki za uključivanje premotavanja unatrag, premotavanja unaprijed i strukturne navigacije tijekom naredbe Izgovori sve.</desc>
+    </info>
+    <title>Kretanje tijekom naredbe Izgovori sve</title>
+    <p>Orcina značajka Izgovori sve izgovara sadržaj dokumenta od trenutačnog položaja do kraja dokumenta. Po zadanom će pritisak bilo koje tipke prekinuti izgovaranje naredbe Izgovori sve. Međutim, ako označite potvrdni okvir <gui>Omogući premotavanje unatrag i unaprijed tijekom naredbe Izgovori sve</gui>, tipke <key>Up</key> i <key>Down</key> mogu se tijekom naredbe Izgovori sve koristiti za brzo kretanje unutar dokumenta kako biste ponovno čuli nešto što je upravo pročitano ili preskočili tekst koji vas ne zanima, bez ponovnog pokretanja naredbe Izgovori sve.</p>
+    <p>Ako čitate dokument u aplikaciji koja podržava strukturnu navigaciju i označili ste potvrdni okvir <gui>Omogući strukturnu navigaciju tijekom naredbe Izgovori sve</gui>, podržane naredbe strukturne navigacije možete koristiti na sličan način: <key>H</key>/<keyseq><key>Shift</key> <key>H</key></keyseq> nastavlja čitanje od sljedećeg/prethodnog naslova, <key>P</key>/<keyseq><key>Shift</key><key>P</key></keyseq> nastavlja čitanje od sljedećeg/prethodnog odlomka, <key>T</key>/<keyseq><key>Shift</key> <key>T</key></keyseq> nastavlja čitanje od sljedeće/prethodne tablice i tako dalje.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+  <section id="say_all_announce_context">
+    <title>Najava kontekstualnih informacija tijekom naredbe Izgovori sve</title>
+    <p><app>Orca</app> može, ako to želite, pružiti više informacija o sadržaju dokumenta koji se izgovara, primjerice najaviti kada ulazite u blok citata, popis, tablicu ili drugi spremnik i kada iz njega izlazite. Hoće li se te najave izgovarati možete zasebno podesiti pomoću sljedećih potvrdnih okvira:</p>
+    <list>
+      <item><p>Najavi blokove citata tijekom naredbe Izgovori sve</p></item>
+      <item><p>Najavi obrasce tijekom naredbe Izgovori sve</p></item>
+      <item><p>Najavi orijentire tijekom naredbe Izgovori sve</p></item>
+      <item><p>Najavi popise tijekom naredbe Izgovori sve</p></item>
+      <item><p>Najavi ploče tijekom naredbe Izgovori sve</p></item>
+      <item><p>Najavi tablice tijekom naredbe Izgovori sve</p></item>
+    </list>
+    <p>Zadana vrijednost: označeno</p>
+    <note style="note">
+      <p>Hoće li <app>Orca</app> te najave izgovarati tijekom kretanja također se može podesiti. Slične potvrdne okvire pronaći ćete na kartici <gui>Govor</gui>. Za više informacija pogledajte <link xref="preferences_speech#spoken_context">Izgovoreni kontekst</link>.</p>
+    </note>
+  </section>
+  <section id="say_all_by">
+   <info>
+      <desc>Mogućnost u dijaloškom okviru postavki za prilagodbu prikaza Orcine naredbe Izgovori sve.</desc>
+   </info>
+   <title>Izgovori sve po</title>
+   <p>Kombinirani okvir <gui>Izgovori sve po</gui> omogućuje vam da odredite hoće li <app>Orca</app> pri izvođenju naredbe Izgovori sve nad dokumentom izgovarati rečenicu po rečenicu ili redak po redak.</p>
+    <p>Zadana vrijednost: <gui>Rečenici</gui></p>
+  </section>
+  <section id="profiles">
+    <info>
+      <desc>Mogućnosti u dijaloškom okviru postavki za upravljanje profilima postavki.</desc>
+    </info>
+    <title>Profili</title>
+    <p>Skupina kontrola <gui>Profili</gui>, koja se nalazi na dnu kartice <gui>Općenito</gui>, omogućuje vam da održavate i koristite više postava.</p>
+   <list>
+      <item>
+        <p>Kombinirani okvir <gui>Aktivni profil</gui> prikazuje trenutačni profil i omogućuje vam da odaberete drugi profil za učitavanje.</p>
+      </item>
+      <item>
+        <p>Gumb <gui>Učitaj</gui> učinit će da <app>Orca</app> učita profil naveden u kombiniranom okviru <gui>Aktivni profil</gui>.</p>
+      </item>
+      <item>
+        <p>Gumb <gui>Spremi kao</gui> omogućuje vam da trenutačni skup mogućnosti iz dijaloškog okvira postavki spremite u imenovani profil.</p>
+      </item>
+      <item>
+        <p>Kombinirani okvir <gui>Profil pri pokretanju</gui> omogućuje vam da odaberete profil koji će se automatski učitati svaki put kada pokrenete <app>Orcu</app>.</p>
+      </item>
+    </list>
+  </section>
+  <section id="progress_bar_updates">
+    <title>Promjene traka napretka</title>
+    <section id="progress_bar_updates_speak">
+      <title>Izgovori promjene</title>
+      <p>Ako je označen potvrdni okvir <gui>Izgovori promjene</gui>, <app>Orca</app> će povremeno izgovarati stanje traka napretka.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="progress_bar_updates_braille">
+      <title>Prikaži promjene na brajici</title>
+      <p>Ako je označen potvrdni okvir <gui>Prikaži promjene na brajici</gui>, <app>Orca</app> će povremeno prikazivati stanje traka napretka na vašem brajičnom retku.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="progress_bar_updates_beep">
+      <title>Označi promjene zvučnim signalom</title>
+      <p>Ako je označen potvrdni okvir <gui>Označi promjene zvučnim signalom</gui>, <app>Orca</app> će povremeno emitirati zvučne signale čija se visina povećava kako se povećava vrijednost trake napretka.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="progress_bar_updates_frequency">
+      <title>Učestalost (sek)</title>
+      <p>Ovo okretno polje određuje koliko se često promjene prikazuju.</p>
+      <p>Zadana vrijednost: 10</p>
+    </section>
+    <section id="progress_bar_updates_restrict">
+      <title>Odnosi se na</title>
+      <p>Ovaj kombinirani okvir omogućuje vam da odredite koje će se trake napretka prikazivati, uz uvjet da je prikazivanje promjena traka napretka uključeno. Izbori su <gui>Sve</gui>, <gui>Aplikacija</gui> i <gui>Prozor</gui>.</p>
+      <p>Odabir <gui>Sve</gui> rezultirat će time da <app>Orca</app> prikazuje promjene za sve trake napretka, bez obzira na to gdje se one nalaze.</p>
+      <p>Odabir <gui>Aplikacija</gui> rezultirat će time da <app>Orca</app> prikazuje promjene traka napretka u aktivnoj aplikaciji, čak i ako se ne nalaze u aktivnom prozoru.</p>
+      <p>Odabir <gui>Prozor</gui> rezultirat će time da <app>Orca</app> prikazuje promjene samo za trake napretka u aktivnom prozoru.</p>
+      <p>Zadana vrijednost: <gui>Aplikacija</gui></p>
+    </section>
+  </section>
+</page>

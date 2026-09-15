@@ -61,28 +61,22 @@
   <p>Les commandes suivantes peuvent être utilisées pour accéder aux informations des messageries instantanées et des discussions relayées par Internet (IRC) prises en charge par <app>Orca</app>. Vous remarquerez que certaines de ces commandes sont « non liées ». Consultez <link xref="howto_key_bindings">Modifier les combinaisons de touches</link> pour en apprendre plus sur la façon de lier ces commandes à des combinaisons de touches.</p>
   <list>
     <item>
-      <p>
-        Present previous chat room message: (Unbound)
-      </p>
+      <p>Présenter le message de salon de discussion précédent : (non liée)</p>
     </item>
     <item>
-      <p>
-        Present next chat room message: (Unbound)
-      </p>
+      <p>Présenter le message de salon de discussion suivant : (non liée)</p>
     </item>
     <item>
       <p>Activer ou désactiver l’annonce des noms de salon contenant des messages : (non liée)</p>
     </item>
     <item>
-      <p>
-        Toggle chat room specific message histories: (unbound)
-      </p>
+      <p>Activer les historiques de messages par salon de discussion : (non liée)</p>
     </item>
     <item>
       <p>Activer ou désactiver l’annonce de l’état de saisie d’un contact : (non liée)</p>
     </item>
     <item>
-      <p>Toggle room name presentation: (Unbound)</p>
+      <p>Activer l’affichage du nom du salon : (non liée)</p>
     </item>
   </list>
 </page>

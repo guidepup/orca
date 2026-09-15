@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_braille" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_reading"/>
+    <link type="guide" xref="commands#speech_braille"/>
+    <link type="seealso" xref="preferences_braille"/>
+    <title type="sort">2. Brajica</title>
+    <title type="link">Brajica</title>
+    <desc>Naredbe koje mogu biti izvršene na brajičnim redcima</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Brajične naredbe</title>
+  <p>Sljedeće naredbe omogućuju vam upravljanje programom <app>Orca</app> putem brajičnog retka umjesto tipkovnicom:</p>
+  <list>
+    <item><p>Pomakni brajični redak ulijevo: Line Left</p></item>
+    <item><p>Pomakni brajični redak udesno: Line Right</p></item>
+    <item><p>Uključi/isključi način ravnog pregleda: Freeze</p></item>
+    <item><p>Pregledaj riječ iznad: Line Up</p></item>
+    <item><p>Pregledaj riječ ispod: Line Down</p></item>
+    <item><p>Pregledaj dolje lijevo: Bottom Right</p></item>
+    <item><p>Pregledaj početni položaj: Top Left</p></item>
+    <item><p>Kratkopisna brajica: Six Dots</p></item>
+    <item><p>Označava početak odabira teksta: Cut Begin</p></item>
+    <item><p>Označava kraj odabira teksta: Cut Line</p></item>
+    <item><p>Obrađuje tipku za usmjeravanje pokazivača: Cursor Routing</p></item>
+    <item><p>Vraća se na objekt koji ima fokus tipkovnice: Cursor Position</p></item>
+  </list>
+</page>

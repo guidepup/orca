@@ -20,10 +20,7 @@
     <p>Následující příkazy se používají pro přístup do dialogového okna předvoleb <app>Orca</app>, k zápínání a vypínání čtečky <app>Orca</app> a k obcházení příkazů <app>Orca</app>, aby se předešlo konfliktům s aplikací, se kterou se pracuje.</p>
     <list>
       <item>
-        <p>
-          Toggle <app>Orca</app> on and off in supported desktop environments:
-          <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.
-        </p>
+        <p>Chcete-li zapnout či vypnout čtečku <app>Orca</app> v podporovaných pracovních prostředích, použijte <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
         <note style="tip">
            <p>Pokud používáte čtečku <app>Orca</app> v jiném pracovním prostředí, ve kterém není žádný příkaz pro její zapnutí a vypnutí, může se vám hodit příkaz pro její ukončení. Ve výchozím stavu nemá tento příkaz přidělenou žádnou klávesovou zkratku. Jak mu ji přidělit, najdete v kapitole <link xref="howto_key_bindings">Změna klávesových zkratek</link>.</p>
         </note>
@@ -35,34 +32,31 @@
         <p>Dialogové okno s předvolbami <app>Orca</app> pro zaměřenou aplikaci: <keyseq><key>Ctrl</key> <key>Modifikátor Orca</key> <key>mezerník</key></keyseq>.</p>
       </item>
       <item>
-        <p>
-          Toggle all Orca command keys:
-          <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq>
-        </p>
+        <p>Zapnout nebo vypnout všechny kurzorové klávesy Orca: <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq></p>
       </item>
       <item>
-        <p>Toggle keyboard layout: (Unbound)</p>
+        <p>Přepnout rozložení klávesnice: (bez klávesové zkratky)</p>
       </item>
       <item>
         <p>Cyklicky přejít na následujcí úroveň oznamování kláves: (bez klávesové zkratky)</p>
       </item>
       <item>
-        <p>Quit the screen reader: (Unbound)</p>
+        <p>Ukončit aplikaci čtečky obrazovky: (bez klávesové zkratky)</p>
       </item>
     </list>
   </section>
   <section id="braille_keyboard_bindings">
     <title>Příkazy pro braillský řádek</title>
-    <p>The following commands can be used to control and customize Orca's braille output.</p>
+    <p>Následující příkazy umožňují správu a přizpůsobení braillského výstupu Orca.</p>
     <list>
       <item>
-        <p>Pan the braille display to the left: (Unbound)</p>
+        <p>Posunout braillský řádek doleva: (bez klávesové zkratky)</p>
       </item>
       <item>
-        <p>Pan the braille display to the right: (Unbound)</p>
+        <p>Posunout braillský řádek doprava: (bez klávesové zkratky)</p>
       </item>
       <item>
-        <p>Turn contracted braille on and off: (Unbound)</p>
+        <p>Vypnout nebo zapnout režim zkratkopisu braillského řádku: (bez klávesové zkratky)</p>
       </item>
     </list>
   </section>

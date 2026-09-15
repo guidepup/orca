@@ -58,10 +58,11 @@ class AXUtilitiesTable:
     def _is_table_with_interface(obj: Atspi.Accessible) -> bool:
         """Returns True if obj has a table-like role and supports the table interface."""
 
+        role = AXObject.get_role(obj)
         if (
-            AXUtilitiesRole.is_table(obj)
-            or AXUtilitiesRole.is_tree_table(obj)
-            or AXUtilitiesRole.is_tree(obj)
+            AXUtilitiesRole.is_table(obj, role)
+            or AXUtilitiesRole.is_tree_table(obj, role)
+            or AXUtilitiesRole.is_tree(obj, role)
         ):
             return AXObject.supports_table(obj)
         return False
@@ -97,8 +98,8 @@ class AXUtilitiesTable:
         if old_cell is None:
             return headers
 
-        old_headers = AXUtilitiesTable.get_row_headers(old_cell)
-        return list(set(headers).difference(set(old_headers)))
+        old_headers = set(AXUtilitiesTable.get_row_headers(old_cell))
+        return [header for header in headers if header not in old_headers]
 
     @staticmethod
     def get_new_column_headers(
@@ -116,8 +117,8 @@ class AXUtilitiesTable:
         if old_cell is None:
             return headers
 
-        old_headers = AXUtilitiesTable.get_column_headers(old_cell)
-        return list(set(headers).difference(set(old_headers)))
+        old_headers = set(AXUtilitiesTable.get_column_headers(old_cell))
+        return [header for header in headers if header not in old_headers]
 
     @staticmethod
     def get_row_headers(cell: Atspi.Accessible) -> list[Atspi.Accessible]:
@@ -313,7 +314,7 @@ class AXUtilitiesTable:
             elif AXTable.get_caption(table):
                 result, reason = False, "Has caption"
 
-        tokens = ["AXUtilitiesTable:", table, f"is layout only: {result} ({reason})"]
+        tokens = ["AXUtilitiesTable:", table, "is layout only:", result, "(", reason, ")"]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
@@ -493,7 +494,7 @@ class AXUtilitiesTable:
         if col_label is not None and row_label is not None:
             result = f"{col_label}{row_label}"
 
-        tokens = ["AXUtilitiesTable: Coordinates label for", cell, f": {result}"]
+        tokens = ["AXUtilitiesTable: Coordinates label for", cell, ":", result]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         if result:
             return result
@@ -508,7 +509,7 @@ class AXUtilitiesTable:
         if col_label is not None and row_label is not None:
             result = f"{col_label}{row_label}"
 
-        tokens = ["AXUtilitiesTable: Updated coordinates label based on", row, f": {result}"]
+        tokens = ["AXUtilitiesTable: Updated coordinates label based on", row, ":", result]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 

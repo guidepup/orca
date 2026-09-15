@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_pronunciation" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_text_attributes"/>
+    <title type="sort">7. Izgovor</title>
+    <title type="link">Izgovor</title>
+    <desc>Određivanje načina izgovaranja pojedinih riječi</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke izgovora</title>
+  <p>Ponekad vaš govorni sintetizator jednostavno ne izgovara ispravno određeni niz. Možda biste radije čuli "smijem se naglas" nego "LOL" ili "pristupačnost" nego "a11y". Ili pak postoji ime ili stručni izraz koji sintetizator pogrešno izgovara.</p>
+  <p>Kartica <gui>Izgovor</gui> u Orcinom dijalogu postavki omogućuje vam dodavanje, uređivanje i brisanje unosa u Orcinom rječniku izgovora.</p>
+  <p>Budući da je kartica <gui>Izgovor</gui> ujedno dio postavki specifičnih za aplikaciju, svoje unose možete prilagoditi prema potrebi za svaku aplikaciju koju koristite.</p>
+  <steps>
+    <title>Dodavanje novog unosa u rječnik</title>
+    <item>
+      <p>Pritisnite gumb <gui>Novi unos</gui> (<keyseq><key>Alt</key><key>N</key></keyseq>)</p>
+    </item>
+    <item>
+      <p>Upišite tekst novog unosa i pritisnite <key>Return</key> za dovršetak uređivanja stvarnog niza.</p>
+    </item>
+    <item>
+      <p>Prijeđite na stupac <gui>Zamjenski niz</gui> i pritisnite <key>Return </key> za početak uređivanja.</p>
+    </item>
+    <item>
+      <p>Upišite tekst koji želite da se izgovara umjesto njega i pritisnite <key> Return</key> za dovršetak uređivanja zamjenskog niza.</p>
+    </item>
+  </steps>
+  <steps>
+  <title>Uređivanje postojećeg unosa u rječniku</title>
+    <item>
+      <p>Prijeđite na ćeliju koju želite urediti i pritisnite <key>Return</key> za početak uređivanja.</p>
+    </item>
+    <item>
+      <p>Napravite svoje promjene i zatim pritisnite <key>Return</key> za dovršetak uređivanja.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Brisanje postojećeg unosa iz rječnika</title>
+    <item>
+      <p>Prijeđite na unos koji želite izbrisati.</p>
+    </item>
+    <item>
+      <p>Pritisnite gumb <gui>Izbriši</gui> ili <keyseq><key>Alt</key><key>D</key></keyseq>.</p>
+    </item>
+  </steps>
+</page>

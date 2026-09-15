@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_speech_settings" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_braille"/>
+    <link type="guide" xref="commands#speech_braille"/>
+    <link type="seealso" xref="preferences_speech"/>
+    <title type="sort">2. Postavke govora</title>
+    <title type="link">Govor</title>
+    <desc>Naredbe za prilagodbu Orcinog izlaza</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe za postavke govora i opširnosti</title>
+  <p>Sljedeće naredbe možete koristiti za prilagodbu Orcinog govornog izlaza. Primijetit ćete da nekim od tih naredbi nije dodijeljen prečac. Pogledajte <link xref="howto_key_bindings">Mijenjanje tipkovnih prečaca</link> za informacije o tome kako tim naredbama dodijeliti tipkovne prečace.</p>
+  <list>
+    <item>
+      <p>Omogući/onemogući govor: <keyseq><key>Orca modifikator</key><key>S</key></keyseq></p>
+    </item>
+    <item>
+      <p>Prebaci se između čitanja ćelije i čitanja retka u tablici: <keyseq><key>Orca modifikator</key><key>F11</key></keyseq></p>
+    </item>
+    <item>
+      <p>Prebaci se između opširne i sažete razine opširnosti: <keyseq><key>Orca modifikator</key><key>V</key></keyseq></p>
+    </item>
+    <item>
+      <p>Omogući/onemogući izgovaranje uvlaka i poravnanja: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Promijeni način izgovaranja brojeva: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Prijeđi na sljedeću razinu izgovaranja interpunkcije: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Prijeđi na sljedeću razinu odjeka tipki: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Prijeđi na sljedeći način izgovaranja velikih slova: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Smanji brzinu govora: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Povećaj brzinu govora: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Smanji visinu tona: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Povećaj visinu tona: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Smanji glasnoću: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Povećaj glasnoću: (nije dodijeljeno)</p>
+    </item>
+    <item>
+      <p>Prijeđi na sljedeći govorni sintetizator: (nije dodijeljeno)</p>
+    </item>
+  </list>
+</page>

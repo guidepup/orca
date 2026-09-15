@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_the_orca_modifier" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_learn_modes"/>
+    <title type="sort">3. Orca modifikator</title>
+    <desc>Tipka koja radi kao <key>Shift</key>, <key>Ctrl</key> i <key>Alt</key></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Orca modifikator</title>
+  <p>Orca ima posebnu modifikatorsku tipku koja radi kao <key>Shift</key>, <key>Ctrl</key> i <key>Alt</key>. Osmišljena je posebno za izvođenje Orcinih naredbi, i to bez stvaranja sukoba s naredbama aplikacija kojima pristupate.</p>
+  <p>O tome na koju je tipku "Orca modifikator" vezan po zadanom ovisi koristite li Orcin raspored tipkovnice za prijenosno ili za stolno računalo:</p>
+  <list>
+    <item>
+      <p>Ako koristite raspored za prijenosno računalo, zadani Orca modifikator bit će <key>CapsLock</key></p>
+    </item>
+    <item>
+      <p>Ako koristite raspored za stolno računalo, Orca modifikator bit će i <key>Insert</key> i <key>KP_Insert</key>, pri čemu je potonja ista tipka kao <key>KP_0</key>.</p>
+    </item>
+  </list>
+  <p>Ako želite zadržati trenutačni raspored tipkovnice, ali odabrati drugu modifikatorsku tipku, to možete učiniti sljedećim koracima:</p>
+  <steps>
+    <title>Promjena Orca modifikatora</title>
+    <item>
+      <p>Otvorite dijalog <link xref="preferences">Postavke Orce</link> pritiskom <keyseq><key>Orca modifikator</key><key>Razmaknica</key></keyseq>. Umjesto toga, Orcu možete pokrenuti s otvorenim dijalogom postavki iz terminala: upišite <cmd>orca -s</cmd> i pritisnite <key>Return</key>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na karticu <gui>Tipkovni prečaci</gui>.</p>
+    </item>
+    <item>
+      <p>Prijeđite na kombinirani okvir <gui>Modifikatorske tipke čitača zaslona</gui>.</p>
+    </item>
+    <item>
+      <p>Strelicama odaberite željeni modifikator. Dostupne mogućnosti su:</p>
+      <list>
+        <item><p>Insert, KP_Insert</p></item>
+        <item><p>KP_Insert</p></item>
+        <item><p>Insert</p></item>
+        <item><p>Caps_Lock</p></item>
+      </list>
+    </item>
+    <item><p>Pritisnite gumb <gui>Primijeni</gui>.</p></item>
+  </steps>
+</page>

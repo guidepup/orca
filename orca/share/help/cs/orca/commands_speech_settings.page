@@ -15,7 +15,7 @@
       <p>Creative Commons Share Alike 3.0</p>
     </license>
   </info>
-  <title>Speech And Verbosity Settings Commands</title>
+  <title>Příkazy pro nastavení řeči a upovídanosti</title>
   <p>Následující příkazy lze použít k přizpůsobení řečového výstupu čtečky <app>Orca</app>. Budete informování, že řada těchto příkazů nemá klávesovou zkratku. Informace, jak jim nějakou přiřadit, najdete v kapitole <link xref="howto_key_bindings">Změna klávesových zkratek</link>.</p>
   <list>
     <item>
@@ -61,7 +61,7 @@
       <p>Zvýšit hlasitost: (bez klávesové zkratky)</p>
     </item>
     <item>
-      <p>Cycle to the next speech synthesizer: (Unbound)</p>
+      <p>Cyklicky přejít na další hlasový výstup: (bez klávesové zkratky)</p>
     </item>
   </list>
 </page>

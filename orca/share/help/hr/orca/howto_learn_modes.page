@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_learn_modes" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_keyboard_layout"/>
+    <title type="sort">5. Način učenja</title>
+    <desc>Otkrivanje Orcinih naredbi</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Način učenja</title>
+  <p>U načinu učenja <app>Orca</app> će najaviti svaku tipku koju pritisnete zajedno s pripadajućom naredbom programa <app>Orca</app> na koju je ta tipka vezana. U tom načinu možete dobiti i popis prečaca sa svim naredbama programa <app>Orca</app> koje možete koristiti.</p>
+  <steps>
+    <title>Korištenje načina učenja</title>
+    <item>
+      <p>Uđite u način učenja pritiskom <keyseq><key>Orca modifikator</key> <key>H</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Pritisnite bilo koju tipku ili kombinaciju tipki. <app>Orca</app> će najaviti tipke i pripadajuću naredbu.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>Esc</key> za izlazak iz načina učenja.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Dobivanje popisa prečaca</title>
+    <item>
+      <p>Uđite u način učenja pritiskom <keyseq><key>Orca modifikator</key> <key>H</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>F2</key> ako želite popis prečaca koji vrijede u cijelom programu <app>Orca</app> ili pritisnite <key>F3</key> ako želite popis prečaca koji su specifični za aplikaciju koja ima fokus.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>Up</key> ili <key>Down</key> za pregledavanje sadržaja popisa.</p>
+    </item>
+    <item>
+      <p>Pritisnite <key>Esc</key> za izlazak iz popisa.</p>
+    </item>
+  </steps>
+</page>

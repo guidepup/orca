@@ -24,7 +24,7 @@
     <mal:credit xmlns:mal="http://projectmallard.org/1.0/" type="translator copyright">
       <mal:name>Christian Kirbach</mal:name>
       <mal:email>Christian.Kirbach@googlemail.com</mal:email>
-      <mal:years>2011, 2016, 2017, 2018</mal:years>
+      <mal:years>2011, 2016, 2017, 2018,2026</mal:years>
     </mal:credit>
   
     <mal:credit xmlns:mal="http://projectmallard.org/1.0/" type="translator copyright">
@@ -45,7 +45,7 @@
       <mal:years>2023, 2024</mal:years>
     </mal:credit>
   </info>
-  <title>Speech And Verbosity Settings Commands</title>
+  <title>Befehle für Sprach- und Ausführlichkeitseinstellungen</title>
   <p>Die folgenden Befehle können zur Anpassung von <app>Orcas</app> Sprachausgabe verwendet werden. Sie werden bemerken, dass einige Befehle nicht zugewiesen sind. Lesen Sie <link xref="howto_key_bindings">Tastaturkürzel anpassen</link>, um mehr über die Zuweisung von Tastenkürzeln zu erfahren.</p>
   <list>
     <item>
@@ -91,7 +91,7 @@
       <p>Sprachlautstärke erhöhen: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>Cycle to the next speech synthesizer: (Unbound)</p>
+      <p>Zum nächsten Sprachsynthesizer wechseln: (Nicht zugewiesen)</p>
     </item>
   </list>
 </page>

@@ -180,7 +180,7 @@
     <p>Se você estiver em um link, o comando Onde Estou Básico do <app>Orca</app> pode ser usado para anunciar os detalhes associados ao link, como o tipo de link, se o link foi visitado, a descrição do site e tamanho do arquivo. Se você preferir um comando dedicado para essa finalidade, você pode vincular o comando Falar detalhes do link do <app>Orca</app> a um pressionamento de tecla. Consulte <link xref="howto_key_bindings"> Associações de teclas</link> para obter informações sobre como fazê-lo.</p>
     <list>
       <item>
-        <p>Fale os detalhes do link: (Sem atalho definido)</p>
+        <p>Fale os detalhes do link: (sem atalho definido)</p>
       </item>
     </list>
   </section>
@@ -202,10 +202,10 @@
   <section id="toggling_layout_mode">
     <title>Alterna o Modo de Layout</title>
     <p>Quando o Modo Layout está ativado, a navegação por cursor do <app>Orca</app> respeitará o layout do conteúdo na tela e apresentará a linha completa, incluindo quaisquer links ou campos de formulário nessa linha. Quando o Modo Layout está desabilitado, o <app>Orca</app> tratará objetos como links e campos de formulário como se estivessem em linhas separadas, tanto para apresentação quanto para navegação.</p>
-    <p>O <app>Orca</app> fornece um comando para alternar entre o modo Layout e o modo Objeto. Este comando não possui atalho definido por padrão. Consulte <link xref="howto_key_bindings">Associações de teclas</link> para obter informações sobre como vincular comandos Sem atalho definidos.</p>
+    <p>O <app>Orca</app> fornece um comando para alternar entre o modo Layout e o modo Objeto. Este comando não possui atalho definido por padrão. Consulte <link xref="howto_key_bindings">Associações de teclas</link> para obter informações sobre como vincular comandos sem atalho definidos.</p>
     <list>
       <item>
-        <p>Alterna entre o Modo de Layout e o Modo de Objeto: (Sem atalho definido)</p>
+        <p>Alterna entre o Modo de Layout e o Modo de Objeto: (sem atalho definido)</p>
       </item>
     </list>
   </section>

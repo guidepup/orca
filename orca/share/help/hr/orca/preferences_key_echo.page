@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_key_echo" xml:lang="hr">
+  <info>
+    <title type="link">Odjek</title>
+    <title type="sort">4. Odjek</title>
+    <desc>Podešavanje onoga što se izgovara dok tipkate</desc>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_key_bindings"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke odjeka</title>
+  <section id="keyecho">
+    <title>Omogući odjek tipki</title>
+    <p>Orcina postavka odjeka tipki određuje što se događa svaki put kada pritisnete tipku. Za uključivanje odjeka tipki označite potvrdni okvir "Omogući odjek tipki". Time postaju dostupni dodatni potvrdni okviri pomoću kojih možete točno odabrati koje se tipke trebaju, a koje ne trebaju ponavljati, kako bi to najbolje odgovaralo vašim potrebama.</p>
+    <p>Zadana vrijednost: označeno</p>  
+    <section id="keyecho_enable_alphanumeric">
+      <title>Omogući slovne tipke</title>
+      <p>Ova mogućnost određuje hoće li se tipke poput <key>a</key>, <key>b</key> i <key>c</key> izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_numeric">
+      <title>Omogući brojčane tipke</title>
+      <p>Ova mogućnost određuje hoće li se tipke poput <key>1</key>, <key>2</key> i <key>3</key> izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_punctuation">
+      <title>Omogući interpunkcijske tipke</title>
+      <p>Ova mogućnost određuje hoće li se tipke poput <key>%</key>, <key>;</key> i <key>?</key> izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_space">
+      <title>Omogući razmaknicu</title>
+      <p>Ova mogućnost određuje hoće li se <key>Space</key> izgovarati kada je pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_modifier">
+      <title>Omogući modifikatorske tipke</title>
+      <p>Ova mogućnost određuje hoće li se <key>Shift</key>, <key>Ctrl</key>, <key>Alt</key> i <key>Meta</key> izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_function">
+      <title>Omogući funkcijske tipke</title>
+      <p>Ova mogućnost određuje hoće li se tipke od <key>F1</key> do <key>F12</key> izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_action">
+      <title>Omogući akcijske tipke</title>
+      <p>Ova mogućnost određuje hoće li se <key>BackSpace</key>, <key>Delete </key>, <key>Return</key>, <key>Esc</key>, <key>Tab</key>, <key>Page Up</key>, <key>Page Down</key>, <key>Home</key> i <key>End</key> izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="keyecho_enable_navigation">
+      <title>Omogući navigacijske tipke</title>
+      <p>Ova mogućnost određuje hoće li se <key>Left</key>, <key>Right</key>, <key>Up</key> i <key>Down</key> izgovarati kada ih pritisnete. Ova se mogućnost odnosi i na svaku kombinaciju tipki u kojoj je pritisnut <key>Orca modifikator</key>, primjerice pri korištenju ravnog pregleda.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="keyecho_enable_diacritical">
+      <title>Omogući dijakritičke tipke bez razmaka</title>
+      <p>Ova mogućnost određuje hoće li se "mrtve tipke", koje se koriste za stvaranje naglašenih slova, izgovarati kada ih pritisnete.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+  </section>
+  <section id="characterecho">
+    <title>Omogući odjek po znakovima</title>
+    <p>Uključivanje ove mogućnosti čini da Orca ponovi znak koji ste upravo upisali.</p>
+    <p>Iako se odjek po znakovima čini vrlo sličnim odjeku slovnih, brojčanih i interpunkcijskih tipki, postoje važne razlike, osobito kad je riječ o naglašenim slovima i drugim simbolima za koje ne postoji zasebna tipka:</p>
+    <list>
+      <item>
+        <p>Odjek tipki čini da <app>Orca</app> najavi ono što ste upravo <em> pritisnuli</em>.</p>
+      </item>
+      <item>
+        <p>Odjek znakova čini da <app>Orca</app> najavi ono što je upravo <em>umetnuto</em>.</p>
+      </item>
+    </list>
+    <p>Stoga, ako želite da se naglašeni znakovi izgovaraju dok ih tipkate, trebate uključiti odjek znakova.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+    <note style="tip">
+      <title>Uključivanje i odjeka tipki i odjeka znakova</title>
+      <p>Ako vam se sviđa odjek tipki, a često tipkate naglašene znakove, razmislite o uključivanju obojeg. Orcina logika odjeka znakova pokušava odfiltrirati znakove koji su izgovoreni zbog odjeka tipki, čime se smanjuje vjerojatnost "dvostrukog izgovaranja" dok tipkate.</p>
+    </note>
+  </section>
+  <section id="wordandsentenceecho">
+    <title>Omogući odjek po riječima i Omogući odjek po rečenicama</title>
+    <p>Označavanje potvrdnog okvira <gui>Omogući odjek po riječima</gui> čini da <app>Orca</app> ponovi riječ koju ste upravo upisali. Slično tome, označavanje potvrdnog okvira <gui>Omogući odjek po rečenicama</gui> čini da <app>Orca</app> ponovi rečenicu koju ste upravo upisali.</p>
+    <p>Zadana vrijednost: nije označeno</p>
+  </section>
+</page>

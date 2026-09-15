@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_speech" xml:lang="hr">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_braille"/>
+    <title type="sort">2.1 Govor</title>
+    <title type="link">Govor</title>
+    <desc>Podešavanje onoga što se izgovara</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Postavke govora</title>
+  <section id="enable_speech">
+    <title>Omogući govor</title>
+    <p>Potvrdni okvir <gui>Omogući govor</gui> određuje hoće li <app>Orca</app> koristiti govorni sintetizator. Korisnici koji koriste samo brajicu vjerojatno će htjeti ukloniti oznaku iz ovog potvrdnog okvira.</p>
+    <p>Zadana vrijednost: označeno</p>
+  </section>
+  <section id="verbosity">
+    <title>Opširnost</title>
+    <p>Postavka <gui>Opširnost</gui> određuje količinu informacija koja će se izgovarati u različitim situacijama. Primjerice, ako je postavljena na opširno, a strelicama dođete do riječi koja je pogrešno napisana, <app>Orca</app> će najaviti da je riječ pogrešno napisana. Kada je razina postavljena na sažeto, ta se najava neće izgovoriti.</p>
+    <p>Zadana vrijednost: <gui>Opširno</gui></p>
+  </section>
+  <section id="punctuation_level">
+    <title>Razina interpunkcije</title>
+    <p>Skupina izbornih gumba <gui>Razina interpunkcije</gui> koristi se za podešavanje količine interpunkcije koju izgovara sintetizator. Dostupne razine su <gui>Nikakva</gui>, <gui>Djelomična</gui>, <gui>Većina</gui> i <gui>Sva</gui>.</p>
+    <p>Zadana vrijednost: <gui>Većina</gui></p>
+    <section id="punctuation_level_none">
+      <title>Nikakva</title>
+      <p>Odabir razine interpunkcije <gui>Nikakva</gui> uzrokovat će, kao što očekujete, da se interpunkcija ne izgovara. Imajte na umu, međutim, da se posebni simboli poput indeksiranih i eksponentnih brojeva, Unicode razlomaka i grafičkih oznaka na toj razini i dalje izgovaraju, iako bi neki takve vrste simbola smatrali interpunkcijom.</p>
+    </section>
+    <section id="punctuation_level_some">
+      <title>Djelomična</title>
+      <p>Odabir razine interpunkcije <gui>Djelomična</gui> uzrokuje da se izgovaraju svi prethodno spomenuti simboli. Osim toga, <app>Orca</app> će izgovarati poznate matematičke simbole, simbole valuta te "^", "@", "/", "&amp;", "#".</p>
+    </section>
+    <section id="punctuation_level_most">
+      <title>Većina</title>
+      <p>Odabir razine interpunkcije <gui>Većina</gui> uzrokuje da se izgovaraju svi prethodno spomenuti simboli. Osim toga, <app>Orca</app> će izgovarati sve ostale poznate interpunkcijske simbole <em>osim</em> "!", "'", ",", ".", "?".</p>
+    </section>
+    <section id="punctuation_level_all">
+      <title>Sva</title>
+      <p>Odabir razine interpunkcije <gui>Sva</gui> uzrokuje, kao što se očekuje, da <app>Orca</app> izgovara sve poznate interpunkcijske simbole.</p>
+    </section>
+  </section>
+  <section id="spoken_context">
+    <title>Izgovoreni kontekst</title>
+    <p>Sljedeće stavke određuju prikazivanje raznih dopunskih, "sistemskih" informacija o stavci koja ima fokus. Budući da se pripadajući tekst ne pojavljuje na zaslonu, te se informacije prikazuju Orcinim sistemskim glasom.</p>
+    <section id="only_speak_displayed_text">
+      <title>Izgovori samo prikazani tekst</title>
+      <p>Označavanje ovog potvrdnog okvira uzrokuje da <app>Orca</app> izgovara samo tekst stvarno prikazan na zaslonu. Ova je mogućnost prvenstveno namijenjena slabovidnim korisnicima i korisnicima s teškoćama u vizualnom učenju.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+      <note style="note">
+        <p>Sljedeće stavke neće biti dostupne za podešavanje ako je označen potvrdni okvir <gui>Izgovori samo prikazani tekst</gui>.</p>
+      </note>
+    </section>
+    <section id="speak_blank_lines">
+      <title>Izgovori prazne retke</title>
+      <p>Ako je označen potvrdni okvir <gui>Izgovori prazne retke</gui>, <app>Orca</app> će reći "prazno" svaki put kada strelicama dođete do praznog retka. Ako nije označen, <app>Orca</app> neće reći ništa kada dođete do praznog retka.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="indentation_and_justification">
+      <title>Izgovori uvlake i poravnanje</title>
+      <p>Pri radu s kôdom ili uređivanju drugih dokumenata često je poželjno znati kakvi su poravnanje i uvlaka. Označavanje potvrdnog okvira <gui>Izgovori uvlake i poravnanje</gui> učinit će da <app>Orca</app> najavljuje te informacije.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="speak_misspelled_word_indicator">
+      <title>Izgovori oznaku pogrešno napisane riječi</title>
+      <p>Oznaka pogrešno napisane riječi crvena je valovita crta koja se pojavljuje ispod pogrešno napisanih riječi u tekstnim poljima koja se mogu uređivati. Ako je <gui>Izgovori oznaku pogrešno napisane riječi</gui> označeno, kada dođete do riječi s tom oznakom ili riječ upišete pogrešno pa se ta oznaka pojavi, <app>Orca</app> će izgovoriti "pogrešno napisano".</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="mnemonics">
+     <title>Izgovori pristupna slova objekata</title>
+      <p>Ako je označen potvrdni okvir <gui>Izgovori pristupna slova objekata</gui>, <app>Orca</app> će najaviti pristupno slovo povezano s objektom koji ima fokus (kao što je <keyseq><key>Alt</key><key>O</key> </keyseq> za gumb <gui>U redu</gui>).</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="child_position">
+      <title>Izgovori položaj podređene stavke</title>
+      <p>Označavanje potvrdnog okvira <gui>Izgovori položaj podređene stavke</gui> učinit će da <app>Orca</app> najavljuje položaj fokusirane stavke u izbornicima, popisima i stablima (npr. "9 od 16").</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="speak_tutorial_messages">
+      <title>Izgovori poduke</title>
+      <p>Ako je označen potvrdni okvir <gui>Izgovori poduke</gui>, <app>Orca</app> će vam, dok se krećete među objektima u sučelju, pružati dodatne informacije, primjerice kako raditi s trenutačno fokusiranim objektom.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+    <section id="speak_description">
+      <title>Izgovori opis</title>
+      <p>Ako je označen potvrdni okvir <gui>Izgovori opis</gui>, <app>Orca</app> će vam, dok se krećete među objektima u sučelju, uz pristupačni naziv objekta izgovarati i njegov pristupačni opis.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="system_messages_are_detailed">
+      <title>Sistemske poruke su detaljne</title>
+      <p>Ako je <gui>Sistemske poruke su detaljne</gui> označeno, <app>Orca</app> će vam govorom prikazivati detaljne poruke. Primjerice, ako koristite Orcinu naredbu za promjenu odjeka, <app>Orca</app> bi mogla izgovoriti "Odjek postavljen na riječ". Ako želite kraće poruke, kao što je samo "riječ", uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="speak_colors_as_names">
+      <title>Izgovori boje nazivima</title>
+      <p>Ako je <gui>Izgovori boje nazivima</gui> označeno, <app>Orca</app> će opisivati boje tražeći najbližu približnu vrijednost. Primjerice, RGB 0, 27, 51 bio bi izgovoren kao "ponoćnoplava". Ako radije želite čuti točnu RGB vrijednost, uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="announce_blockquotes_during_navigation">
+      <title>Najavi blokove citata tijekom kretanja</title>
+      <p>Ako je <gui>Najavi blokove citata tijekom kretanja</gui> označeno, <app>Orca</app> će vam reći kada uđete u blok citata ili iz njega izađete. Imajte na umu da je ta postavka neovisna o tome izgovara li se ta najava tijekom naredbe Izgovori sve. Za više informacija pogledajte <link xref="preferences_general#say_all_announce_context">Najava kontekstualnih informacija tijekom naredbe Izgovori sve</link>.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="announce_forms_during_navigation">
+      <title>Najavi obrasce tijekom kretanja</title>
+      <p>Ako je <gui>Najavi obrasce tijekom kretanja</gui> označeno, <app>Orca</app> će vam reći kada uđete u obrazac ili iz njega izađete. Imajte na umu da se ta postavka odnosi na obrasce koji nisu ARIA orijentiri. Prikazivanje ARIA orijentira možete podesiti potvrdnim okvirom <gui>Najavi orijentire tijekom kretanja</gui>. Osim toga, imajte na umu da je ta postavka neovisna o tome izgovara li se ta najava tijekom naredbe Izgovori sve. Za više informacija pogledajte <link xref="preferences_general#say_all_announce_context">Najava kontekstualnih informacija tijekom naredbe Izgovori sve</link>.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="announce_landmarks_during_navigation">
+      <title>Najavi orijentire tijekom kretanja</title>
+      <p>Ako je <gui>Najavi orijentire tijekom kretanja</gui> označeno, <app>Orca</app> će vam reći kada uđete u ARIA orijentir ili iz njega izađete. Imajte na umu da je ta postavka neovisna o tome izgovara li se ta najava tijekom naredbe Izgovori sve. Za više informacija pogledajte <link xref="preferences_general#say_all_announce_context">Najava kontekstualnih informacija tijekom naredbe Izgovori sve</link>.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="announce_lists_during_navigation">
+      <title>Najavi popise tijekom kretanja</title>
+      <p>Ako je <gui>Najavi popise tijekom kretanja</gui> označeno, <app>Orca</app> će vam reći kada uđete u popis ili iz njega izađete. Imajte na umu da je ta postavka neovisna o tome izgovara li se ta najava tijekom naredbe Izgovori sve. Za više informacija pogledajte <link xref="preferences_general#say_all_announce_context">Najava kontekstualnih informacija tijekom naredbe Izgovori sve</link>.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="announce_panels_during_navigation">
+      <title>Najavi ploče tijekom kretanja</title>
+      <p>Ako je <gui>Najavi ploče tijekom kretanja</gui> označeno, <app>Orca</app> će vam reći kada uđete u ploču ili iz nje izađete. Imajte na umu da je ta postavka neovisna o tome izgovara li se ta najava tijekom naredbe Izgovori sve. Za više informacija pogledajte <link xref="preferences_general#say_all_announce_context">Najava kontekstualnih informacija tijekom naredbe Izgovori sve</link>.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="announce_tables_during_navigation">
+      <title>Najavi tablice tijekom kretanja</title>
+      <p>Ako je <gui>Najavi tablice tijekom kretanja</gui> označeno, <app>Orca</app> će vam reći kada uđete u tablicu ili iz nje izađete. Imajte na umu da je ta postavka neovisna o tome izgovara li se ta najava tijekom naredbe Izgovori sve. Za više informacija pogledajte <link xref="preferences_general#say_all_announce_context">Najava kontekstualnih informacija tijekom naredbe Izgovori sve</link>.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="speak_full_row_in_gui_tables">
+      <title>Izgovori cijeli redak u tablicama grafičkog sučelja</title>
+      <p>Ako je <gui>Izgovori cijeli redak u tablicama grafičkog sučelja</gui> označeno, <app>Orca</app> će izgovarati cijeli redak dok se strelicama krećete gore i dolje po tablicama u aplikacijama, kao što je popis poruka u vašoj ulaznoj pošti. Ako radije želite čuti samo ćeliju koja ima fokus, uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="speak_full_row_in_document_tables">
+      <title>Izgovori cijeli redak u tablicama u dokumentima</title>
+      <p>Ako je <gui>Izgovori cijeli redak u tablicama u dokumentima</gui> označeno, <app>Orca</app> će izgovarati cijeli redak dok se strelicama krećete gore i dolje po tablicama poput onih u programu <app>Writer</app> i u web dokumentima. Ako radije želite čuti samo ćeliju koja ima fokus, uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: označeno</p>
+    </section>
+    <section id="speak_full_row_in_spreadsheets">
+      <title>Izgovori cijeli redak u proračunskim tablicama</title>
+      <p>Ako je <gui>Izgovori cijeli redak u proračunskim tablicama</gui> označeno, <app>Orca</app> će izgovarati cijeli redak dok se strelicama krećete gore i dolje po proračunskim tablicama. Ako radije želite čuti samo ćeliju koja ima fokus, uklonite oznaku iz ovog potvrdnog okvira.</p>
+      <p>Zadana vrijednost: nije označeno</p>
+    </section>
+  </section>
+</page>

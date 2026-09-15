@@ -39,7 +39,7 @@
       <mal:years>2022</mal:years>
     </mal:credit>
   </info>
-  <title>Speech And Verbosity Settings Commands</title>
+  <title>Comandos de configuração de fala e verbosidade</title>
   <p>Os comandos a seguir podem ser usados para personalizar a saída de fala do <app>Orca</app>. Você perceberá que alguns desses comandos estão "sem teclas de atalho definidas." Por favor veja <link xref="howto_key_bindings">Associações de teclas</link> para informações de como atribuir teclas de atalhos a esses comandos.</p>
   <list>
     <item>
@@ -52,40 +52,40 @@
       <p>Alterne entre os níveis de verbosidade curto e detalhado: <keyseq><key>Tecla Modificadora do Orca</key><key>V</key></keyseq></p>
     </item>
     <item>
-      <p>Habilita/desabilita a fala de recuo e justificação: (Sem atalho definido)</p>
+      <p>Habilita/desabilita a fala de recuo e justificação: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Circula para o estilo do número falado: (Sem atalho definido)</p>
+      <p>Circula para o estilo do número falado: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Circula para o próximo nível de fala de pontuação: (Sem atalho definido)</p>
+      <p>Circula para o próximo nível de fala de pontuação: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Circular para o próximo nível de eco de tecla: (Sem atalho definido)</p>
+      <p>Circular para o próximo nível de eco de tecla: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Circula para o próximo estilo de letras maiúsculas: (Sem atalho definido)</p>
+      <p>Circula para o próximo estilo de letras maiúsculas: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Diminui a velocidade: (Sem atalho definido)</p>
+      <p>Diminui a velocidade: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Aumenta a velocidade: (Sem atalho definido)</p>
+      <p>Aumenta a velocidade: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Diminui a tonalidade: (Sem atalho definido)</p>
+      <p>Diminui a tonalidade: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Aumenta a tonalidade: (Sem atalho definido)</p>
+      <p>Aumenta a tonalidade: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Diminui o volume: (Sem atalho definido)</p>
+      <p>Diminui o volume: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Aumenta o volume: (Sem atalho definido)</p>
+      <p>Aumenta o volume: (sem atalho definido)</p>
     </item>
     <item>
-      <p>Cycle to the next speech synthesizer: (Unbound)</p>
+      <p>Alterna para o próximo sintetizador de voz: (sem atalho definido)</p>
     </item>
   </list>
 </page>

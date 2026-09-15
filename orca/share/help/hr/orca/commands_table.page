@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_table" xml:lang="hr">
+  <info>
+    <link type="next" xref="commands_flat_review"/>
+    <link type="guide" xref="commands#reading_documents"/>
+    <link type="seealso" xref="howto_tables"/>
+    <title type="sort">3. Navigacija tablicama</title>
+    <title type="link">Navigacija tablicama</title>
+    <desc>Naredbe za pristup tabličnim podacima</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Naredbe za navigaciju tablicama</title>
+  <p>Orcina podrška za kretanje po ćelijama tablice dio je njezinih <link xref="commands_structural_navigation#tables">naredbi strukturne navigacije</link>. Osim toga možete:</p>
+  <list>
+    <item>
+      <p>Postavi dinamička zaglavlja redaka na trenutačni stupac: <keyseq><key>Orca modifikator</key><key>C</key></keyseq></p>
+    </item>
+    <item>
+      <p>Postavi dinamička zaglavlja stupaca na trenutačni redak: <keyseq><key>Orca modifikator</key><key>R</key></keyseq></p>
+    </item>
+    <item>
+      <p>Ukloni dinamička zaglavlja redaka: <keyseq><key>Orca modifikator</key><key>C</key></keyseq> (dvostruki pritisak)</p>
+    </item>
+    <item>
+      <p>Ukloni dinamička zaglavlja stupaca: <keyseq><key>Orca modifikator</key><key>R</key></keyseq> (dvostruki pritisak)</p>
+    </item>
+    <item>
+      <p>Prebaci se između čitanja ćelije i čitanja retka u tablici: <keyseq><key>Orca modifikator</key><key>F11</key></keyseq></p>
+    </item>
+  </list>
+</page>

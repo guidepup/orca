@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_structural_navigation" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_tables"/>
+    <title type="sort">3. Strukturna navigacija</title>
+    <desc>Kretanje po naslovima i drugim elementima</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Strukturna navigacija</title>
+  <p>Orcina značajka strukturne navigacije omogućuje vam kretanje među elementima u dokumentu. Vrste elemenata po kojima se možete kretati uključuju:</p>
+  <list>
+    <item><p>Naslove i druge tekstne blokove</p></item>
+    <item><p>Kontrole obrazaca</p></item>
+    <item><p>Poveznice</p></item>
+    <item><p>Popise i stavke popisa</p></item>
+    <item><p>Orijentire, razdjelnike i sidra</p></item>
+    <item><p>Tablice i ćelije tablica</p></item>
+  </list>
+  <p>Potpuni popis pojedinačnih elemenata i njima dodijeljenih tipkovnih prečaca možete pronaći u <link xref="commands_structural_navigation">Naredbama strukturne navigacije</link>.</p>
+  <section id="applications">
+      <title>Podržane aplikacije</title>
+      <p>Strukturna navigacija trenutačno je u potpunosti podržana za web sadržaj, uključujući sadržaj pomoći koji upravo čitate. Orcina podrška za strukturnu navigaciju po ćelijama tablice podržana je i u programima <app>OpenOffice Writer</app> i <app>LibreOffice Writer</app>. Podrška za preostale objekte strukturne navigacije u tim uredskim paketima zahtijeva promjene koje trebaju napraviti njihovi razvijatelji. Podrška za bilo koju značajku strukturne navigacije u programu <app>Evince</app> zahtijevat će sličan trud njegovih razvijatelja.</p>
+      <note style="tip">
+        <title>Ne zaboravite uključiti strukturnu navigaciju!</title>
+        <p>Ovisno o tome gdje se nalazite, možda ćete morati izričito uključiti strukturnu navigaciju prije nego što je možete koristiti.</p>
+      </note>
+      <section id="toggling_required">
+        <title>Kada je uključivanje strukturne navigacije potrebno</title>
+        <p>Na web stranicama izričito uključivanje strukturne navigacije obično nije potrebno jer se vaš rad s dokumentom uglavnom sastoji od čitanja njegovog sadržaja. Stoga nema dvojbe je li slovo "H" koje ste upravo pritisnuli trebalo biti naredba za pisanje ili naredba za navigaciju.</p>
+        <p>S druge strane, u dokumentima koji se mogu uređivati, kao što su oni u programima <app>OpenOffice</app> i <app>LibreOffice</app>, programu <app>Orca</app> mnogo je teže točno predvidjeti što očekujete da će se dogoditi kada pritisnete "H". Zato prije korištenja bilo koje naredbe strukturne navigacije u dokumentu koji se može uređivati morate uključiti strukturnu navigaciju pritiskom <keyseq><key>Orca modifikator</key><key>Z</key></keyseq>. Kada završite s kretanjem i spremni ste nastaviti pisati, ponovno pritisnite <keyseq><key>Orca modifikator</key><key>Z</key></keyseq> kako biste isključili strukturnu navigaciju.</p>
+      </section>
+  </section>
+  <section id="settings">
+    <title>Dostupne postavke</title>
+    <p>Uz prethodno navedene naredbe, <app>Orca</app> ima niz mogućnosti koje se mogu podesiti posebno za aplikacije u kojima je podržana strukturna navigacija.</p>
+    <steps>
+      <title>Podešavanje strukturne navigacije</title>
+      <item>
+        <p>Postavite fokus na aplikaciju za koju <app>Orca</app> podržava strukturnu navigaciju.</p>
+      </item>
+      <item>
+        <p>Otvorite dijaloški okvir <link xref="preferences">Postavke Orce</link> za trenutačnu aplikaciju pritiskom <keyseq> <key>Ctrl</key><key>Orca modifikator</key><key>Razmaknica</key> </keyseq>.</p>
+      </item>
+      <item>
+        <p>Prijeđite na zadnju karticu dijaloškog okvira, koja bi trebala nositi naziv vaše trenutačne aplikacije.</p>
+      </item>
+      <item>
+        <p>Pregledajte postavke i promijenite ih po želji.</p>
+      </item>
+      <item>
+        <p>Pritisnite gumb <gui>U redu</gui>.</p>
+      </item>
+    </steps>
+  </section>
+</page>

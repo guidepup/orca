@@ -40,7 +40,7 @@
   <title>Associações de teclas</title>
   <p>O Orca possui muitos comandos, alguns deles estão associados a teclas de atalho, outros não. Você pode associar, reassociar e desassociar os comandos do <app>Orca</app> seguindo os passos abaixo.</p>
   <steps>
-    <title>Associando um Comando Sem atalho definido Definido</title>
+    <title>Associando um comando sem atalho definido</title>
     <item>
       <p>Acesse o diálogo <link xref="preferences">Preferências do Orca</link> pressionando <keyseq><key>Tecla Modificadora do Orca</key><key>Barra de espaço</key></keyseq>.</p>
     </item>

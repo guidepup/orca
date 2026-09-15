@@ -65,6 +65,6 @@
         <p>A coluna <gui>Modificado</gui> serve tanto como um indicador do que foi alterado quanto como uma forma de restaurar as ligações padrão associadas a esse comando.</p>
       </item>
     </list>
-    <p>Abaixo da lista de atalhos de teclado do <app>Orca</app>, você encontrará um grupo de comandos "Sem atalho definido". Estes são comandos que achamos que serão muito úteis para alguns usuários, mas não necessariamente para a maioria. Em vez de "usar" um pressionamento de tecla para esses comandos, os deixamos sem atribuição por padrão. No final da lista estão as associações em braile, para uso com linha braile atualizável.</p>
+    <p>Abaixo da lista de atalhos de teclado do <app>Orca</app>, você encontrará um grupo de comandos "sem atalho definido". Estes são comandos que achamos que serão muito úteis para alguns usuários, mas não necessariamente para a maioria. Em vez de "usar" um pressionamento de tecla para esses comandos, os deixamos sem atribuição por padrão. No final da lista estão as associações em braile, para uso com linha braile atualizável.</p>
   </section>
 </page>

@@ -28,10 +28,7 @@
   <steps>
     <title>Změna modifikátoru Orca</title>
     <item>
-      <p>
-        Get into the <link xref="preferences">Orca Preferences</link> dialog by
-        pressing <keyseq><key>Orca Modifier</key><key>Space</key></keyseq>. Alternatively, you can start Orca with the preferences dialog open from a terminal: type <cmd>orca -s</cmd> and press <key>Return</key>.
-      </p>
+      <p>Chcete-li si zobrazit <link xref="preferences">předvolby Orca</link>, stiskněte <keyseq><key>Modifikátor Orca</key><key>Mezerník</key></keyseq>. Alternativně si můžete otevřít Orca s otevřeným dialogem předvoleb z konzoly: napište <cmd>orca -s</cmd> a stiskněte <key>Enter</key>.</p>
     </item>
     <item>
       <p>Přejděte na stránku <gui>Klávesové zkratky</gui>.</p>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_text_attributes" xml:lang="hr">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_structural_navigation"/>
+    <title type="sort">2. Svojstva teksta</title>
+    <desc>Pregledavanje oblikovanja teksta</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Share Alike 3.0</p>
+    </license>
+  </info>
+  <title>Svojstva teksta</title>
+  <p>Pojam "svojstva teksta" odnosi se na sva slova, stil, poravnanje i drugo oblikovanje povezano s pojedinim znakom ili nizom znakova.</p>
+  <section id="obtaining">
+    <title>Dobivanje informacija o oblikovanju</title>
+    <p>Kada pritisnete <keyseq><key>Orca modifikator</key><key>F</key> </keyseq>, <app>Orca</app> će izgovoriti poznate informacije o svojstvima teksta nekog objekta. Osim toga, <app>Orca</app> može, ako to želite, svojstva teksta označavati na brajici tako da ih "podcrtava" dok se krećete kroz dokument.</p>
+    <p>Budući da je broj svojstava teksta velik, a nikome nisu važna sva svojstva, <link xref="preferences_text_attributes"> kartica Svojstva teksta u dijalogu postavki</link> omogućuje vam da odredite koja će svojstva teksta <app>Orca</app> prikazivati govorom, kojim će ih redoslijedom prikazivati i koja će označavati na brajici.</p>
+    <p>Budući da je <link xref="preferences_text_attributes">kartica Svojstva teksta</link> ujedno dio postavki specifičnih za aplikaciju, prikazivanje svojstava teksta možete prilagoditi prema potrebi za svaku aplikaciju koju koristite.</p>
+  </section>
+  <section id="identifying_misspelled_words">
+    <title>Prepoznavanje pogrešno napisanih riječi</title>
+    <p>Većina aplikacija i radnih okvira označava da je riječ pogrešno napisana tako da je podcrta crvenom valovitom crtom. Postojanje te crte pomoćnim se tehnologijama obično izlaže kao svojstvo teksta. Zbog toga ćete među svojstvima teksta koja možete odabrati pronaći i pravopisne pogreške. Svojstvo pravopisne pogreške po zadanom je uključeno i za govor i za brajicu te će stoga biti prikazano zajedno sa svim drugim svojstvima čije ste označavanje uključili.</p>
+    <p>Uz pristup postojanju pravopisnih pogrešaka kao svojstvu teksta, ako imate uključen odjek tipki i/ili odjek riječi i upišete riječ koja je pogrešno napisana, <app>Orca</app> će pri pojavi oznake pravopisne pogreške najaviti "pogrešno napisano" kako biste se odmah mogli vratiti i ispraviti pogrešku.</p>
+    <p>Naposljetku, kada se krećete kroz dokument i pokazivač teksta uđe u riječ koja je pogrešno napisana, <app>Orca</app> će najaviti postojanje pravopisne pogreške.</p>
+  </section>
+</page>
