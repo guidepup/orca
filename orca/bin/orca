@@ -47,8 +47,14 @@ try:
 except ImportError:
     HAS_CTYPES = False
 
-sys.prefix = "/home/runner/work/orca/orca/orca"
-sys.path.insert(1, "/home/runner/work/orca/orca/orca/lib/python3/dist-packages")
+import os as _guidepup_os
+_GUIDEPUP_ORCA_PREFIX = _guidepup_os.path.realpath(
+    _guidepup_os.path.join(
+        _guidepup_os.path.dirname(_guidepup_os.path.realpath(__file__)), ".."
+    )
+)
+sys.prefix = _GUIDEPUP_ORCA_PREFIX
+sys.path.insert(1, _guidepup_os.path.join(_GUIDEPUP_ORCA_PREFIX, "lib/python3/dist-packages"))
 
 _share_dir = os.path.join(sys.prefix, "share")
 if os.path.isdir(_share_dir):

@@ -36,7 +36,13 @@ cgettext = gettext.gettext
 
 # Tell gettext where to find localized strings.
 #
-localedir = os.path.join('/home/runner/work/orca/orca/orca','share/locale')
+import os as _guidepup_os
+_GUIDEPUP_ORCA_PREFIX = _guidepup_os.path.realpath(
+    _guidepup_os.path.join(
+        _guidepup_os.path.dirname(_guidepup_os.path.realpath(__file__)), "..", "..", "..", ".."
+    )
+)
+localedir = os.path.join(_GUIDEPUP_ORCA_PREFIX,'share/locale')
 gettext.bindtextdomain ("orca", localedir)
 gettext.textdomain("orca")
 
