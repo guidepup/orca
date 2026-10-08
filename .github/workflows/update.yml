@@ -135,6 +135,14 @@ jobs:
           meson compile -C _build
           meson install -C _build
 
+      - name: Make the build relocatable
+        if: steps.current.outputs.skip != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 ./makeRelocatable.py "$GITHUB_WORKSPACE/orca"
+
       - name: Create guidepup.ini settings file
         if: steps.current.outputs.skip != 'true'
         shell: bash
