@@ -164,10 +164,7 @@
           </p>
         </item>
         <item>
-          <p>
-            Display a list of links:
-            <keyseq><key>Alt</key><key>Shift</key><key>K</key></keyseq>
-          </p>
+          <p>Prikaz seznama povezav: <keyseq><key>izmenjalka</key><key>dvigalka</key><key>K</key></keyseq></p>
         </item>
         <item>
           <p>Naslednja in predhodna neobiskana povezava: <keyseq><key>U</key></keyseq> in <keyseq><key>Dvigalka</key><key>U</key></keyseq></p>
@@ -196,10 +193,7 @@
           <p>Naslednji in predhodni seznam: <keyseq><key>L</key></keyseq> in <keyseq><key>Dvigalka</key><key>L</key></keyseq></p>
         </item> 
         <item>
-          <p>
-            Display a list of lists:
-            <keyseq><key>Alt</key><key>Shift</key><key>L</key></keyseq>
-          </p>
+          <p>Prikaz seznama seznamov: <keyseq><key>izmenjalka</key><key>dvigalka</key><key>L</key></keyseq></p>
         </item>
         <item>
           <p>Naslednji in predhodni predmet seznama: <keyseq><key>I</key></keyseq> in <keyseq><key>Dvigalka</key><key>I</key></keyseq></p>
@@ -271,10 +265,7 @@
           <p>Naslednja in predhodna oznaka mesta: <keyseq><key>M</key></keyseq> in <keyseq><key>Dvigalka</key><key>M</key></keyseq></p>
         </item> 
         <item>
-          <p>
-            Display a list of landmarks:
-            <keyseq><key>Alt</key><key>Shift</key><key>M</key></keyseq>
-          </p>
+          <p>Prikaz seznama mejnikov: <keyseq><key>izmenjalka</key><key>dvigalka</key><key>M</key></keyseq></p>
         </item>
         <item>
           <p>Naslednja in predhodna ločnica : <keyseq><key>S</key></keyseq> in <keyseq><key>Dvigalka</key><key>S</key></keyseq></p>

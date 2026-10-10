@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_time_date_notifications" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_profiles"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <link type="seealso" xref="howto_notifications"/>
+    <title type="sort">4. Tid, dato og varsling</title>
+    <title type="link">Tid, dato og varsling</title>
+    <desc>Kommandoar for å hente tid, dato og varselmeldingar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tid, dato og kommandoar for varsling</title>
+  <p>Følgjande kommandoar kan brukast for å få nåtid og dato og for å gå gjennom tidlegare viste varselmeldingar:</p>
+  <section id="time_and_date">
+    <title>Hentar tid og dato</title>
+    <list>
+      <item>
+        <p>Vis klokkeslett: <keyseq><key>Orca-modifikator</key><key>T</key></keyseq></p>
+      </item>
+      <item>
+        <p>Vis dato: <keyseq><key>Orca-modifikator</key><key>T</key></keyseq> (dobbeltklikka)</p>
+      </item>
+    </list>
+  </section>
+  <section id="notifications">
+    <title>Går gjennom varselmeldingar</title>
+    <p>Orca har tre ubindne kommandoar for å få tilgang til tidlegare viste <link xref="howto_notifications">varselmeldingar</link>. Sjå <link xref="howto_key_bindings">Endre tastetrykk</link> for informasjon om korleis du bind desse kommandoane til tastetrykk.</p>
+    <list>
+      <item>
+        <p>Vis det siste (nyaste) varslingsbodskapet: (Ubind)</p>
+      </item>
+      <item>
+        <p>Vis det førre varslingsbodskapet: (Uforpliktande)</p>
+      </item>
+      <item>
+        <p>Vis neste varselmelding: (Ubind)</p>
+      </item>
+      <item>
+        <p>Vis fram liste over alle varselmeldingar: (Ubind)</p>
+      </item>
+    </list>
+  </section>
+</page>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_tables" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_forms"/>
+    <title type="sort">4. Tabellar</title>
+    <desc>Navigere og setje dynamiske overskrifter</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tabellar</title>
+  <p><app>Orca</app> gjev fleire funksjonar som er laga spesielt for å betre tilgangen til tabellar i nettsider og andre dokument: konfigurerbar lesing av celle mot rad, <link xref="howto_structural_navigation">Strukturell navigering</link> og dynamiske overskrifter.</p>
+  <section id="cell_row">
+    <title>Celle mot rad-lesing</title>
+    <p>Tenk på prosessen med å gå gjennom meldingslista i Innboksen din. For at Orca skal seie frå om avsendar, emne, dato og vedlegg, må du la <app>Orca</app> lese opp raden. På den andre sida, når du navigerer mellom radene i eit rekneark, er det kanskje ikkje ønskeleg å høyre heile raden berre på grunn av det store talet på celler i kvar rad. Dermed vil du i det tilfellet at <app>Orca</app> berre skal lese opp den fokuserte cella. Tilsvarande situasjonar førekjem i dokumenttabellar.</p>
+    <p><app>Orca</app> lèt deg tilpasse om berre cella skal lesast, eller om heile rada skal lesast, for GUI-tabellar, dokumenttabellar og rekneark. Sidan desse innstillingane er uavhengige av kvarandre, treng du ikkje velje éin lesemodus for tabellar for å dekke fleire tabelltypar.</p>
+    <p>Du kan setje kvar av <app>Orca</app> sine tabell-opplesingsinnstillingar <app>Orca</app> breitt så vel som for kvar enkelt app. Korleis du gjer kvar og ein er skildra i guiden om <link xref="preferences"><app>Orca</app> sine innstillingsvindauge</link>. Innstillingane finn du på <link xref="preferences_speech"> <gui>Tale</gui> sida</link>.</p>
+    <p>Til slutt er det også ein <app>Orca</app>-kommando som gjer at du kan slå om mellom celle- og radlesing på flukt for den aktive tabellen: <keyseq><key>Orca-modifikator</key><key>F11</key></keyseq>.</p>
+  </section>
+  <section id="structural_navigation">
+    <title>Strukturell navigasjon</title>
+    <p><app>Orca</app> sine <link xref="commands_structural_navigation#tables">tabellstrukturnavigasjonskommandoar</link> gjer det mogleg for deg å raskt finne tabellar, hoppe rett til første eller siste celle i ein tabell, og flytte til neste celle i kva som helst retning.</p>
+    <p>Når du navigerer i og innanfor tabellar med Strukturell Navigering, vil <app>Orca</app> annonsere tilleggsinformasjon for å hjelpe deg å forstå posisjonen din, som dimensjonane på tabellen du nettopp har gått inn i og at du har nådd kanten av tabellen i den retninga du flyttar deg.</p>
+    <p>I tillegg gjev <app>Orca</app> konfigurerbare <link xref="preferences_table_navigation">visingsinnstillingar</link> som fungerer saman med strukturell navigering og lèt deg styre om cellekoordinatar vert viste, fleire celleovergripande vert viste, og celleoverskrifter vert lese opp.</p>
+    <note style="tip">
+      <title>Hugs å slå på strukturell navigering!</title>
+      <p>Avhengig av kvar du er, kan det vere nødvendig for deg å slå på Strukturell navigasjon før du kan bruke det. For å lære meir, les <link xref="howto_structural_navigation#toggling_required"> når det er nødvendig å slå på Strukturell navigasjon.</link></p>
+    </note>
+  </section>
+  <section id="dynamic_headers">
+    <title>Dynamiske overskrifter</title>
+    <p>Mange av tabellane du vil møte på når du les, har celler som fungerer som overskrift for ei rad eller ein kolonne. Det er vanskeleg å seie om skaparen av tabellen har merkt desse cellene som overskrifter på korrekt vis. I mange tilfelle vart teksten berre formatert til å vere større og/eller feit. Og sjølv om tabellen er korrekt merkt, er det ingen garanti for at appen eller verktøysettet eksponerer den teksten som overskriftsinformasjon til hjelpeteknologiar. <app>Orca</app> sitt dynamiske overskriftsstøtte gjer det mogleg å overvinne desse utfordringane.</p>
+    <steps>
+      <title>Stille kolonneoverskrifter</title>
+      <item>
+        <p>Flytt til rada som inneheld alle kolonneoverskrifter.</p>
+      </item>
+      <item>
+        <p>Trykk <keyseq><key>Orca-modifikator</key><key>R</key></keyseq> for å seie til <app>Orca</app> at den noverande rada er rada med overskrifter.</p>
+      </item>
+    </steps>
+    <steps>
+      <title>Stille inn radoverskrifter</title>
+      <item>
+        <p>Flytt til kolonnen som inneheld alle radhovuda.</p>
+      </item>
+      <item>
+        <p>Trykk <keyseq><key>Orca-modifikator</key><key>C</key></keyseq> for å fortelje <app>Orca</app> at den noverande kolonnen er den med overskrifter.</p>
+      </item>
+    </steps>
+    <p>Når du har sett anten kolonneoverskrifta eller radoverskrifta, vil du sjå at når du navigerer mellom cellene, vil <app>Orca</app> vise kvar overskrift som er endra. Eller med andre ord, <app>Orca</app> vil ikkje vise kolonneoverskrifta om og om igjen når du flyttar deg opp eller ned innanfor den gjeldande kolonnen. På same måte vil det ikkje vise radoverskrifta om og om igjen når du flyttar deg til venstre eller høgre innanfor den gjeldande rada. Men om du byter rad og det finst radoverskrifter, vil overskrifta knytt til den nye rada verte vist. Og om du byter kolonne og det finst kolonneoverskrifter, vil overskrifta knytt til den nye kolonnen verte vist.</p>
+    <p>For å tømma overskrifter, dobbeltklikk berre kommandoen du nytta til å setja dei. Slik fortel dobbeltklikk på <keyseq><key>Orca-modifikator</key><key>R</key></keyseq> <app>Orca</app> at det ikkje er kolonneoverskrifter. Dobbeltklikk på <keyseq><key>Orca-modifikator</key><key>C</key></keyseq> fortel <app>Orca</app> at det ikkje er rad-overskrifter.</p>
+  </section>
+</page>

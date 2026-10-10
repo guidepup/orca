@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" id="index" xml:lang="nn">
+  <info>
+    <title type="text"><app>Orca</app> skjermlesar</title>
+    <title type="link" role="trail"><app>Orca</app> skjermlesar</title>
+    <title type="link"><app>Orca</app> skjermlesar</title>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+
+    <desc>Orca er ein fri, open kjeldekode, fleksibel og utvidbar skjermlesar som gjev tilgang til det grafiske skrivebordet via tale og oppfriskbar punktskrift.</desc>
+  </info>
+
+  <title><media type="image" width="48px" height="48px" its:translate="no" src="figures/orca-logo.svg"/> <app>Orca</app> Skjermlesar</title>
+  <note style="important">
+    <title>Før du byrjar</title>
+    <p>Dersom du ikkje er kjend med navigasjonskommandoane som følgjer med skrivebordsmiljøet ditt, oppmodar vi deg til å lese den dokumentasjonen først.</p>
+  </note>
+  <section id="getting_started" style="2column">
+    <title>Kom i gang</title>
+  </section>
+  <section id="reading" style="2column">
+    <title>Les dokument og nettsider</title>
+  </section>
+  <section id="reviewing" style="2column">
+    <title>Gjennomgang og samhandling med skjerminnhaldet</title>
+  </section>
+  <section id="quick_reference" style="2column">
+    <title>Snøggreferanse</title>
+  </section>
+</page>

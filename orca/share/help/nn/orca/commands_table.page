@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_table" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_flat_review"/>
+    <link type="guide" xref="commands#reading_documents"/>
+    <link type="seealso" xref="howto_tables"/>
+    <title type="sort">3. Tabellnavigering</title>
+    <title type="link">Tabellnavigering</title>
+    <desc>Kommandoar for å få tilgang til tabellinformasjon</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tabellnavigeringkommandoar</title>
+  <p>Orca si støtte for navigasjon med tabellcelle er ein del av <link xref="commands_structural_navigation#tables">Strukturelle navigatjonskommandoar</link>. I tillegg kan du:</p>
+  <list>
+    <item>
+      <p>Set dynamiske radoverskrifter til gjeldande kolonne: <keyseq><key>Orca-modifikator</key><key>C</key></keyseq></p>
+    </item>
+    <item>
+      <p>Set dynamiske kolonneoverskrifter til noverande rad: <keyseq><key>Orca-modifikator</key><key>R</key></keyseq></p>
+    </item>
+    <item>
+      <p>Tøm dynamiske radoverskrifter: <keyseq><key>Orca-modifikator</key><key>C</key></keyseq> (dobbeltklikka)</p>
+    </item>
+    <item>
+      <p>Tøm dynamiske kolonneoverskrifter: <keyseq><key>Orca-modifikator</key><key>R</key></keyseq> (dobbeltklikka)</p>
+    </item>
+    <item>
+      <p>Veksle mellom celle- og radlesing i ei tabell: <keyseq><key>Orca-modifikator</key><key>F11</key></keyseq></p>
+    </item>
+  </list>
+</page>

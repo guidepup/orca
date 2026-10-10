@@ -26,11 +26,7 @@
       <p>Εάν χρησιμοποιείτε τη διάταξη φορητού, ο προεπιλεγμένος τροποποιητής του Orca θα είναι <key>CapsLock</key></p>
     </item>
     <item>
-      <p>
-        If you are using the Desktop layout, the Orca Modifier will be both
-        <key>Insert</key> and <key>KP_Insert</key>, the latter being the
-        same key as <key>KP_0</key>.
-      </p>
+      <p>Αν χρησιμοποιείτε τη διάταξη επιτραπέζιου υπολογιστή, ο τροποποιητής Orca θα είναι τόσο το <key>Insert</key> όσο και το <key>KP_Insert</key>, με το τελευταίο να είναι το ίδιο πλήκτρο με το <key>KP_0</key>.</p>
     </item>
   </list>
   <p>Η διάταξη επίσης καθορίζει τις συσχετισμένες πληκτρολογήσεις με έναν αριθμό των εντολών του <app>Orca</app>, ειδικά στις περιοχές της γενικής επισκόπησης, πού είμαι και εκφώνηση όλων.</p>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_forms" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reading"/>
+     <link type="next" xref="howto_live_regions"/>
+    <title type="sort">5. Fylle ut skjema</title>
+    <desc>Gjev tilgang til innebygde widgetar i dokument</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Fyller ut skjema</title>
+  <p>Når du samhandlar med nettsider og andre dokument med <app>Orca</app>, samhandlar du med sjølve dokumentet; ikkje ein bufra kopi av dokumentet. <app>Orca</app> sine nettlesar- og fokuseringsmodusar lèt deg byte mellom å lese og å fylle ut skjema.</p>
+  <section id="navigating_amongst_form_fields">
+    <title>Navigering mellom skjema-felt</title>
+    <p>For å navigere mellom skjema-felta har du fleire val:</p>
+    <list>
+      <item>
+        <p>Bruk <key>Tab</key> og <keyseq><key>Shift</key><key>Tab</key></keyseq> for å navigere mellom fokusbare objekt, uavhengig av type.</p>
+      </item>
+      <item>
+        <p>Bruk <app>Orca</app> sine <link xref="commands_structural_navigation#forms"> strukturelle navigasjonskommandoar for skjema</link>.</p>
+      </item>
+      <item>
+        <p>Avhengig av skjemaet og appen kan du òg bruke piltastane til å flytte deg til eit bestemt skjemafelt.</p>
+      </item>
+   </list>
+   <note style="tip">
+     <p>For å bruke <app>Orca</app> sin caret-navigering eller strukturelle navigering til å navigere til eit skjema-felt, må du vere i nettlesarmodus. Om du er i fokusmodus, kan du byte til nettlesarmodus ved å trykkje <keyseq><key>Orca-modifikator</key><key>A</key></keyseq>.</p>
+   </note>
+  </section>
+  <section id="exiting_form_fields">
+    <title>Avsluttar skjema-felt</title>
+    <p>For å gå ut av eit skjema-felt, har du fleire val:</p>
+    <list>
+      <item>
+        <p>Bruk <key>Tab</key>/<keyseq><key>Shift</key><key>Tab</key></keyseq> om du vil forlate det fokuserte tekstfeltet og flytte til neste/førre fokuserbare objekt, uavhengig av type.</p>
+      </item>
+      <item>
+        <p>Bruk <app>Orca</app> sine <link xref="commands_structural_navigation#forms"> strukturelle navigasjonskommandoar for skjema</link> for å flytte til neste eller førre skjemafelt.</p>
+      </item>
+      <item>
+        <p>Avhengig av skjemaet og appen kan du kanskje òg bruke piltastane til å flytte deg ut av eit gitt skjemafelt.</p>
+      </item>
+    </list>
+   <note style="tip">
+     <p>For å bruke <app>Orca</app> si markørnavigering eller strukturelle navigeringskommandoar for å gå ut av eit skjema-felt, må du vere i nettlesarmodus. Viss du er i fokusmodus, kan du byte til nettlesarmodus ved å trykkje <keyseq><key>Orca-modifikator</key><key>A</key></keyseq>.</p>
+   </note>
+  </section>
+</page>

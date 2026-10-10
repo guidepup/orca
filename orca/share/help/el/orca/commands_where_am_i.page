@@ -26,7 +26,7 @@
   <p>Το <app>Orca</app> παρέχει τις επόμενες εντολές πού είμαι:</p>
   <list>
     <item>
-      <p>Perform basic Where Am I:</p>
+      <p>Εκτέλεση βασικού «Πού είμαι»:</p>
       <list>
         <item>
           <p>Επιτραπέζιος: <key>εισαγωγή KP</key></p>
@@ -37,7 +37,7 @@
       </list>
     </item>
     <item>
-      <p>Perform detailed Where Am I:</p>
+      <p>Εκτέλεση λεπτομερούς «Πού είμαι»:</p>
       <list>
         <item>
           <p>Επιτραπέζιος: <key>εισαγωγή KP</key> (διπλό κλικ)</p>
@@ -48,10 +48,7 @@
       </list>
     </item>
   </list>
-  <p>
-    In addition to the dedicated Where Am I commands, <app>Orca</app> has
-    additional commands related to obtaining information about your present location:
-  </p>
+  <p>Εκτός από τις αποκλειστικές εντολές «Πού είμαι», το <app>Orca</app> διαθέτει πρόσθετες εντολές σχετικά με τη λήψη πληροφοριών για την τρέχουσα τοποθεσία σας.</p>
   <list>
     <item>
       <p>Παρουσίαση της γραμμής τίτλου:</p>
@@ -74,7 +71,7 @@
           <p>Φορητός: <keyseq><key>τροποποιητής Orca</key><key>πλαγιοκάθετος</key></keyseq> (διπλό κλικ)</p>
         </item>
         <item>
-          <p>Present size and location of current object in pixels: (Unbound)</p>
+          <p>Παρουσίαση μεγέθους και θέσης του τρέχοντος αντικειμένου σε εικονοστοιχεία: (Αδέσμευτο)</p>
         </item>
       </list>
     </item>

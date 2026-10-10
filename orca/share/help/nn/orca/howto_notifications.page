@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_notifications" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <title type="sort">5. Varsel</title>
+    <desc>Les tidlegare mottatte meldingar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Varslingar</title>
+  <p>GNOME-skrivebordet inkluderer eit «varslingsområde» som appar kan bruke til å presentere informasjon for brukaren. Eksempel på varslingar er innkomande chat-meldingar, detaljar knytte til songen mediespelaren din byrjar å spele, og åtvaringar om at batterinivået vert lågt.</p>
+  <p>Sidan varslingar er meint å gje informasjon til brukaren utan å avbryte det brukaren held på med, vert desse meldingane ofte viste og skjulte relativt raskt. Dei er heller ikkje fokuserbare. Sjølv om <app>Orca</app> vil vise desse meldingane til deg når dei kjem, er det altfor lett å avbryte <app>Orca</app> si kunngjering ved eit uhell ved å halde fram med å skrive eller ved å skifte fokus. Av denne grunn har <app>Orca</app> tre kommandoar som du kan bruke for å få tilgang til tidlegare viste varslingsmeldingar:</p>
+  <list>
+    <item>
+      <p>Vis det siste (nylegaste) varslingsmeldinga</p>
+    </item>
+    <item>
+      <p>Vis det førre varselmeldinga</p>
+    </item>
+    <item>
+      <p>Visg tilgjengeleg liste over alle varselmeldingar</p>
+    </item>
+  </list>
+  <p>Dei fyrste to kommandoane er laga først og fremst for rask tilgang til ei melding du nettopp har fått. Den siste kommandoen er den kraftigaste sidan han lagrar varslingshistorikken din.</p>
+  <p>Når du går inn i lista over varselmeldingar, får du vite storleiken på lista og får desse vala:</p>
+  <list>
+    <item><p>Trykk H for hjelp.</p></item>
+    <item><p>Bruk Opp, Ned, Home eller End for å flytte i lista.</p></item>
+    <item><p>Trykk Escape for å avslutte.</p></item>
+    <item><p>Trykk mellomrom for å gjenta den siste meldinga du las.</p></item>
+    <item><p>Trykk eit siffer for å lese ei bestemt melding.</p></item>
+  </list>
+  <p>Ver merksam på at den nyaste meldinga står øvst i lista.</p>
+  <p>Kvar av <app>Orca</app> sine kommandoar for gjennomgang av varsel er ikkje bunde som standard. Du kan binde alle eller enkelte av dei til den snarvegen eller snarvegane du vel. Korleis du gjer det er skildra i <link xref="howto_key_bindings">Innføring i tastetrykk</link>.</p>
+</page>

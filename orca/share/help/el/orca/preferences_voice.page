@@ -44,29 +44,18 @@
       <p>Αυτό το σύνθετο πλαίσιο επιτρέπει την επιλογή ποιο "άτομο" ή "εκφωνητής" θα χρησιμοποιηθεί με την επιλεγμένη φωνή. Για παράδειγμα, ίσως επιθυμείτε να έχετε την ομιλία του Δαβίδ από προεπιλογή, αλλά οι υπερσύνδεσμοι να εκφωνούνται από την Αλίκη. Σημειώστε ότι τι βρίσκετε στο σύνθετο πλαίσιο <gui>άτομο</gui> θα εξαρτάται από τους εγκατεστημένους συνθέτες ομιλίας.</p>
     </section>
     <section id="capitalization_style">
-      <title>Capitalization style</title>
-      <p>
-       This combo box allows you to choose which Speech Dispatcher capitalization
-       indication styles you wish to use in addition to <app>Orca</app>'s
-       capitalization voice. The options, which are named using Speech Dispatcher's
-       terminology, are:
-     </p>
+      <title>Στυλ κεφαλαίων</title>
+      <p>Αυτό το αναπτυσσόμενο πλαίσιο σας επιτρέπει να επιλέξετε ποιο στυλ ένδειξης κεφαλαίων του Speech Dispatcher επιθυμείτε να χρησιμοποιήσετε επιπλέον της φωνής κεφαλαίων του <app>Orca</app>.</p>
      <list>
-       <item><p><gui>Icon</gui>: Plays a tone</p></item>
-       <item><p><gui>Spell</gui>: Speaks the word "capital"</p></item>
-       <item><p><gui>None</gui></p></item>
+       <item><p><gui>Ήχος</gui>: Αναπαράγει έναν τόνο</p></item>
+       <item><p><gui>Εκφώνηση</gui>: Εκφωνεί τη λέξη «κεφαλαίο»</p></item>
+       <item><p><gui>Κανένα</gui></p></item>
     </list>
     <note style="tip">
       <title>Αυτή η ρύθμιση μπορεί να εναλλαχθεί άμεσα</title>
-      <p>
-        <app>Orca</app> also has a command to cycle through the available
-        capitalization styles. See <link xref="commands_speech_settings">
-        Speech Settings Commands</link> for more information.
-      </p>
+      <p>Το <app>Orca</app> διαθέτει επίσης μια εντολή για κυκλική εναλλαγή στα διαθέσιμα στυλ κεφαλαίων. Δείτε <link xref="commands_speech_settings">Εντολές ρυθμίσεων εκφώνησης</link>.</p>
     </note>
-    <p>
-      Default value: none
-    </p>
+    <p>Προεπιλεγμένη τιμή: κανένα</p>
     </section>
     <section id="rate_pitch_and_volume">
       <title>Ρυθμός, ύψος και ένταση</title>
@@ -81,12 +70,8 @@
       <p>Προεπιλεγμένη τιμή: σημειωμένη</p>
     </section>
     <section id="numbers_as_digits">
-      <title>Speak numbers as digits</title>
-      <p>
-        Checking the <gui>Speak numbers as digits</gui> checkbox will cause
-        <app>Orca</app> to break a number like "123" into separate digits
-        ("1," "2," and "3") prior to passing it along to the speech synthesizer.
-      </p>
+      <title>Εκφώνηση αριθμών ως ψηφία</title>
+      <p>Η επιλογή του πλαισίου ελέγχου <gui>Εκφώνηση αριθμών ως ψηφία</gui> θα κάνει το <app>Orca</app> να διαχωρίζει έναν αριθμό όπως «123» σε ξεχωριστά ψηφία («1», «2», «3») πριν τον στείλει στον συνθέτη ομιλίας.</p>
       <p>Προεπιλεγμένη τιμή: ασημείωτη</p>
     </section>
   </section>

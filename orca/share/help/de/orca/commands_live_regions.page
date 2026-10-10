@@ -49,25 +49,19 @@
   <p>Die folgenden Befehle können benutzt werden, um einen Zugriff auf dynamisch-aktualisierten Inhalt auf Webseiten zu ermöglichen, die durch ARIA verfügbar gemacht wurden.</p>
   <list>
     <item>
-      <p>
-        Monitor live regions:
-        <keyseq><key>Orca Modifier</key><key>Backslash</key></keyseq>
-      </p>
+      <p>Dynamische Bereiche überwachen: <keyseq><key>Orca-Zusatztaste</key><key>Rückwärtsschrägstrich</key></keyseq></p>
     </item>
     <item>
-      <p>Advance live region politeness setting: (Unbound)</p>
+      <p>Zur nächsten Höflichkeitsstufe für dynamische Bereiche wechseln: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>Set default politeness level to off: (Unbound)</p>
+      <p>Standard-Höflichkeitsstufe auf »Aus« setzen: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>
-        Go to next/previous live region in the document's reading order:
-        <keyseq><key>D</key></keyseq>/<keyseq><key>Shift</key><key>D</key></keyseq>
-      </p>
+      <p>Zum nächsten/vorherigen dynamischen Bereich in der Lesereihenfolge des Dokuments springen: <keyseq><key>D</key></keyseq>/<keyseq><key>Umschalt</key><key>D</key></keyseq></p>
     </item>
     <item>
-      <p>Review the next/previous saved live region message: (Unbound)</p>
+      <p>Die nächste/vorherige gespeicherte Nachricht eines dynamischen Bereichs vorlesen: (Nicht zugewiesen)</p>
     </item>
     <item>
       <p>Zum letzten dynamischen Bereich springen, der eine Meldung erzeugte: <keyseq><key>Y</key></keyseq></p>

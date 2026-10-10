@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_toggling_caps_lock" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_key_bindings"/>
+    <title type="sort">7. CapsLock i berbar oppsetjing</title>
+    <desc>Veksle når det er <key>Orca-modifikator</key></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>CapsLock i Laptop-oppsett</title>
+  <p>Orca har to tastaturoppsett: Skrivebord og Berbar. Oppsettet du vel påverkar kva tast som vert brukt som Orca-modifikator. Brukar du det berbare oppsettet, vert standard Orca-modifikator <key>CapsLock</key>. Brukar du <app>Orca</app> sitt berbare oppsett og vil låse eller låse opp <key>CapsLock</key>, kan du trykke <key>CapsLock</key> to gongar (krev at-spi2 versjon 2.32 eller seinare), eller utføre desse stega:</p>
+  <steps>
+    <title>Veksle CapsLock i berbart oppsett</title>
+    <item>
+      <p>Trykk på Bypåss-kommandoen, <keyseq><key>Orca-modifikator</key><key>BackSpace</key> </keyseq>, for å seie til <app>Orca</app> at den neste kommandoen skal ignorerast.</p>
+    </item>
+    <item>
+      <p>Trykk <key>CapsLock</key> for å skifte låsetilstand.</p>
+    </item>
+  </steps>
+</page>

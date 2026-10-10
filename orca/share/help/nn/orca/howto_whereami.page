@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_whereami" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_flat_review"/>
+    <title type="sort">1. Kvar er eg</title>
+    <desc>Lærer om plasseringa di</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Kvar er eg</title>
+  <p>I tillegg til eigne kommandoar for å lese tittellinja og statuslinja, gjev Orca to kontekstsensitive Kvar er eg-kommandoar: Enkel Kvar er eg og Detaljert Kvar er eg. Enkel Kvar er eg er implementert for alle objekt. Detaljert Kvar er eg er implementert berre for dei objekta der det finst ein stor mengde informasjon du kanskje vil vite, men sannsynlegvis ikkje vil vite heile tida.</p>
+  <p>Den beste måten å verte kjend med kva Where Am I vil presentere er å prøve <link xref="commands_where_am_i">Where Am I-kommandoane</link>. Men for å gje deg eit betre inntrykk av den kontekstsensitive naturen til <app>Orca</app> sin Where Am I-funksjon, tenk på følgjande:</p>
+  <p>For dei fleste widgets vert du i det minste fortalt etiketten og/eller namnet, typen eller rolla til widgeten, og minnetasten og/eller hurtigtasten om dei tilfelle finst. I tillegg:</p>
+  <list>
+    <item>
+      <p>Dersom widgeten er tekst, og du utfører ein enkel «Kvar er eg», vil du få vite den gjeldande linja dersom ingen tekst er vald. Dersom tekst er vald, vil derimot ein enkel «Kvar er eg» fortelje deg kva tekst som er vald. Ein detaljert «Kvar er eg» innanfor teksten vil også ta med tekstattributt.</p>
+    </item>
+    <item>
+      <p>Dersom widgeten kan sjekkast, slik som med avkryssingsruter og radioknappar, vert sjekka tilstand teken med.</p>
+    </item>
+    <item>
+      <p>Viss widgeten er eit liste- eller listeliknande objekt, som ein kombinasjonsboks, radioknappgruppe eller pagineringstabbliste, vert posisjonen til det gjeldande elementet teke med.</p>
+    </item>
+    <item>
+      <p>Dersom widgeten er hierarkisk, slik som eit tre, og du er på eit utvidbart punkt, vil du få vite om punktet er utvida eller ikkje. Og dersom det er utvida, vil du også få vite kor mange barn det inneheld. I tillegg vil innsetjingsnivået også verte oppgjeve.</p>
+    </item>
+    <item>
+      <p>Viss widgeten er ein framdriftslinje eller ein skyveknapp, får du vite kor mange prosent som er oppe.</p>
+    </item>
+    <item>
+      <p>Viss widgeten er eit ikon i ei ikon-gruppe, vil ein enkel «Kvar er eg»-vising ta med objektet du er i, elementet du er på, og kor mange element som er valde. I ein detaljert «Kvar er eg»-vising får du i tillegg vite kva element som er valde.</p>
+    </item>
+    <item>
+      <p>Viss du er på ei lenke, vil lenkjetypen (same nettstad, annan nettstad, FTP-lenkje, etc.) verte teken med.</p>
+    </item>
+    <item>
+      <p>Viss du er i ei tabellcelle, vert koordinatane til den cella og celleoverskriftene tekne med.</p>
+    </item>
+    <item>
+      <p>Viss du er i stavekontrollen til ein app der <app>Orca</app> gjev utvida støtte, vil ein enkel «Kvar er eg» gjenta feilen i samsvar med <link xref="preferences_spellcheck">innstillingane for stavekontroll</link>. Ein detaljert «Kvar er eg» vil få <app>Orca</app> til å vise fullstendige detaljar om feilen.</p>
+    </item>
+  </list>
+  <p>Og slik held det fram. Målet med <app>Orca</app> sin Where Am I er att å gje deg detaljane du mest sannsynleg er mest interessert i å vite om objektet du er i for tida. For å prøve Where Am I, sjå lista over <link xref="commands_where_am_i">Where Am I-kommandoar</link>.</p>
+</page>

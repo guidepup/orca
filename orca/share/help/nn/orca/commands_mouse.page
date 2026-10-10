@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_mouse" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_live_regions"/>
+    <link type="guide" xref="commands#reviewing_screen_contents"/>
+    <title type="sort">3. Mus/peikar-relatert</title>
+    <title type="link">Mus/peikar-relatert</title>
+    <link type="seealso" xref="howto_flat_review"/>
+    <link type="seealso" xref="howto_mouse_review"/>
+    <desc>Kommandoar for å manipulere peikaren</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Mus/peikar-kommandoar</title>
+  <p><app>Orca</app> gjev fleire kommandoar som kan brukast til å flytte musepeikaren og lese innhaldet under. Alle kommandoane er «bunde» til tastetrykk med eitt unntak: Toggling Mouse Review Mode. Sjå <link xref="howto_key_bindings">Endre tastetrykk</link> for informasjon om korleis du kan binde denne kommandoen til eit tastetrykk.</p>
+  <note style="tip">
+    <p>Nedanfor ser du fleire referansar til «KP». Alle «KP»-tastar er plasserte på numerisk tastatur. Du vil også sjå at det er ulike tastetrykk avhengig av om du brukar ein stasjonær eller ein berbar datamaskin -- eller meir korrekt, om du brukar <app>Orca</app> sitt stasjonære tastaturoppsett eller det berbare tastaturoppsettet. For meir informasjon, sjå temaet <link xref="howto_keyboard_layout">Tastaturoppsett</link>.</p>
+  </note>
+  <list>
+    <item>
+      <p>Venstreklikk på gjeldande element:</p>
+      <list>
+        <item><p>Skrivebord: <keyseq><key>KP Divide</key></keyseq></p></item>
+        <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>7</key></keyseq></p></item>
+      </list>
+    </item>
+    <item>
+      <p>Høgreklikk på gjeldande element:</p>
+      <list>
+        <item><p>Skrivebord: <keyseq><key>KP Multipliser</key></keyseq></p></item>
+        <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>8</key></keyseq></p></item>
+      </list>
+    </item>
+    <item>
+      <p>Rute peikar til gjeldande element:</p>
+      <list>
+        <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP-divisjon</key></keyseq></p></item>
+        <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>9</key></keyseq></p></item>
+      </list>
+    </item>
+    <item>
+      <p>Flytt fokus inn i eller bort frå den noverande markøren (berre web):</p>
+      <list>
+        <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP Multiplikasjon</key></keyseq></p></item>
+        <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>0</key></keyseq></p></item>
+      </list>
+    </item>
+    <item>
+      <p>Slå på/av musevisingsmodus: (Ubind)</p>
+    </item>
+  </list>
+</page>

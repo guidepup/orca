@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_reading" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_structural_navigation"/>
+    <link type="guide" xref="commands#reading_documents"/>
+    <link type="seealso" xref="howto_documents"/>
+    <link type="seealso" xref="howto_text_attributes"/>
+    <link type="seealso" xref="howto_whereami"/>
+    <title type="sort">1. Lesing</title>
+    <title type="link">Les</title>
+    <desc>Kommandoar for å få tilgang til dokumentinnhald</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Les kommandoar</title>
+  <p>I tillegg til caret-navigasjonskommandoane som er ein del av GNOME, gjev <app>Orca</app> eit tal kommandoar som du kan bruke til å lese eit dokument.</p>
+  <note style="tip">
+    <p>Nedanfor ser du fleire referansar til «KP». Alle «KP»-tastar er plasserte på numerisk tastatur. Du vil også sjå at det er ulike tastetrykk avhengig av om du brukar ein stasjonær eller ein berbar datamaskin -- eller meir korrekt, om du brukar <app>Orca</app> sitt stasjonære tastaturoppsett eller det berbare tastaturoppsettet. For meir informasjon, sjå temaet <link xref="howto_keyboard_layout">Tastaturoppsett</link>.</p>
+  </note>
+  <section id="flat_review">
+    <title>Les din noverande plassering</title>
+    <p>Følgjande <app>Orca</app> <link xref="commands_flat_review">Flate kommandoar for gjennomgang</link> kan brukast til å lese den noverande plasseringa di:</p>
+    <list>
+      <item>
+        <p>Les den gjeldande linja:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 8</key></keyseq></p>
+          </item>
+          <item>
+            <p>Laptop: <keyseq><key>Orca-modifikator</key><key>I</key></keyseq></p>
+          </item>
+        </list>
+      </item>
+      <item>
+        <p>Les det noverande ordet:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 5</key></keyseq></p>
+          </item>
+          <item>
+            <p>Laptop: <keyseq><key>Orca-modifikator</key><key>K</key></keyseq></p>
+          </item>
+        </list>
+      </item>
+      <item>
+        <p>Spel det gjeldande ordet:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 5</key></keyseq> (dobbeltklikka)</p>
+          </item>
+          <item>
+            <p>Berbar: <keyseq><key>Orca-modifikator</key><key>K</key></keyseq> (dobbeltklikka)</p>
+          </item>
+        </list>
+      </item>
+      <item>
+        <p>Stav det noverande ordet fonetisk:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 5</key></keyseq> (trippelklikka)</p>
+          </item>
+          <item>
+            <p>Berbar: <keyseq><key>Orca-modifikator</key><key>K</key></keyseq> (trippelklikka)</p>
+          </item>
+        </list>
+      </item>
+      <item>
+        <p>Les den noverande karakteren:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 2</key></keyseq></p>
+          </item>
+          <item>
+            <p>Laptop: <keyseq><key>Orca-modifikator</key><key>Komma</key></keyseq></p>
+          </item>
+        </list>
+      </item>
+      <item>
+        <p>Uttal det gjeldande teiknet fonetisk:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 2</key></keyseq> (dobbeltklikka)</p>
+          </item>
+          <item>
+            <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Komma</key></keyseq> (dobbeltklikka)</p>
+          </item>
+        </list>
+      </item>
+      <item>
+        <p>Sei Unicode-verdien til gjeldande teikn:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <keyseq><key>KP 2</key></keyseq> (trippelklikka)</p>
+          </item>
+          <item>
+            <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Komma</key></keyseq> (trippelklikka)</p>
+          </item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="say_all">
+    <title>Sei alt</title>
+    <p>Orca sin «Sei alt»-kommando vil få <app>Orca</app> til å lese opp heile dokumentet frå der du er no.</p>
+    <list>
+      <item>
+        <p>Skrivebord: <key>KP Plus</key></p>
+      </item>
+      <item>
+        <p>Laptop: <keyseq><key>Orca-modifikator</key><key>Semikolon</key></keyseq></p>
+      </item>
+    </list>
+  </section>
+  <section id="attributes_and_selection">
+    <title>Teksteigenskapar og vald tekst</title>
+    <p><app>Orca</app> har ein eigen kommando for å hente eigenskapane til teksten der markøren står. I tillegg, om du brukar <app>Orca</app> sine Where Am I-kommandoar frå eit tekstobjekt der tekst er vald, vil <app>Orca</app> seie den valde teksten. <app>Orca</app> sin kommando for å lese opp det som er valt vil også utføre denne funksjonen i eit tekstobjekt.</p>
+    <list>
+      <item>
+        <p>Vis fram tekstattributta: <keyseq><key>Orca-modifikator</key><key>F</key></keyseq></p>
+      </item>
+      <item>
+        <p>Utfør enkel Where Am I:</p>
+        <list>
+          <item>
+            <p>Skrivebord: <key>KP Enter</key></p>
+          </item>
+          <item>
+            <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Return</key></keyseq></p>
+          </item>
+        </list>
+    </item>
+    <item>
+      <p>Utfør detaljert Kvar er eg:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <key>KP Enter</key> (dobbeltklikka)</p>
+        </item>
+        <item>
+          <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Return</key></keyseq> (dobbeltklikka)</p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Tale om det du har valt: <keyseq><key>Orca-modifikator</key><key>Shift</key><key>Opp</key></keyseq></p>
+    </item>
+  </list>
+  </section>
+  <section id="link_details">
+    <title>Lenkedetaljar</title>
+    <p>Dersom du er på ei lenkje, kan <app>Orca</app> sin Enkel Kvar Er Eg-kommando brukast til å annonsere detaljar knytte til lenkja, slik som lenkjetype, om lenkja er vitja, skildringa av nettstaden og filstorleik. Dersom du heller vil ha ein eigen kommando til dette føremålet, kan du knyte <app>Orca</app> sin Sei Lenkjedetaljar-kommando til eit tastetrykk. Sjå <link xref="howto_key_bindings"> Endring av tastetrykk</link> for informasjon om korleis du gjer det.</p>
+    <list>
+      <item>
+        <p>Sei lenkjedetaljane: (Ubinda)</p>
+      </item>
+    </list>
+  </section>
+  <section id="browse_and_focus_modes">
+    <title>Nettlese- og fokustilstandar</title>
+    <p><app>Orca</app> sine Lesar- og fokusmodus let deg byte mellom å lese og å samhandle med webinnhald.</p>
+    <list>
+      <item>
+        <p>Byt mellom nettlesarmodus og fokusmodus: <keyseq><key>Orca-modifikator</key><key>A</key></keyseq></p>
+      </item>
+      <item>
+        <p>Slå på seig fokusmodus: <keyseq><key>Orca-modifikator</key><key>A</key></keyseq> (dobbeltklikka)</p>
+      </item>
+      <item>
+        <p>Slå på klistre nettlesarmodus: <keyseq><key>Orca-modifikator</key><key>A</key></keyseq> (trippelklikka)</p>
+      </item>
+    </list>
+  </section>
+  <section id="toggling_layout_mode">
+    <title>Veksle layoutmodus</title>
+    <p>Når layoutmodus er slått på, vil <app>Orca</app> si markørnavigering ta omsyn til skjermoppsettet av innhaldet og vise heile linja, inkludert alle lenkjer eller formfelt på den linja. Når layoutmodus er slått av, vil <app>Orca</app> handsame objekt som lenkjer og formfelt som om dei var på separate linjer, både for vising og navigering.</p>
+    <p><app>Orca</app> gjev ein kommando for å byte mellom Layout-modus og Objekt-modus. Denne kommandoen er ikkje bunden som standard. Sjå <link xref="howto_key_bindings">Endre tastetrykk</link> for informasjon om korleis du kan binde ubundne kommandoar.</p>
+    <list>
+      <item>
+        <p>Veksle mellom Layout-modus og Objekt-modus: (Ikkje bunden)</p>
+      </item>
+    </list>
+  </section>
+</page>

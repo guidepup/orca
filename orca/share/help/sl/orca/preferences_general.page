@@ -20,12 +20,7 @@
       <desc>Možnost za izbiro razporeditve tipkovnice, ki jo bo uporabljala <app>Orka</app>. Na voljo sta razporeditvi namiznega računalnika in prenosnika.</desc>
     </info>
     <title>Razporeditev tipkovnice</title>
-    <p>
-      The <gui>Keyboard Layout</gui> radio button group allows you to specify if
-      you will be working on a desktop (i.e. with a numeric keypad) or laptop
-      keyboard. Which layout you choose will determine both the <key>Orca
-      Modifier</key> as well as a number of keyboard shortcuts for performing
-      <app>Orca</app> commands.</p>
+    <p>Izbirni gumb <gui>razporeditev tipkovnice</gui> vam omogoča navedbo, če boste delali s tipkovnico namiznega računalnika (s številčno tipkovnico) ali prenosnika. Razporeditev, ki jo izberete, bo določila tako <key>spremenilno tipko Orka</key> kot tudi številne tipkovne bližnjice za izvajanje ukazov <app>Orka</app>.</p>
     <p>Privzeta vrednost: <gui>Namizni računalnik</gui></p>
   </section>
   <section id="presenttooltips">
@@ -118,9 +113,7 @@
    </info>
    <title>Reči vse od</title>
    <p>Spustno polje <gui>Reci vse po</gui> vam omogoča navedbo ali <app>Orka</app> med "Izgovori vse"naenkrat izgovori stavek ali vrstico.</p>
-    <p>
-      Default value: <gui>Sentence</gui>
-    </p>
+    <p>Privzeta vrednost: <gui>Stavek</gui></p>
   </section>
   <section id="profiles">
     <info>
@@ -154,7 +147,7 @@
       <p>Privzeta vrednost: izbrano</p>
     </section>
     <section id="progress_bar_updates_braille">
-      <title>Braille updates</title>
+      <title>Brajeve posodobitve</title>
       <p>
         If the <gui>Braille updates</gui> checkbox is checked <app>Orca</app> will
         periodically display the status of progress bars on your refreshable braille

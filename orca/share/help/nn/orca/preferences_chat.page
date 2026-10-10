@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_chat" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#application"/>
+    <link type="next" xref="preferences_spellcheck"/>
+    <title type="sort">3. Chat</title>
+    <title type="link">Prat</title>
+    <desc>Konfigurerer <app>Orca</app> sin støtte for IM og IRC</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Chatinnstillingar</title>
+  <p>Følgjande val gjer at du kan tilpasse korleis <app>Orca</app> oppfører seg når du gjev tilgang til klientar for augneblinkleg meldingsutveksling og internett-reléchat.</p>
+  <section id="speak_name">
+    <title>Spåk Chat-romnamn</title>
+    <p>Viss dette avkryssingsfeltet er valt, vil <app>Orca</app> setje namnet på rommet eller vennen dei kom frå som prefiks på innkomande meldingar, med mindre dei kom frå den aktive samtalen.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="announce_typing">
+    <title>Gjev beskjed når venene dine skriv</title>
+    <p>Viss denne avmerkingsboksen er avkrysta, og <app>Orca</app> har nok informasjon til å identifisere at din kamerat skriv, vil <app>Orca</app> annonsere endringar i skrivestatus.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="message_histories">
+    <title>Gjev chatrom-spesifikke meldingshistorier</title>
+    <p>Viss dette avmerkingsfeltet er avkrysta, vil <app>Orca</app> sine kommandoar for å gå gjennom siste meldingar berre gjelde for den samtalen som er i fokus. Elles vil historikken innehalde dei siste meldingane uavhengig av kva samtale dei kom frå.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="speak_messages_from">
+    <title>Les meldingar frå</title>
+    <p>Denne gruppa med radioknappar lèt deg styre under kva føresetnader <app>Orca</app> skal presentere ei innkomande melding for deg. Valet ditt er:</p>
+    <list>
+      <item>
+        <p><gui>Alle kanalar</gui></p>
+      </item>
+      <item>
+        <p><gui>Ein kanal berre viss vindauget er aktivt</gui></p>
+      </item>
+      <item>
+        <p><gui>Alle kanalar når eit chatvindauge er aktivt</gui></p>
+      </item>
+    </list>
+    <p>Standardverdi: alle kanalar</p>
+  </section>
+</page>

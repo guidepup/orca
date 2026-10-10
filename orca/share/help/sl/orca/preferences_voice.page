@@ -56,17 +56,15 @@
        terminology, are:
      </p>
      <list>
-       <item><p><gui>Icon</gui>: Plays a tone</p></item>
-       <item><p><gui>Spell</gui>: Speaks the word "capital"</p></item>
-       <item><p><gui>None</gui></p></item>
+       <item><p><gui>Ikona</gui>: predvaja ton</p></item>
+       <item><p><gui>Črkovanje</gui>: izgovori besedo »kapital«</p></item>
+       <item><p><gui>Brez</gui></p></item>
     </list>
     <note style="tip">
       <title>To nastavitev lahko preklapljate sproti</title>
       <p><app>Orca</app> ima tudi ukaz za kroženje po razpoložljivih slogih pisanja velikih črk. Če želite več informacij, glejte <link xref="commands_speech_settings"> Ukazi za nastavitev govora</link>.</p>
     </note>
-    <p>
-      Default value: none
-    </p>
+    <p>Privzeta vrednost: brez</p>
     </section>
     <section id="rate_pitch_and_volume">
       <title>Hitrost, višina in glasnost</title>

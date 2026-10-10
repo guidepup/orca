@@ -212,9 +212,9 @@
       <item>
         <p>Die Inhalte in der Übersicht an die Zwischenablage anhängen: (Nicht zugewiesen)</p>
       </item>
-      <item><p>Move flat review to the bottom left: (Unbound)</p></item>
-      <item><p>Show flat review contents: (Unbound)</p></item>
-      <item><p>Toggle restricting flat review to the current object: (Unbound)</p></item>
+      <item><p>Übersicht nach unten links bewegen: (Nicht zugewiesen)</p></item>
+      <item><p>Inhalt der Übersicht anzeigen: (Nicht zugewiesen)</p></item>
+      <item><p>Beschränkung der Übersicht auf das aktuelle Objekt ein/ausschalten: (Nicht zugewiesen)</p></item>
     </list>
   </section>
 </page>

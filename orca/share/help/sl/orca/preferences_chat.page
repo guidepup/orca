@@ -5,9 +5,7 @@
     <link type="next" xref="preferences_spellcheck"/>
     <title type="sort">3. Klepet</title>
     <title type="link">Klepet</title>
-    <desc>
-      Configuring <app>Orca</app>'s support for IM and IRC
-    </desc>
+    <desc>Prilagajanje <app>Orkine</app> podpore za HS in IRC</desc>
     <credit type="author">
       <name>Joanmarie Diggs</name>
       <email>joanied@gnome.org</email>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_profiles" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_speech_settings"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <link type="seealso" xref="howto_profiles"/>
+    <title type="sort">5. Profilar</title>
+    <title type="link">Profilar</title>
+    <desc>Kommandoar for å få tilgang til lagra oppsett</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Profilkommandoar</title>
+    <p>Profilane lèt deg lagre og laste fleire oppsett slik at du raskt kan få tilgang til innstillingane du treng.</p>
+    <p>Følgjande kommando er ikkje «bunden» til eit tastetrykk. Om du vil binde han, sjå <link xref="howto_key_bindings">Endre tastetrykk</link>.</p>
+    <list>
+      <item>
+        <p>Syklus til neste profil: (Ubind)</p>
+      </item>
+      <item>
+        <p>Vis fram den noverande profilen: (Ikkje tildelt)</p>
+      </item>
+    </list>
+</page>

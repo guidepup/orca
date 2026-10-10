@@ -296,6 +296,10 @@ class BrailleGenerator(generator.Generator):
 
     @log_generator_output
     def _generate_accessible_role(self, obj: Atspi.Accessible) -> list[Any]:
+        string = self._get_content_string(obj)
+        if string and string.isspace():
+            return []
+
         result = []
         role = self._get_resolved_role(obj)
         do_not_present = [
@@ -730,7 +734,7 @@ class BrailleGenerator(generator.Generator):
         if self._generate_text_substring(obj):
             line = self._generate_text_line(obj)
         else:
-            line = self._generate_accessible_label_and_name(obj)
+            line = self._generate_accessible_label_and_name(obj) or self._generate_text_line(obj)
 
         result = [
             braille.Component(
@@ -887,6 +891,7 @@ class BrailleGenerator(generator.Generator):
                 self._as_string(self._generate_eol(obj)),
                 self._get_start_offset(obj),
                 self._get_end_offset(obj),
+                self._get_caret_offset(obj, self._get_offset()),
                 indicate_links=self._context.indicate_links,
             ),
         ]
@@ -1510,7 +1515,7 @@ class BrailleGenerator(generator.Generator):
         if self._generate_text_substring(obj):
             line = self._generate_text_line(obj)
         else:
-            line = self._generate_accessible_label_and_name(obj)
+            line = self._generate_accessible_label_and_name(obj) or self._generate_text_line(obj)
 
         result = [
             braille.Component(

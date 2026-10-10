@@ -40,10 +40,5 @@
     <p>Δεν έχουν όλες οι εφαρμογές περιήγηση δρομέα ενεργοποιημένο από προεπιλογή. Σε πολλές εφαρμογές GNOME, η περιήγηση δρομέα μπορεί να εναλλαχτεί ναι/όχι πατώντας το <key>F7</key>.</p>
   </note>
   <p>Πέρα από την ανάγνωση εγγράφου με περιήγηση δρομέα, μπορείτε να βρείτε χρήσιμη την ανάγνωση, συλλαβισμό και λήψη τιμής Unicode για το τρέχον κείμενο. Μπορείτε να κάνετε αυτά τα πράγματα μέσα από το <app>Orca</app> στο <link xref="howto_flat_review">γνώρισμα γενικής επισκόπησης</link>.</p>
-  <p>
-    Finally, in order to have <app>Orca</app> speak the entire document from your
-    present location, use the Say All command. It, along with a more complete
-    listing of <app>Orca</app>'s commands for accessing document text, can
-    be found in the <link xref="commands_reading">Reading Commands</link> guide.
-  </p>
+  <p>Τέλος, για να εκφωνήσει το <app>Orca</app> ολόκληρο το έγγραφο από την τρέχουσα θέση σας, χρησιμοποιήστε την εντολή «Εκφώνηση όλων». Αυτή η εντολή, μαζί με μια πιο λεπτομερή περιγραφή της λειτουργίας «Εκφώνηση όλων» του <app>Orca</app>, βρίσκεται στον οδηγό <link xref="commands_reading">Εντολές ανάγνωσης</link>.</p>
 </page>

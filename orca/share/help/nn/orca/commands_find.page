@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_find" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_mouse"/>
+    <link type="guide" xref="commands#reviewing_screen_contents"/>
+    <link type="seealso" xref="howto_orca_find"/>
+    <title type="sort">2. Orca Finn</title>
+    <title type="link">Orca Finn</title>
+    <desc>Kommandoar for å søkje i vindauginnhald</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Orca-kommandoar</title>
+  <p><app>Orca</app> sine <link xref="howto_orca_find">Finn-funksjon</link> lèt deg søkje i <link xref="howto_flat_review">Flat Review</link>-konteksten etter element som ligg innanfor det noverande vindauget.</p>
+  <list>
+    <item>
+      <p>Opne <app>Orca</app> Finn-vindauge:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <keyseq><key>KP Delete</key></keyseq></p>
+        </item>
+        <item>
+          <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Venstre hakeparentes</key></keyseq></p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Flytt flat vurdering til neste førekomst av ein streng:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP Delete</key></keyseq></p>
+        </item>
+        <item>
+          <p>Laptop: <keyseq><key>Orca-modifikator</key><key>Høgre hakeparentes</key></keyseq></p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Flytt flat vurdering til førre instans av ein streng:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <keyseq> <key>Orca-modifikator</key><key>Shift</key><key>KP Delete</key> </keyseq></p>
+        </item>
+        <item>
+          <p>Berbar: <keyseq> <key>Orca-modifikator</key><key>Ctrl</key><key>Høgre hakeparentes</key> </keyseq></p>
+        </item>
+      </list>
+    </item>
+  </list>
+</page>

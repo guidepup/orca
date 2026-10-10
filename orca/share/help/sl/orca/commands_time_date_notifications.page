@@ -6,9 +6,7 @@
     <link type="seealso" xref="howto_notifications"/>
     <title type="sort">4. Čas, datum in obvestila</title>
     <title type="link">Čas, datum in obvestila</title>
-    <desc>
-      Commands for getting the time, date, and notification messages
-    </desc>
+    <desc>Ukazi za pridobivanje časa, datuma in obvestilnih sporočil</desc>
     <credit type="author">
       <name>Joanmarie Diggs</name>
       <email>joanied@gnome.org</email>
@@ -35,16 +33,16 @@
     <p>Orka ima tri nedoločene ukaze za dostop do predhodno prikazanih <link xref="howto_notifications">obvestilnih sporočil</link>.  Za podrobnosti kako tem ukazom dodati tipkovne bližnjice si oglejte <link xref="howto_key_bindings">Spreminjanje tipkovnih bližnjic</link>.</p>
     <list>
       <item>
-        <p>Present the last (most recent) notification message: (Unbound)</p>
+        <p>Predstavi zadnje (najbolj nedavno) obvestilno sporočilo: (ni povezano)</p>
       </item>
       <item>
-        <p>Present the previous notification message: (Unbound)</p>
+        <p>Predstavi predhodno sporočilo z obvestilom: (ni povezano)</p>
       </item>
       <item>
-        <p>Present the next notification message: (Unbound)</p>
+        <p>Predstavi naslednje sporočila z obvestilom: (ni povezano)</p>
       </item>
       <item>
-        <p>Present list of all notification messages: (Unbound)</p>
+        <p>Predstavi seznam vseh sporočil z obvestili: (ni povezano)</p>
       </item>
     </list>
   </section>

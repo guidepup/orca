@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_flat_review" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_orca_find"/>
+    <title type="sort">2. Flat vurdering</title>
+    <desc>Undersøker eit vindauge romleg</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Flat vurdering</title>
+  <p><app>Orca</app> sin Flat Review-funksjon lèt deg vitje innhaldet, både tekst og widgetar, i det aktive vindauget romleg. I denne modusen handsamar <app>Orca</app> vindauget som om det var eit todimensjonalt ark med tekst, og fjernar all førestilling om widget-hierarki eller anna logisk gruppering i vindauget.</p>
+  <p>Innhaldet som er «flata ut», også kjent som Flat-Review-konteksten, kan <link xref="commands_flat_review">navigerast</link> linje for linje, ord for ord, teikn for teikn og objekt for objekt. I tillegg kan du utføre eit venstre- eller høgreklikk på objektet som vert gjennomgått. Til slutt kan du bruke <link xref="howto_orca_find">Orca Find</link>, ein Flat-Review-basert funksjon for å søkje i innhaldet i det aktive vindauget.</p>
+  <p>Sidan Flat Review-konteksten er ei romleg framstilling av innhaldet i det aktive vindauget, vert han oppretta når du fyrst går inn i Flat Review og inneheld berre dei objekta som er synlege. Dermed vil du ikkje kunne bruke Flat Review til å få tilgang til element som er i vindauget, men for tida utanfor skjermen. I tillegg, om innhaldet i vindauget endrar seg av seg sjølv, vil Flat Review-konteksten ikkje verte oppdatert automatisk. Du kan få bygd ein ny kontekst ved å slå Flat Review av og på att.</p>
+  <p>Til sist er Flat Review av sitt vesen ein modus som ikkje kan brukast samtidig som <app>Orca</app> sporar fokus. Dermed, om du er i Flat Review og så brukar appen sine navigasjonskommandoar til å flytte markøren eller gje fokus til eit anna objekt, vil du automatisk forlate Flat Review.</p>
+</page>

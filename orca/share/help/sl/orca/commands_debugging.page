@@ -14,21 +14,16 @@
     </license>
   </info>
   <title>Ukazi razhroščevanja</title>
-  <p>
-    You may be asked by the developers to provide some debugging information in
-    order to help them identify the source of a problem you are experiencing.
-    The following command is not "bound" to a keystroke. If you need to bind it,
-    please see <link xref="howto_key_bindings">Modifying Keybindings</link>.
-  </p>
+  <p>Razvijalci vas bodo morda prosili, da jim posredujete nekaj podatkov za odpravljanje napak, da bi jim pomagali ugotoviti vzrok težave, s katero se soočate. Naslednji ukaz ni »povezan« s tipko. Če ga želite povezati s tipko, si oglejte <link xref="howto_key_bindings">Spreminjanje povezanih tipk</link>.</p>
   <list>
     <item>
-      <p>Capture snapshot for debugging: (Unbound)</p>
+      <p>Zajemi posnetek za razhroščevanje: (ni povezano)</p>
     </item>
     <item>
-      <p>Cycle to the next debug level: (Unbound)</p>
+      <p>Kroži na naslednjo raven razhroščevanja: (ni povezano)</p>
     </item>
     <item>
-      <p>Clear the AT-SPI cache for the current application: (Unbound)</p>
+      <p>Počisti predpomnilnik AT-SPI za trenutni program: (ni povezano)</p>
     </item>
   </list>
 </page>

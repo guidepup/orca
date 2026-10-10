@@ -26,12 +26,7 @@
       <desc>Η επιλογή του πλαισίου διαλόγου προτιμήσεων για διάλεγμα διάταξης πληκτρολογίου του <app>Orca</app> για επιτραπέζιου ή φορητού.</desc>
     </info>
     <title>Διάταξη πληκτρολογίου</title>
-    <p>
-      The <gui>Keyboard Layout</gui> radio button group allows you to specify if
-      you will be working on a desktop (i.e. with a numeric keypad) or laptop
-      keyboard. Which layout you choose will determine both the <key>Orca
-      Modifier</key> as well as a number of keyboard shortcuts for performing
-      <app>Orca</app> commands.</p>
+    <p>Η ομάδα κουμπιών επιλογής <gui>Διάταξη πληκτρολογίου</gui> σας επιτρέπει να καθορίσετε αν θα εργάζεστε σε επιτραπέζιο (desktop) ή φορητό (laptop) υπολογιστή. Η διάταξη που επιλέγετε καθορίζει τόσο τον Τροποποιητή Orca όσο και έναν αριθμό συντομεύσεων πληκτρολογίου για την εκτέλεση εντολών του <app>Orca</app>.</p>
     <p>Προεπιλεγμένη τιμή: <gui>επιτραπέζιος</gui></p>
   </section>
   <section id="presenttooltips">
@@ -60,67 +55,32 @@
   </section>
   <section id="navigation_in_say_all">
     <info>
-      <desc>
-        Preferences dialog box options for enabling rewind, fast forward,
-	and structural navigation during Say All.
-      </desc>
+      <desc>Επιλογές του πλαισίου διαλόγου προτιμήσεων για την ενεργοποίηση της επαναφοράς, της γρήγορης προώθησης και της δομικής περιήγησης κατά την Εκφώνηση όλων.</desc>
     </info>
-    <title>Navigation in Say All</title>
-    <p>
-        <app>Orca</app>'s Say All feature speaks document content from your
-        present location to the end of the document. By default, pressing any
-        key will interrupt Say All's presentation. However, if you check the
-        <gui>Enable rewind and fast forward in Say All</gui> checkbox,
-        <key>Up</key> and <key>Down</key> can be used during Say All to quickly
-        move within the document in order to re-hear something which was just
-        read or skip past text of no interest without having to restart Say All.
-    </p>
-    <p>
-       If you are reading a document within an application that has structural
-       navigation support, and you have checked the <gui>Enable structural navigation
-       in Say All</gui> checkbox, you can use the supported structural navigation
-       commands in a similar fashion: <key>H</key>/<keyseq><key>Shift</key>
-       <key>H</key></keyseq> continues reading from the next/previous heading,
-       <key>P</key>/<keyseq><key>Shift</key><key>P</key></keyseq> continues reading
-       from the next/previous paragraph, <key>T</key>/<keyseq><key>Shift</key>
-       <key>T</key></keyseq> continues reading from the next/previous table, and
-       so on.
-    </p>
+    <title>Περιήγηση στην Εκφώνηση όλων</title>
+    <p>Η λειτουργία «Εκφώνηση όλων» του <app>Orca</app> εκφωνεί το περιεχόμενο του εγγράφου από την τρέχουσα θέση σας μέχρι το τέλος του εγγράφου.</p>
+    <p>Αν διαβάζετε ένα έγγραφο μέσα σε μια εφαρμογή που υποστηρίζει δομική περιήγηση και έχετε επιλέξει τις αντίστοιχες επιλογές περιήγησης, μπορείτε να χρησιμοποιήσετε εντολές δομικής περιήγησης κατά τη διάρκεια της Εκφώνησης όλων.</p>
     <p>Προεπιλεγμένη τιμή: ασημείωτη</p>
   </section>
   <section id="say_all_announce_context">
-    <title>Announce Contextual Information in Say All</title>
-    <p>
-      <app>Orca</app> can optionally provide more information about the document
-      content being spoken, such as announcing when you are entering and leaving
-      a blockquote, list, table, or other container. Whether or not these
-      announcements are made can be configured independently through the following
-      checkboxes:
-    </p>
+    <title>Ανακοίνωση πληροφοριών περιβάλλοντος στην Εκφώνηση όλων</title>
+    <p>Το <app>Orca</app> μπορεί προαιρετικά να παρέχει περισσότερες πληροφορίες σχετικά με το περιεχόμενο του εγγράφου που εκφωνείται, όπως η ανακοίνωση παραθέσεων, λιστών, πινάκων κ.ά.</p>
     <list>
-      <item><p>Announce blockquotes in Say All</p></item>
-      <item><p>Announce forms in Say All</p></item>
-      <item><p>Announce landmarks in Say All</p></item>
-      <item><p>Announce lists in Say All</p></item>
-      <item><p>Announce panels in Say All</p></item>
-      <item><p>Announce tables in Say All</p></item>
+      <item><p>Ανακοίνωση παραθέσεων στην Εκφώνηση όλων</p></item>
+      <item><p>Ανακοίνωση φορμών στην Εκφώνηση όλων</p></item>
+      <item><p>Ανακοίνωση οροσήμων στην Εκφώνηση όλων</p></item>
+      <item><p>Ανακοίνωση λιστών στην Εκφώνηση όλων</p></item>
+      <item><p>Ανακοίνωση πλαισίων στην Εκφώνηση όλων</p></item>
+      <item><p>Ανακοίνωση πινάκων στην Εκφώνηση όλων</p></item>
     </list>
     <p>Προεπιλεγμένη τιμή: σημειωμένη</p>
     <note style="note">
-      <p>
-        Whether or not <app>Orca</app> makes these announcements during
-        navigation is also configurable. You will find similar checkboxes
-        on the <gui>Speech</gui> page. For more information, see
-        <link xref="preferences_speech#spoken_context">Spoken Context</link>.
-      </p>
+      <p>Το αν το <app>Orca</app> κάνει αυτές τις ανακοινώσεις κατά την περιήγηση είναι επίσης ρυθμίσιμο. Θα βρείτε παρόμοιες επιλογές στη σελίδα <gui>Ομιλία</gui>.</p>
     </note>
   </section>
   <section id="say_all_by">
    <info>
-      <desc>
-        Preferences dialog box option for customizing <app>Orca</app>'s
-	Say All presentation.
-      </desc>
+      <desc>Επιλογή πλαισίου διαλόγου προτιμήσεων για την προσαρμογή της παρουσίασης «Εκφώνηση όλων» του <app>Orca</app>.</desc>
    </info>
    <title>Εκφώνηση όλων κατά</title>
    <p>Ο σύνθετο πλαίσιο <gui>εκφώνηση όλων κατά</gui> επιτρέπει τον ορισμό εάν το <app>Orca</app> εκφωνεί μια πρόταση τη φορά ή μια γραμμή τη φορά όταν κάνει μια "εκφώνηση όλων" ενός εγγράφου.</p>
@@ -150,40 +110,27 @@
   <section id="progress_bar_updates">
     <title>Ενημερώσεις γραμμής προόδου</title>
     <section id="progress_bar_updates_speak">
-      <title>Speak updates</title>
-      <p>
-        If the <gui>Speak updates</gui> checkbox is checked <app>Orca</app> will
-        periodically speak the status of progress bars.
-      </p>
+      <title>Εκφώνηση ενημερώσεων</title>
+      <p>Αν είναι επιλεγμένο το πλαίσιο ελέγχου <gui>Εκφώνηση ενημερώσεων</gui>, το <app>Orca</app> θα εκφωνεί περιοδικά την κατάσταση των γραμμών προόδου.</p>
       <p>Προεπιλεγμένη τιμή: σημειωμένη</p>
     </section>
     <section id="progress_bar_updates_braille">
-      <title>Braille updates</title>
-      <p>
-        If the <gui>Braille updates</gui> checkbox is checked <app>Orca</app> will
-        periodically display the status of progress bars on your refreshable braille
-        display.
-      </p>
+      <title>Ενημερώσεις Μπράιγ</title>
+      <p>Αν είναι επιλεγμένο το πλαίσιο ελέγχου <gui>Ενημερώσεις Μπράιγ</gui>, το <app>Orca</app> θα εμφανίζει περιοδικά την κατάσταση των γραμμών προόδου στην οθόνη Μπράιγ σας.</p>
       <p>Προεπιλεγμένη τιμή: ασημείωτη</p>
     </section>
     <section id="progress_bar_updates_beep">
-      <title>Beep updates</title>
-      <p>
-        If the <gui>Beep updates</gui> checkbox is checked <app>Orca</app> will
-        periodically emit beeps which increase in pitch as the value of the progress
-        bar increases.
-      </p>
+      <title>Ενημερώσεις με ηχητικό σήμα (Beep)</title>
+      <p>Αν είναι επιλεγμένο το πλαίσιο ελέγχου <gui>Ενημερώσεις με ηχητικό σήμα</gui>, το <app>Orca</app> θα εκπέμπει περιοδικά ηχητικά σήματα (μπιπ) τα οποία αυξάνονται σε συχνότητα όσο προχωρά η γραμμή προόδου.</p>
       <p>Προεπιλεγμένη τιμή: ασημείωτη</p>
     </section>
     <section id="progress_bar_updates_frequency">
       <title>Συχνότητα (s)</title>
-      <p>
-        This spin button determines how often updates are presented.
-      </p>
+      <p>Αυτό το κουμπί αυξομείωσης καθορίζει πόσο συχνά παρουσιάζονται οι ενημερώσεις.</p>
       <p>Προεπιλεγμένη τιμή: 10</p>
     </section>
     <section id="progress_bar_updates_restrict">
-      <title>Applies to</title>
+      <title>Εφαρμόζεται σε</title>
       <p>Αυτό το σύνθετο πλαίσιο επιτρέπει τον έλεγχο ποιες γραμμές προόδου θα εμφανίζονται, υποθέτοντας ότι η παρουσίαση των ενημερώσεων της γραμμής προόδου έχει ενεργοποιηθεί. Οι επιλογές είναι <gui>όλα</gui>, <gui>εφαρμογή</gui> και <gui>παράθυρο</gui>.</p>
       <p>Επιλέγοντας <gui>όλα</gui> θα καταλήξει στην παρουσίαση ενημερώσεων για όλες τις γραμμές προόδου από το <app>Orca</app>, ανεξάρτητα από πού εντοπιονται οι γραμμές προόδου.</p>
       <p>Επιλέγοντας <gui>εφαρμογή</gui> θα καταλήξει στην παρουσίαση ενημερώσεων από τις γραμμές προόδου στην ενεργή εφαρμογή από το <app>Orca</app>, ακόμα κι αν δεν είναι στο ενεργό παράθυρο.</p>

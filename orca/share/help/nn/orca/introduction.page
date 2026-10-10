@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="introduction" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_setting_up_orca"/>
+    <title type="sort">1. Velkommen til Orca</title>
+    <desc>Presenterer <app>Orca</app> skjermlesar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Velkomen til Orca</title>
+  <p><app>Orca</app> er ein fri, open kjeldekode, fleksibel og utvidbar skjermlesar som gjev tilgang til det grafiske skrivebordet via tale og oppfriskbar punktskrift.</p>
+  <p><app>Orca</app> fungerer med app-ar og verktøysett som støttar Assistive Technology Service Provider Interface (AT-SPI), som er den viktigaste teknologien for hjelpeteknologi for Linux og Solaris. App-ar og verktøysett som støttar AT-SPI inkluderer Gtk+, Qt, Java Swing, LibreOffice, Gecko, WebKitGtk og Chrome/Chromium.</p>
+  <section id="launching">
+    <title>Startar <app>Orca</app></title>
+    <p>For å starte <app>Orca</app>:</p>
+    <list>
+      <item>
+        <p>Metoden for å setje opp <app>Orca</app> til å verte lansert automatisk som skjermlesaren din vil avhenge av kva skrivebordsmiljø du brukar.</p>
+      </item>
+      <item>
+        <p>For å slå <app>Orca</app> av og på i GNOME, trykk <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
+      </item>
+      <item>
+        <p>Skriv <cmd>orca</cmd>, saman med eventuelle valfrie parameter, i eit terminalvindauge eller i <gui>Køyr</gui>-vindauget og trykk deretter <key>Return</key>.</p>
+      </item>
+    </list>
+  </section>
+    <section id="loadtime">
+      <title>Laste-innstillingar</title>
+      <p>Følgjande val kan spesifiserast når du startar <app>Orca</app> i eit terminalvindauge eller i <gui>Køyr</gui>-vindauget:</p>
+      <list>
+        <item>
+          <p><cmd>-h</cmd>, <cmd>--help</cmd>: Vis hjelpemeldinga</p>
+        </item>
+        <item>
+          <p><cmd>-v</cmd>, <cmd>--version</cmd>: Vis versjonen til <app>Orca</app></p>
+        </item>
+        <item>
+          <p><cmd>-s</cmd>, <cmd>--setup</cmd>: Set opp brukarinnstillingar</p>
+        </item>
+        <item>
+          <p><cmd>-u</cmd>, <cmd>--user-prefs=<em>dirname</em></cmd>: Bruk <em>dirname</em> som alternativ mappe for brukarkonfigurasjon</p>
+        </item>
+        <item>
+          <p><cmd>-e</cmd>, <cmd>--enable=<em>val</em></cmd>: Tving bruken av val, der <em>val</em> kan vere eitt av følgjande:</p>
+          <list>
+            <item><p><cmd>speech</cmd></p></item>
+            <item><p><cmd>braille</cmd></p></item>
+            <item><p><cmd>braille-monitor</cmd></p></item>
+          </list>
+        </item>
+        <item>
+          <p><cmd>-d</cmd>, <cmd>--disable=<em>val</em></cmd>: Hindrar bruken av eit val, der <em>valet</em> kan vere eitt av følgjande:</p>
+          <list>
+            <item><p><cmd>speech</cmd></p></item>
+            <item><p><cmd>braille</cmd></p></item>
+            <item><p><cmd>braille-monitor</cmd></p></item>
+          </list>
+        </item>
+        <item>
+            <p><cmd>-p</cmd>, <cmd>--profile=<em>filnamn</em></cmd>: Importer ein profil frå ei gitt <app>Orca</app>-profilfil</p>
+        </item>
+        <item>
+          <p><cmd>-r</cmd>, <cmd>--replace</cmd>: Erstatt ein køyrande <app>Orca</app></p>
+        </item>
+        <item>
+          <p><cmd>-l</cmd>, <cmd>--list-apps</cmd>: Skriv ut kjende køyrande appar</p>
+        </item>
+        <item>
+          <p><cmd>--debug</cmd>: Send debug-utdata til debug-YYYY-MM-DD-HH:MM:SS.out</p>
+        </item>
+        <item>
+          <p><cmd>--debug-file=<em>filnamn</em></cmd>: Send debug-utdata til den angitte fila</p>
+        </item>
+      </list>
+    </section>
+
+</page>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_key_bindings" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_pronunciation"/>
+    <link type="seealso" xref="howto_key_bindings"/>
+    <title type="sort">6. Tastetrykk</title>
+    <title type="link">Tastaturbindingar</title>
+    <desc>Konfigurering av <app>Orca</app> sine tastatursnarvegar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tastaturinnstillingar</title>
+  <section id="orca_modifier_keys">
+    <title>Orca-modifikasjonstastar</title>
+    <p>Kombinasjonsboksen <gui>Skjermlesar-modifikatornøkkel(ar)</gui> lèt deg velje kva tast eller tastar som skal fungere som Orca-modifikator. Dei tilgjengelege vala er:</p>
+    <list>
+      <item>
+        <p><gui>TTInsert</gui> (same tast som <key>0</key> på den numeriske tastaturet)</p></item>
+      <item><p><gui>Set inn</gui></p></item>
+      <item><p><gui>Set inn, KP_Set inn</gui></p></item>
+      <item><p><gui>Caps_Lock</gui></p></item>
+    </list>
+  </section>
+  <section id="key_bindings_table">
+    <title>Tabell for tastatursnarvei</title>
+    <p>Tabellen for tastetrykk gjev ei liste over <app>Orca</app>-operasjonar og tastane som er knytte til dei.</p>
+    <list>
+      <item>
+        <p>Kolonna <gui>Kommando</gui> inneheld ei skildring av <app>Orca</app>-kommandoen som skal utførast.</p>
+      </item>
+      <item>
+        <p>Kolonna <gui>Tastebinding</gui> inneheld tastatursnarvegen som er tildelt <app>Orca</app>-kommandoen akkurat no. Du kan endre verdien i denne kolonnen ved å trykkje <key>Return</key>, trykkje på tastane for den nye bindinga, og trykkje <key>Return</key> på nytt.</p>
+      </item>
+      <item>
+        <p>Kolonna <gui>Endra</gui> fungerer både som ein indikator på kva som er endra og som ein måte å gjenopprette standardinnstillingane for den kommandoen.</p>
+      </item>
+    </list>
+    <p>Under lista over <app>Orca</app> tastetrykk finn du ei gruppe «uplasserte» kommandoar. Dette er kommandoar som vi trur vil vere svært nyttige for nokre brukarar, men ikkje nødvendige for dei fleste. I staden for å «bruke opp» eit tastetrykk til slike kommandoar, har vi late dei stå uplasserte som standard. Nedst på lista står punktskrift-tastetrykka, til bruk med ein oppfriskbar punktskrift-skjerm.</p>
+  </section>
+</page>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_key_echo" xml:lang="nn">
+  <info>
+    <title type="link">Ekko</title>
+    <title type="sort">4. Echo</title>
+    <desc>Stiller inn kva som vert sagt medan du skriv</desc>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_key_bindings"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Echo-innstillingar</title>
+  <section id="keyecho">
+    <title>Slå på tastatur-ekko</title>
+    <p>Orca si nøkkel-ekko-innstilling styrer kva som skjer kvar gong du trykkjer på ein tast. For å slå på nøkkel-ekko, merk av i avkryssingsboksen «Slå på nøkkel-ekko». Då kjem det fleire avkryssingsboksar som du kan bruke til å velje nøyaktig kva tastar som skal og ikkje skal ekkoast, slik at det passar best for dine behov.</p>
+    <p>Standardverdi: merka</p>  
+    <section id="keyecho_enable_alphanumeric">
+      <title>Slå på alfabetiske tastar</title>
+      <p>Denne innstillinga styrer om tastar som <key>a</key>, <key>b</key> og <key>c</key> skal seiast høgt når dei vert trykte.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_numeric">
+      <title>Slå på numeriske tastar</title>
+      <p>Denne innstillinga styrer om tastar som <key>1</key>, <key>2</key> og <key>3</key> skal seiast når dei vert trykte.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_punctuation">
+      <title>Slå på teiknsetjingstastar</title>
+      <p>Denne innstillinga styrer om tastar som <key>%</key>, <key>;</key> og <key>?</key> skal seiast når dei vert trykte.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_space">
+      <title>Slå på mellomrom</title>
+      <p>Denne innstillinga styrer om <key>Mellomrom</key> skal seiast opp når det vert trykt.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_modifier">
+      <title>Slå på modifikasjonstastar</title>
+      <p>Denne innstillinga styrer om <key>Shift</key>, <key>Ctrl</key>, <key>Alt</key> og <key>Meta</key> skal seiast opp når dei vert trykte.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_function">
+      <title>Slå på funksjonstastar</title>
+      <p>Denne innstillinga styrer om <key>F1</key> til <key>F12</key> skal seiast høgt når dei vert trykte på.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_action">
+      <title>Slå på handlingstastar</title>
+      <p>Denne innstillinga styrer om <key>BackSpace</key>, <key>Delete </key>, <key>Return</key>, <key>Esc</key>, <key>Tab</key>, <key>Page Up</key>, <key>Page Down</key>, <key>Home</key> og <key>End</key> skal seiast når dei vert trykte ned.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="keyecho_enable_navigation">
+      <title>Slå på navigasjonstastar</title>
+      <p>Denne innstillinga styrer om <key>Venstre</key>, <key>Høgre</key>, <key>Opp</key> og <key>Ned</key> skal seiast opp når dei vert trykte. Denne innstillinga gjeld òg for alle tastetrykk der <key>Orca-modifikator</key> vert halden nede, til dømes når flat vurdering vert brukt.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="keyecho_enable_diacritical">
+      <title>Slå på diakritiske tastar utan mellomrom</title>
+      <p>Dette valet styrer om «daude tastar» som vert brukte til å lage aksentteikn skal seiast når dei vert trykte.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+  </section>
+  <section id="characterecho">
+    <title>Slå på ekko teikn for teikn</title>
+    <p>Ved å slå på dette valet vil Orca gje ekko av karakteren du nettopp skreiv.</p>
+    <p>Sjølv om teiknvis ekko verkar ganske likt som tast-ekkoet for alfabetiske, numeriske og teikn-tastar, er det viktige skilnader, særleg med omsyn til aksentteikn og andre symbol som det ikkje finst eigen tast for:</p>
+    <list>
+      <item>
+        <p>Tastatur-ekko gjer at <app>Orca</app> annonserer kva du nettopp <em>trykte</em>.</p>
+      </item>
+      <item>
+        <p>Teikn-ekko gjer at <app>Orca</app> kunngjer det som nettopp vart <em>sett inn</em>.</p>
+      </item>
+    </list>
+    <p>Slik får du aksentteikn opplese medan du skriv, ved å slå på teikn-ekko.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+    <note style="tip">
+      <title>Slår på både tastatur- og teiknvising</title>
+      <p>Dersom du likar tast-ekko og ofte skriv aksentteikn, bør du vurdere å slå på begge. <app>Orca</app> sin karakter-ekkologgikk prøver å filtrere ut karakterar som vart uttalte som eit resultat av tast-ekko, og minimerer dermed sannsynet for «dobbel uttale» når du skriv.</p>
+    </note>
+  </section>
+  <section id="wordandsentenceecho">
+    <title>Slå på ekko per ord og Slå på ekko per setning</title>
+    <p>Viss du markerer <gui>Slå på ekko per ord</gui>-avmerkingsboksen, vil <app>Orca</app> ekko-lese ordet du nettopp skreiv. På same måte vil <gui>Slå på ekko per setning</gui>-avmerkingsboksen føre til at <app>Orca</app> les opp setninga du nettopp skreiv.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+</page>

@@ -243,7 +243,9 @@ class Script(script.Script):
         if learn_mode_presenter.get_presenter().is_active():
             learn_mode_presenter.get_presenter().quit()
 
-        document_presenter.get_presenter().update_mode_if_needed(self, old_focus, new_focus)
+        document_presenter.get_presenter().update_mode_if_needed(
+            self, old_focus, new_focus, event=event
+        )
 
         active_window = self.utilities.top_level_object(new_focus)
         focus_manager.get_manager().set_active_window(active_window)
@@ -470,6 +472,12 @@ class Script(script.Script):
 
         obj, offset = manager.get_last_cursor_position()
         if offset == event.detail1 and obj == event.source:
+            if text_selection_presenter.get_presenter().selection_removal_was_presented(
+                event.source
+            ):
+                msg = "DEFAULT: Selection removal already presented for this input"
+                debug.print_message(debug.LEVEL_INFO, msg, True)
+                return True
             navigation_reasons = {
                 TextEventReason.NAVIGATION_BY_WORD,
                 TextEventReason.NAVIGATION_BY_CHARACTER,
@@ -486,7 +494,9 @@ class Script(script.Script):
                 return True
             msg = "DEFAULT: Position matches but proceeding due to navigation reason"
             debug.print_message(debug.LEVEL_INFO, msg, True)
-            presentation_manager.get_manager().interrupt_presentation()
+            # Don't interrupt selection speech when handling the accompanying caret event.
+            if not AXUtilities.has_selected_text(event.source):
+                presentation_manager.get_manager().interrupt_presentation()
 
         offset = AXText.get_caret_offset(event.source)
 
@@ -1247,10 +1257,19 @@ class Script(script.Script):
 
         AXUtilities.set_last_text_unit_spoken(TextUnit.LINE)
 
-    def say_phrase(self, obj: Atspi.Accessible, start_offset: int, end_offset: int) -> None:
+    def say_phrase(
+        self,
+        obj: Atspi.Accessible,
+        start_offset: int,
+        end_offset: int,
+        *,
+        include_whole_objects: bool = False,
+    ) -> None:
         """Speaks the substring between start and end offset."""
 
-        phrase = AXUtilities.expand_eocs(obj, start_offset, end_offset)
+        phrase = AXUtilities.expand_eocs(
+            obj, start_offset, end_offset, include_whole_objects=include_whole_objects
+        )
         if not phrase:
             return
 

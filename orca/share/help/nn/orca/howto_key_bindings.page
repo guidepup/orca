@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_key_bindings" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_profiles"/>
+  <title type="sort">8. Tastetrykk</title>
+  <desc>Binding, ombinding og oppbinding</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tastatursnarvegar</title>
+  <p>Orca har mange kommandoar, nokre av dei er bundne til eit tastetrykk, andre er ikkje bundne. Du kan binde, ombinde og fjerne bindingar til <app>Orca</app> sine kommandoar ved å følgje stega nedanfor.</p>
+  <steps>
+    <title>Koplar eit upålagt kommando</title>
+    <item>
+      <p>Opne <link xref="preferences">Orca-innstillingane</link> ved å trykkje <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Flytt til <gui>Tastebindingar</gui>-sida.</p>
+    </item>
+    <item>
+      <p>Pil til cella som inneheld kommandoen du vil tildele eit tastetrykk til.</p>
+    </item>
+    <item>
+      <p>Pila ein gong til høgre. Dette vil flytte fokus til <gui>Tastebinding</gui>-kolonnen. Trykk <key>Return</key>.</p>
+    </item>
+    <item>
+      <p>Trykk den ønska tastkombinasjonen.</p></item>
+    <item>
+      <p>Trykk <key>Return</key> for å stadfeste den nye kombinasjonen. Det nye tastetrykket vert lagra, og avkryssingsboksen i den siste kolonnen (kolonnen <gui>Endra</gui>) vil vise at tastbindinga er endra.</p>
+    </item>
+    <item>
+      <p>Trykk på knappen <gui>Bruk</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Endrar eksisterande bindingar</title>
+    <item>
+      <p>Opne <link xref="preferences">Orca-innstillingane</link> ved å trykkje <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Flytt til <gui>Tastebindingar</gui>-sida.</p>
+    </item>
+    <item>
+      <p>Flytt markøren til cella som inneheld bindinga du vil endre og trykk <key>Return</key>.</p>
+    </item>
+    <item>
+        <p>Trykk den ønska tastkombinasjonen.</p>
+    </item>
+    <item>
+      <p>Trykk <key>Return</key> for å stadfeste den nye kombinasjonen. Det nye tastetrykket vert lagra, og avkryssingsboksen i den siste kolonnen (kolonnen <gui>Endra</gui>) vil vise at tastbindinga er endra.</p>
+    </item>
+    <item>
+      <p>Trykk på knappen <gui>Bruk</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Gjenopprettar opphavlege bindingar</title>
+    <item>
+      <p>Opne <link xref="preferences">Orca-innstillingane</link> ved å trykkje <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Flytt til <gui>Tastebindingar</gui>-sida.</p>
+    </item>
+    <item>
+      <p>Pila til den endra kolonnen knytt til tastetrykket.</p>
+    </item>
+    <item>
+      <p>Avhuk avkryssingsboksen ved å trykkje <key>Mellomrom</key>.</p>
+    </item>
+    <item>
+      <p>Trykk på knappen <gui>Bruk</gui>.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Løys binding av bundne kommandoar</title>
+    <item>
+      <p>Opne <link xref="preferences">Orca-innstillingane</link> ved å trykkje <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Flytt til <gui>Tastebindingar</gui>-sida.</p>
+    </item>
+    <item>
+      <p>Flytt pilen til cella som inneheld bindinga du vil slette og trykk <key>Return</key>.</p>
+    </item>
+    <item>
+      <p>Når du vert bedt om ny tastetildeling, trykk <key>Slett</key> eller <key>BackSpace</key>. Du får beskjed om at tastetildelinga er fjerna.</p>
+    </item>
+    <item>
+      <p>Trykk <key>Return</key> for å stadfeste.</p>
+    </item>
+    <item>
+      <p>Trykk på knappen <gui>Bruk</gui>.</p>
+    </item>
+  </steps>
+</page>

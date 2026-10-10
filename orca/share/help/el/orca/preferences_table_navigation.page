@@ -23,12 +23,7 @@
     </mal:credit>
   </info>
   <title>Προτιμήσεις πίνακα περιήγησης</title>
-  <p>
-    The following options allow you to customize how <app>Orca</app>
-    behaves when navigating within a table in
-    <link xref="howto_structural_navigation">Structural-Navigation</link>-enabled
-    applications.
-  </p>
+  <p>Οι ακόλουθες επιλογές σας επιτρέπουν να προσαρμόσετε πώς συμπεριφέρεται το <app>Orca</app> κατά την περιήγηση μέσα σε έναν πίνακα σε εφαρμογές με υποστήριξη <link xref="howto_structural_navigation">Δομικής περιήγησης</link>.</p>
   <section id="speak_cell_coordinates">
     <title>Εκφώνηση συντεταγμένων κελιών</title>
     <p>Εάν αυτό το πλαισίου ελέγχου σημειωθεί, το <app>Orca</app> θα ανακοινώσει τις συντεταγμένες κάθε κελιού που περιηγείστε.</p>

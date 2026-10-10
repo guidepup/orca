@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_orca_find" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_mouse_review"/>
+    <title type="sort">3. Orca Finn</title>
+    <desc>Søkjer i eit vindauge etter objekt</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Orca Finn</title>
+  <p><app>Orca</app> si Søk-funksjon er eit <link xref="howto_flat_review">Flat-Review</link>-basert søk som er laga for å hjelpe deg å raskt finne objekt som er synlege på skjermen innanfor det noverande vindauget.</p>
+  <note style="tip">
+    <title>Aktiverer Orca Find</title>
+      <p>For å opne Orca <gui>Finn</gui> vindauget, brukar du følgjande kommando basert på det <link xref="howto_keyboard_layout">tastaturoppsettet</link> du har valt:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <keyseq><key>KP Delete</key></keyseq></p>
+        </item>
+        <item>
+          <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Venstre hakeparentes</key></keyseq></p>
+        </item>
+      </list>
+      <p>For ei liste over tilleggsoppgåver du kan utføre, sjå <link xref="commands_find">Orca Find-kommandoane</link></p>
+  </note>
+  <p>Når du slår på Orca Find, vert du plassert i eit vindauge.</p>
+  <p>Her kan du spesifisere følgjande element:</p>
+  <list>
+    <item>
+      <p>Teksten som skal finnast</p>
+    </item>
+    <item>
+      <p>Plasseringa som søket skal byrje frå, som anten kan vere noverande plassering eller toppen av vindauget</p>
+      <p>Standardverdi for <gui>Start frå</gui>: <gui>Noverande plassering</gui></p>
+    </item>
+    <item>
+      <p>Om store og små bokstavar skal takast omsyn til når du søkjer etter ei samsvar</p>
+      <p>Standardverdi for <gui>Skil mellom store og små bokstavar</gui>: ikkje merka</p>
+    </item>
+    <item>
+      <p>Om du vil avgrense treff til dei som passar heile ordet eller frasen</p>
+      <p>Standardverdi for <gui>Treff berre på heile ord</gui>: ikkje avkrysse</p>
+    </item>
+    <item>
+      <p>Om Finn bør leite ned og/eller til høgre etter neste treff eller opp og/eller til venstre.</p>
+      <p>Standardverdi for <gui>Søk bakover</gui>: ikkje vald</p>
+    </item>
+    <item>
+      <p>Om Søk skal gå attende til toppen/botnen av vindauget dersom det ikkje finst eit samsvar frå startposisjonen i søkretninga.</p>
+      <p>Standardverdi for <gui>Vindauget viklar seg rundt</gui>: vald</p>
+    </item>
+  </list>
+  <p>Etter at du har utført eit søk, kan du raskt søkje etter neste eller førre treff utan å måtte gå tilbake til Orca-vindauget for søk.</p>
+  <p>Sidan det er ein <link xref="howto_flat_review">Flat Review</link>-funksjon, vil Flat Review automatisk verte aktivert når det finst eit samsvar, og det samsvarande elementet eller teksten vert det gjeldande gjennomgangselementet. Merk at fokus i appen ikkje vert endra, og markøren vert heller ikkje flytta. Om du treng å gjere noko av dette, sjå <link xref="commands_mouse">Orcas kommandoar for mus/peikar</link>.</p>
+</page>

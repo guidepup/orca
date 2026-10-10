@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_mouse_review" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reviewing"/>
+    <link type="next" xref="howto_notifications"/>
+    <title type="sort">4. Mus gjennomgang</title>
+    <desc>Brukar peikaren til å undersøkje skjermen</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Mus-gjennomgang</title>
+  <p><app>Orca</app> sin musegjennomgang-funksjon gjer at <app>Orca</app> viser objektet under musepeikaren. I motsetnad til <app>Orca</app> sin <link xref="howto_flat_review">flate gjennomgang</link>-funksjon, er musegjennomgang ikkje avgrensa til det aktive vindauget; i staden vil <app>Orca</app> prøve å identifisere kva tilgjengeleg objekt, viss noko, som er synleg under peikaren når du flyttar på musa. Viss du har flytta peikaren over eit tilgjengeleg objekt med informasjon å vise, vil <app>Orca</app> vise objektet og informasjonen til deg.</p>
+  <p>Sidan aktivering av mus-gjennomgang fører til at <app>Orca</app> lyttar etter, og deretter handsamar, alle endringar i posisjonen til musepeikaren, er denne funksjonen deaktivert som standard. For å ha han alltid aktivert, merk av for <gui>Les opp objektet under musa</gui> i <link xref="preferences_general">Innstillingsvindauget til <app>Orca</app> på sida Generelt</link>. I tillegg finn du ein ubunden kommando kalla <gui>Slå musegjennomgang av eller på</gui> på <link xref="preferences_key_bindings">Tastatursnøggleik-sida</link> i det same vindauget. Ved å knyte denne kommandoen, slik det er skildra i <link xref="howto_key_bindings">Innleiing til tastatursnøkklar</link>, kan du aktivere og deaktivere mus-gjennomgang etter behov.</p>
+  <note style="tip">
+    <title>Standardinnstillingar og tastaturoppsett er uavhengige av kvarandre</title>
+    <p>Merk at du kan velje å alltid ha Mouse Review på eller av og likevel slå det av og på ved å binde og bruke <gui>Slå musegjennomgang av eller på</gui>-kommandoen. Det er ikkje nødvendig å slå det på for å kunne slå det av og på, sidan innstillingar og tastetrykk er uavhengige av kvarandre.</p>
+  </note>
+</page>
