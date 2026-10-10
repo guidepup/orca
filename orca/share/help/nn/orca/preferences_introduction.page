@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_introduction" xml:lang="nn">
+  <info>
+    <title type="sort">0. Innleiing til <app>Orca</app> sine innstillingar</title>
+    <title type="link">Innleiing til <app>Orca</app> sine innstillingar</title>
+    <link type="guide" xref="preferences"/>
+    <link type="next" xref="preferences_general"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Innleiing til <app>Orca</app> sine innstillingar</title>
+  <section id="orca">
+    <title>Orca-innstillingar</title>
+    <p>Innstillingar for Orca let deg tilpasse funksjonaliteten i <app>Orca</app> som gjeld for alle appar. Eit døme på ei Orca-innstilling er ekko fordi ekko er noko som gjeld for alle appar.</p>
+    <p>Merk at Orca-innstillingane kan tilpassast for kvar enkelt app. Du kan til dømes setje standard ekko til ord og deretter setje ekko for Pidgin til ikkje noko. Når du har gjort det, vil <app>Orca</app> alltid ekko kvart ord du skreiv, med mindre du var i Pidgin.</p>
+    <note style="tip">
+      <title>Tastatursnarvegar for å kome inn i innstillingsvindauga</title>
+      <list>
+        <item>
+          <p><keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>: <app>Orca</app> sine innstillingar</p>
+        </item>
+        <item>
+          <p><keyseq><key>Ctrl</key><key>Orca-modifikator</key><key>Space</key> </keyseq>: <app>Orca</app> sine innstillingar for den noverande appen</p>
+        </item>
+      </list>
+    </note>
+  </section>
+  <section id="application_unique">
+    <title>App-unike innstillingar</title>
+      <p>I motsetnad til Orca-innstillingane finst det app-spesifikke innstillingar. Desse innstillingane lèt deg tilpasse <app>Orca</app>-funksjonalitet som berre gjeld i visse miljø, slik som på nettsider eller i chat-appar. Dermed finn du berre desse vala i dei app-spesifikke innstillingsvindauga og berre for dei appane der desse vala gjeld.</p>
+  </section>
+</page>

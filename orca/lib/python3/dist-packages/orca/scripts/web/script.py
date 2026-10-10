@@ -220,8 +220,13 @@ class Script(default.Script):
             )
             return
 
+        is_where_am_i = reason in (
+            PresentationReason.WHERE_AM_I_BASIC,
+            PresentationReason.WHERE_AM_I_DETAILED,
+        )
+
         if AXUtilities.is_status_bar(obj) or AXUtilities.is_alert(obj):
-            if not document_presenter.get_presenter().in_focus_mode(self.app):
+            if not is_where_am_i and not document_presenter.get_presenter().in_focus_mode(self.app):
                 self.utilities.set_caret_position(obj, 0, reason=CaretSetReason.OBJECT_PRESENTATION)
             super().present_object(
                 obj,
@@ -270,7 +275,7 @@ class Script(default.Script):
 
         # Editors like VSCode use the entry role for the code editor.
         if AXUtilities.is_entry(obj):
-            if not document_presenter.get_presenter().in_focus_mode(self.app):
+            if not is_where_am_i and not document_presenter.get_presenter().in_focus_mode(self.app):
                 self.utilities.set_caret_position(obj, 0, reason=CaretSetReason.OBJECT_PRESENTATION)
             super().present_object(
                 obj,
@@ -293,7 +298,8 @@ class Script(default.Script):
             obj, effective_offset, use_cache=False
         )
         if (
-            contents
+            not is_where_am_i
+            and contents
             and contents[0]
             and not document_presenter.get_presenter().in_focus_mode(self.app)
         ):
@@ -516,12 +522,13 @@ class Script(default.Script):
             contents = self.utilities.get_line_contents_at_offset(new_focus, caret_offset)
         elif (
             self.utilities.is_content_editable_with_embedded_objects(new_focus)
+            and not (AXUtilities.is_table_cell(new_focus) and AXObject.get_name(new_focus))
             and (
                 last_command_was_caret_nav
                 or last_command_was_struct_nav
                 or last_command_was_line_nav
+                or self.utilities.focus_entered_content_editable(old_focus, new_focus)
             )
-            and not (AXUtilities.is_table_cell(new_focus) and AXObject.get_name(new_focus))
         ):
             tokens = ["WEB: New focus", new_focus, "content editable. Generating line."]
             debug.print_tokens(debug.LEVEL_INFO, tokens, True)
@@ -594,7 +601,9 @@ class Script(default.Script):
                 prior_obj=old_focus,
             )
 
-        document_presenter.get_presenter().update_mode_if_needed(self, old_focus, new_focus)
+        document_presenter.get_presenter().update_mode_if_needed(
+            self, old_focus, new_focus, event=event
+        )
         return True
 
     def _on_active_changed(self, event: Atspi.Event) -> bool:
@@ -823,6 +832,12 @@ class Script(default.Script):
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return False
 
+        parent = AXObject.get_parent(event.source)
+        if AXUtilities.is_entry(parent) and AXObject.get_index_in_parent(event.source) < 0:
+            msg = "WEB: Ignoring caret event from excluded entry child"
+            debug.print_message(debug.LEVEL_INFO, msg, True)
+            return True
+
         selection_reasons = {
             TextEventReason.SELECTION_BY_CHARACTER,
             TextEventReason.SELECTION_BY_LINE,
@@ -948,6 +963,12 @@ class Script(default.Script):
         if not self.utilities.treat_as_text_object(event.source) and not AXUtilities.is_editable(
             event.source,
         ):
+            if reason in selection_reasons:
+                text_selection_presenter.get_presenter().present_text_selection_change(
+                    self, event.source
+                )
+                self.update_braille(event.source)
+                return True
             msg = "WEB: Event ignored: Was for non-editable object we're treating as textless"
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return True
@@ -970,11 +991,13 @@ class Script(default.Script):
             debug.print_message(debug.LEVEL_INFO, msg, True)
             notify = force = handled = True
 
-        elif (
-            event.source != focus
-            and AXUtilities.is_editable(event.source)
-            and (AXUtilities.is_focused(event.source) or not AXUtilities.is_focusable(event.source))
-        ):
+        # TODO - JD: Can this be removed now that events use the priority queue?
+        elif event.source != focus and AXUtilities.is_editable(event.source):
+            if not AXUtilities.is_focused(event.source) and AXUtilities.is_focusable(event.source):
+                msg = "WEB: Ignoring caret event from unfocused editable widget."
+                debug.print_message(debug.LEVEL_INFO, msg, True)
+                return True
+
             msg = "WEB: Editable object is not (yet) the locus of focus."
             debug.print_message(debug.LEVEL_INFO, msg, True)
             notify = force = handled = (
@@ -1474,6 +1497,16 @@ class Script(default.Script):
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return False
 
+        if caret_navigator.get_navigator().last_input_event_was_navigation_command():
+            msg = "WEB: Event ignored: Last command was caret nav"
+            debug.print_message(debug.LEVEL_INFO, msg, True)
+            return True
+
+        if structural_navigator.get_navigator().last_input_event_was_navigation_command():
+            msg = "WEB: Event ignored: Last command was struct nav"
+            debug.print_message(debug.LEVEL_INFO, msg, True)
+            return True
+
         if not self.utilities.in_document_content(focus_manager.get_manager().get_locus_of_focus()):
             msg = "WEB: Event ignored: locusOfFocus is not in document content"
             debug.print_message(debug.LEVEL_INFO, msg, True)
@@ -1751,16 +1784,6 @@ class Script(default.Script):
 
         if self.utilities.event_is_spinner_noise_deprecated(event):
             msg = "WEB: Ignoring: Event believed to be spinner noise"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
-            return True
-
-        if self.utilities.event_is_for_non_navigable_text_object(event):
-            msg = "WEB: Ignoring event for non-navigable text object"
-            debug.print_message(debug.LEVEL_INFO, msg, True)
-            return True
-
-        if not self.utilities.treat_as_text_object(event.source):
-            msg = "WEB: Ignoring: Event source is not a text object"
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return True
 

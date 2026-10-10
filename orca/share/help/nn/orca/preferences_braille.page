@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_braille" xml:lang="nn">
+  <info>
+    <title type="sort">3. Braille</title>
+    <title type="link">Braille</title>
+    <desc>Konfigurerer <app>Orca</app> si braille-skjermstøtte</desc>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_key_echo"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Braille-innstillingar</title>
+  <section id="braillesupport">
+    <title>Slå på punktskriftstøtte</title>
+    <p>Denne avkryssingsboksen slår på eller av om <app>Orca</app> skal bruke ein punktskriftvisar. Om BrlTTY ikkje køyrer, vil <app>Orca</app> gjenopprette seg på ein god måte og ikkje kommunisere med punktskriftvisaren.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+    <note style="tip">
+      <p>Viss du konfigurerer BrlTTY seinare, må du starte <app>Orca</app> på nytt for å bruke punktskrift.</p>
+    </note>
+  </section>
+  <section id="braillewordwrap">
+    <title>Slå på linjebryting</title>
+    <p>Viss <gui>Slå på ordbryting</gui> er valt, vil <app>Orca</app> justere teksten slik at berre heile ord vert viste på punktskriftvisinga. Viss det ikkje er valt, vil <app>Orca</app> bruke alle punkta på visinga slik at meir tekst kan visast på ein gong.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="contractedbraille">
+    <title>Slå på forkorta punktskrift</title>
+    <p>Orca støttar forkorta punktskrift via liblouis-prosjektet. Sidan mange distribusjonar inkluderer liblouis, vil du truleg automatisk ha tilgang til støtte for forkorta punktskrift i <app>Orca</app>.</p>
+    <p>For å aktivere forkorta punktskrift på eit system der liblouis er installert, må du sørgje for at avmerkingsboksen <gui>Aktiver forkorta punktskrift</gui> er avmerkt. Vel deretter ynskja omsetjingstabell frå kombinasjonsboksen <gui>Forkorta tabell</gui>.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="rolenames">
+    <title>Forkorta rollenamn</title>
+    <p>Denne avkryssingsboksen avgjer korleis rollenamn vert viste og kan brukast til å spare plass på punktskriftvisaren. Til dømes, om ein glidebrytar hadde fokus, ville ordet «glidebrytar» verte vist om forkorta rollenamn ikkje er avkryssa; om det var avkryssa, ville «glbd» verte vist i staden.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="eolindicator">
+    <title>Slå av linjeskiftteikn</title>
+    <p>Ved å merke av i denne avkryssingsboksen fortel du <app>Orca</app> at "$l"-strengen ikkje skal visast på slutten av ei tekstlinje.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="verbosity">
+    <title>Detaljgrad</title>
+    <p>Denne radioknappgruppa avgjer kor mykje informasjon som vert brailled i visse situasjonar. Til dømes, om den står på utfyllande, vert tastatursnarveg og rolleinformasjon vist. Denne informasjonen vert ikkje vist i kortfatta modus.</p>
+    <p>Standardverdi: <gui>Utfyllande</gui></p>
+  </section>
+  <section id="selectionandhyperlink">
+    <title>Val- og hyperlenkeindikatorar</title>
+    <p>Radioknappgruppene <gui>Valindikatoren</gui> og <gui>Hyperlinkindikatoren</gui> lèt deg konfigurere korleis <app>Orca</app> oppfører seg når det viser vald tekst og hyperlenker. Som standard vil <app>Orca</app> «understreke» tekst med punkt 7 og 8 på punktskriftvisinga når du møter slike. Om du vil, kan du endre indikatoren til berre å vere punkt 7, berre punkt 8, eller ikkje vere til stades i det heile.</p>
+    <p>Standardverdi: <gui>Punkt 7 og 8</gui></p>
+    <note style="tip">
+      <title>Tekstattributtindikatorar</title>
+      <p>Du kan også velje å få tekstattributt vist i punktskrift. Slå på denne funksjonen og vel kva attributt som er av interesse på <link xref="preferences_text_attributes"> <gui>Tekstattributt</gui> sida</link> i innstillingsvindauget.</p>
+    </note>
+  </section>
+  <section id="flashMessageSettings">
+    <title>Innstillingar for lynmeldingar</title>
+    <p>Flash-meldingar er i sitt vesen like som varsel eller kunngjeringar: Dei vert viste på punktskriftvisinga di for ei kort tid, og etterpå vert det opphavlege innhaldet i punktskriftvisinga gjenoppretta. <app>Orca</app> har fleire innstillingar du kan bruke til å styre framsyninga av flash-meldingar.</p>
+    <section id="flashMessageSettings_enable">
+      <title>Slå på flash-meldingar</title>
+      <p>Viss <gui>Slå på meldingar</gui> er valt, vil <app>Orca</app> presentere meldingar for deg i punktskrift. Viss du berre vil ha <app>Orca</app> sine meldingar opplesne, bør du fjerne markeringa i denne avkryssinga.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="flashMessageSettings_detailed">
+      <title>Meldingane er detaljerte</title>
+      <p>Viss <gui>Meldingane er detaljerte</gui> er merkt, vil <app>Orca</app> gje deg detaljerte meldingar i punktskrift. Til dømes, viss du brukar <app>Orca</app> sin kommando for å endre ekko, kan <app>Orca</app> vise «Ekko sett til ord». Viss du heller vil ha kortare meldingar, som berre «ord», bør du fjerne merket i denne avkryssinga.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="flashMessageSettings_persistent">
+      <title>Meldingar er vedvarande</title>
+      <p>Som nemnt over, vert flash-meldingar berre viste i eit kort tidsrom. Om du heller vil at meldingar skal verte viste til du gjer ei handling som fører til at visinga vert oppdatert, bør du merke av for <gui>Meldingar vert verande</gui>.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="flashMessageSettings_duration">
+      <title>Varigheit (sekund)</title>
+      <p>Tida <app>Orca</app> ventar før meldinga vert fjerna og opphavleg innhald i visinga vert gjenoppretta kan setjast i <gui> Varigheit (sek)</gui> spin-knappen. Merk at verdien for denne innstillinga vert ignorert om du har aktivert vedvarande flash-meldingar.</p>
+      <p>Standardverdi: 5</p>
+    </section>
+  </section>
+</page>

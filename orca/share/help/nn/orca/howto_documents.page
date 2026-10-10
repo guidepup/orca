@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_documents" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_text_attributes"/>
+    <title type="sort">1. Dokument</title>
+    <desc>Les innhald</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Dokument</title>
+  <p>For å lese innhaldet i eit dokument, bruk den innebygde caret-navigeringsmodusen i appen. Når du navigerer i teksten i dokumentet, vil <app>Orca</app> vise den nye plasseringa di. Dermed kjenner du truleg allereie til korleis du les eit dokument med <app>Orca</app>. Til dømes:</p>
+  <list>
+    <item>
+      <p>Bruk <key>Venstre</key> og <key>Høgre</key> for å flytte og lese teikn for teikn.</p>
+    </item>
+    <item>
+      <p>Bruk <keyseq><key>Ctrl</key><key>Venstre</key></keyseq> og <keyseq><key>Ctrl</key><key>Høgre</key></keyseq> for å flytte og lese ord for ord.</p>
+    </item>
+    <item>
+      <p>Bruk <key>Opp</key> og <key>Ned</key> for å flytte og lese linje for linje.</p>
+    </item>
+    <item>
+      <p>Bruk <key>Shift</key> i kombinasjon med kommandoane over for å markere og avmarkere tekst.</p>
+    </item>
+  </list>
+  <note style="tip">
+    <title>Aktiverer Caret-navigering i ein app</title>
+    <p>Ikkje alle appar har markørnavigasjon slått på som standard. For mange GNOME-appar kan markørnavigasjon slåast på og av ved å trykkje <key>F7</key>.</p>
+  </note>
+  <p>I tillegg til å lese eit dokument med caret-navigasjon, kan du finne det nyttig å lese, stave og hente Unicode-verdien for den gjeldande teksten. Du kan gjere desse tinga gjennom <app>Orca</app> sitt <link xref="howto_flat_review">Flat Review-funksjon</link>.</p>
+  <p>Til slutt, for at <app>Orca</app> skal lese heile dokumentet frå noverande plassering, brukar du kommandoen Sei Alt. Denne, saman med ei meir komplett liste over <app>Orca</app> sine kommandoar for å få tilgang til dokumenttekst, finn du i <link xref="commands_reading">Lese-kommandoar</link>-guiden.</p>
+</page>

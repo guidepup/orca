@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_keyboard_layout" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_toggling_caps_lock"/>
+    <title type="sort">6. Tastaturoppsett</title>
+    <desc>Veljer skrivebord- eller berbart oppsett</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tastaturoppsett</title>
+  <p>Orca har to tastaturoppsett: Skrivebord (det vil seie med eit numerisk tastatur) og Berbar. Oppsettet du vel påverkar kva tast som vert brukt som Orca-modifikator.</p>
+  <list>
+    <item>
+      <p>Viss du brukar berbart oppsett, vert standard Orca-modifikator <key>CapsLock</key></p>
+    </item>
+    <item>
+      <p>_Viss du brukar skrivebordsoppsettet, vil Orca-modifikatoren vere både <key>Insert</key> og <key>KP_Insert</key>, der det siste er same tast som <key>KP0</key>.</p>
+    </item>
+  </list>
+  <p>Oppsettet avgjer òg tastetrykka knytte til fleire av <app>Orca</app>-kommandoane, særleg i områda Flat Review, Where Am I og Say All.</p>
+  <steps>
+    <title>Endre tastaturoppsettet ditt</title>
+    <item>
+      <p>Opne <link xref="preferences">Orca-innstillingane</link> ved å trykkje <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Flytt til radioknappgruppa <gui>Tastaturoppsett</gui>.</p>
+    </item>
+    <item>
+      <p>Pila til ønsket oppsett.</p>
+    </item>
+    <item>
+      <p>Trykk på knappen <gui>Bruk</gui>.</p>
+    </item>
+  </steps>
+</page>

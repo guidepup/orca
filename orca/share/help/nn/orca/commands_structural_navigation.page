@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_structural_navigation" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_table"/>
+    <link type="guide" xref="commands#reading_documents"/>
+    <link type="seealso" xref="howto_forms"/>
+    <title type="sort">2. Strukturell navigering</title>
+    <title type="link">Strukturell navigasjon</title>
+    <desc>Kommandoar for å navigere etter element</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Strukturelle navigasjonskommandoar</title>
+  <p>Følgjande kommandoar kan brukast til å navigere etter overskrifter, lenkjer og andre element som finst i appar der <app>Orca</app> gjev strukturell navigasjonsstøtte.</p>
+  <list>
+    <item>
+      <p>Slå på/av Strukturelle navigasjonstastar: <keyseq><key>Orca-modifikator</key><key>Z</key></keyseq></p>
+    </item>
+  </list>
+  <section id="headings">
+    <title>Overskrifter</title>
+      <list>
+        <item>
+          <p>Neste og førre overskrift: <keyseq><key>H</key></keyseq> og <keyseq><key>Shift</key><key>H</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over overskrifter: <keyseq><key>Alt</key><key>Shift</key><key>H</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre overskrift på nivå 1: <keyseq><key>1</key></keyseq> og <keyseq><key>Shift</key><key>1</key></keyseq></p>
+        </item>
+        <item>
+          <p>Vis ei liste over overskrifter på nivå 1: <keyseq><key>Alt</key><key>Shift</key><key>1</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre overskrift på nivå 2: <keyseq><key>2</key></keyseq> og <keyseq><key>Shift</key><key>2</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over overskrifter på nivå 2: <keyseq><key>Alt</key><key>Shift</key><key>2</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre overskrift på nivå 3: <keyseq><key>3</key></keyseq> og <keyseq><key>Shift</key><key>3</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over overskrifter på nivå 3: <keyseq><key>Alt</key><key>Shift</key><key>3</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre overskrift på nivå 4: <keyseq><key>4</key></keyseq> og <keyseq><key>Shift</key><key>4</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over overskrifter på nivå 4: <keyseq><key>Alt</key><key>Shift</key><key>4</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre overskrift på nivå 5: <keyseq><key>5</key></keyseq> og <keyseq><key>Shift</key><key>5</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over overskrifter på nivå 5: <keyseq><key>Alt</key><key>Shift</key><key>5</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre overskrift på nivå 6: <keyseq><key>6</key></keyseq> og <keyseq><key>Shift</key><key>6</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over overskrifter på nivå 6: <keyseq><key>Alt</key><key>Shift</key><key>6</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+    <section id="forms">
+      <title>Skjema</title>
+      <list>
+        <item>
+          <p>Neste og førre skjema-felt: <keyseq><key>F</key></keyseq> og <keyseq><key>Shift</key><key>F</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over skjema-felt: <keyseq><key>Alt</key><key>Shift</key><key>F</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre knapp: <keyseq><key>B</key></keyseq> og <keyseq><key>Shift</key><key>B</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over knappar: <keyseq><key>Alt</key><key>Shift</key><key>B</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre kombinasjonsboks: <keyseq><key>C</key></keyseq> og <keyseq><key>Shift</key><key>C</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over kombinasjonsboksar: <keyseq><key>Alt</key><key>Shift</key><key>C</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre oppføring: <keyseq><key>E</key></keyseq> og <keyseq><key>Shift</key><key>E</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over oppføringar: <keyseq><key>Alt</key><key>Shift</key><key>E</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre radioknapp: <keyseq><key>R</key></keyseq> og <keyseq><key>Shift</key><key>R</key></keyseq></p>
+        </item>
+        <item>
+          <p>Viser ei liste med radioknappar: <keyseq><key>Alt</key><key>Shift</key><key>R</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Neste og førre avkryssingsrute: <keyseq><key>X</key></keyseq> og <keyseq><key>Shift</key><key>X</key></keyseq></p>
+        </item>
+        <item>
+          <p>Viser ei liste med avkryssingsboksar: <keyseq><key>Alt</key><key>Shift</key><key>X</key></keyseq></p>
+        </item> 
+      </list>
+    </section>
+    <section id="links">
+    <title>Lenkjer</title>
+      <list>
+        <item>
+          <p>Neste og førre lenke: <keyseq><key>K</key></keyseq> og <keyseq><key>Shift</key><key>K</key></keyseq></p>
+        </item>
+        <item>
+          <p>Vis ei liste med lenkjer: <keyseq><key>Alt</key><key>Shift</key><key>K</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre ubesøkte lenke: <keyseq><key>U</key></keyseq> og <keyseq><key>Shift</key><key>U</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over uvitja lenkjer: <keyseq><key>Alt</key><key>Shift</key><key>U</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre vitja lenkje: <keyseq><key>V</key></keyseq> og <keyseq><key>Shift</key><key>V</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over vitja lenkjer: <keyseq><key>Alt</key><key>Shift</key><key>V</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+    <section id="lists">
+      <title>Lister</title>
+      <list>
+        <item>
+          <p>Neste og førre liste: <keyseq><key>L</key></keyseq> og <keyseq><key>Shift</key><key>L</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over lister: <keyseq><key>Alt</key><key>Shift</key><key>L</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre listeelement: <keyseq><key>I</key></keyseq> og <keyseq><key>Shift</key><key>I</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste med listeelement: <keyseq><key>Alt</key><key>Shift</key><key>I</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+    <section id="tables">
+      <title>Tabellar</title>
+      <list>
+        <item>
+          <p>Neste og førre tabell: <keyseq><key>T</key></keyseq> og <keyseq><key>Shift</key><key>T</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over tabellar: <keyseq><key>Alt</key><key>Shift</key><key>T</key></keyseq></p>
+        </item>
+        <item>
+          <p>Celle til venstre: <keyseq><key>Alt</key><key>Shift</key><key>Venstre</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Celle til høgre: <keyseq><key>Alt</key><key>Shift</key><key>Høgre</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Celle over: <keyseq><key>Alt</key><key>Shift</key><key>Opp</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Celle under: <keyseq><key>Alt</key><key>Shift</key><key>Down</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Første celle i tabell: <keyseq><key>Alt</key><key>Shift</key><key>Home</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Siste celle i tabell: <keyseq><key>Alt</key><key>Shift</key><key>End</key></keyseq></p>
+        </item> 
+      </list>
+    </section>
+    <section id="text_blocks">
+      <title>Tekstblokker</title>
+      <list>
+        <item>
+          <p>Neste og førre avsnitt: <keyseq><key>P</key></keyseq> og <keyseq><key>Shift</key><key>P</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Vis ei liste over avsnitt: <keyseq><key>Alt</key><key>Shift</key><key>P</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre sitat: <keyseq><key>Q</key></keyseq> og <keyseq><key>Shift</key><key>Q</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over blokkutdrag: <keyseq><key>Alt</key><key>Shift</key><key>Q</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre «stort objekt»: <keyseq><key>O</key></keyseq> og <keyseq><key>Shift</key><key>O</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over «store objekt»: <keyseq><key>Alt</key><key>Shift</key><key>O</key></keyseq></p>
+        </item>
+       </list>
+    </section>
+    <section id="other">
+      <title>Andre element</title>
+      <list>
+        <item>
+          <p>Neste og førre landemerke: <keyseq><key>M</key></keyseq> og <keyseq><key>Shift</key><key>M</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over landemerke: <keyseq><key>Alt</key><key>Shift</key><key>M</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre skiljeteikn: <keyseq><key>S</key></keyseq> og <keyseq><key>Shift</key><key>S</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Neste og førre «klikkbare»: <keyseq><key>A</key></keyseq> og <keyseq><key>Shift</key><key>A</key></keyseq></p>
+        </item> 
+        <item>
+          <p>Viser ei liste over «klikkbare»: <keyseq><key>Alt</key><key>Shift</key><key>A</key></keyseq></p>
+        </item>
+        <item>
+          <p>Neste og førre bilete: <keyseq><key>G</key></keyseq> og <keyseq><key>Shift</key><key>G</key></keyseq></p>
+        </item>
+        <item>
+          <p>Vis ei liste over bilete: <keyseq><key>Alt</key><key>Shift</key><key>G</key></keyseq></p>
+        </item>
+        <item>
+          <p>Start og slutt for noverande behaldar: <keyseq><key>Shift</key><key>Comma</key></keyseq> og <keyseq><key>Comma</key></keyseq></p>
+        </item>
+      </list>
+    </section>
+</page>

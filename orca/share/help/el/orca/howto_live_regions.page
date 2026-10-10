@@ -23,13 +23,7 @@
   <p>Μια δυναμική περιοχή είναι ένα δυναμικά ενημερωμένο τμήμα μιας ιστοσελίδας, όπως ένας πίνακας αθλητικών στατιστικών, μια λίστα τρεχόντων τιμών αποθέματος, μια καταγραφή από συνομιλία, ή ένα μήνυμα που εμφανίζεται από τη σελίδα που διαβάζετε. Ενώ οι ζωντανές περιοχές εμφανίζονται αρκετά συχνά, οι πλήρως προσβάσιμες ιστοσελίδες με ζωντανές περιοχές αντιμετωπίζονται λιγότερο συχνά. Αυτό το πρόβλημα αντιμετωπίζεται ενεργά από έναν αριθμό οργανώσεων.</p>
   <section id="politeness_levels">
     <title>Επίπεδα ευγένειας δυναμικής περιοχής</title>
-    <p>
-      Live regions have an associated "politeness" level which is set by the
-      author as a means to convey the importance of the information and to
-      suggest when users should be informed by their assistive technology of
-      updates made within that region. Live regions can be "off", "polite", or
-      "assertive."
-    </p>
+    <p>Οι δυναμικές περιοχές έχουν ένα σχετικό επίπεδο «ευγένειας» που ορίζεται από τον δημιουργό ως μέσο για να μεταδώσει τη σημασία της ενημέρωσης. Οι δυναμικές περιοχές μπορούν να είναι «off» (ανενεργές), «polite» (ευγενικές) ή «assertive» (επιτακτικές) σε σημείο να είναι «rude» (αγενείς).</p>
   </section>
   <section id="orca_support">
     <title>Η υποστήριξη του <app>Orca</app> για δυναμικές περιοχές</title>

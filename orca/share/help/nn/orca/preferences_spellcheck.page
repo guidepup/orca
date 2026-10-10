@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_spellcheck" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#application"/>
+    <title type="sort">4. Stavkontroll</title>
+    <title type="link">Stavekontroll</title>
+    <desc>Stiller opp <app>Orca</app> for stavekontroll</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Stavkontrollinnstillingar</title>
+  <p><app>Orca</app> prøver å gje ei konsistent brukaroppleving når du samhandlar med stavekontrollar i appen. For appar der denne utvida støtta er tilgjengeleg, finn du fleire innstillingar som du kan justere for å få det detaljnivået som passar best for deg.</p>
+  <note style="tip">
+    <title>Du kan få både kortfatta og utfyllande stavekontrollinformasjon</title>
+    <p>Dersom du vanlegvis ønskjer svært lite detaljar når du brukar ein stavekontroll, men av og til treng detaljert informasjon om ein bestemt feil, kan du slå av desse innstillingane. Når du treng fleire detaljar, brukar du berre <app>Orca</app> sin detaljerte <link xref="howto_whereami">Kvar er eg</link>-kommando for å få <app>Orca</app> til å presentere den noverande feilen som om alle desse innstillingane var slått på.</p>
+  </note>
+  <section id="spell_error">
+    <title>Stavefeil</title>
+    <p>Viss denne avkryssinga er valt, vil <app>Orca</app> stave det feilstava ordet etter at det er sagt.</p>
+    <p>Standardverdi: merka</p>
+  </section>
+  <section id="spell_suggestion">
+    <title>Spel-forslag</title>
+    <p>Viss denne avmerkingsboksen er avmerkt, vil <app>Orca</app> stave den føreslåtte korreksjonen etter å ha sagt han.</p>
+    <p>Standardverdi: merka</p>
+  </section>
+  <section id="error_context">
+    <title>Vis kontekst for feil</title>
+    <p>Viss denne avkryssinga er vald, vil <app>Orca</app> lese opp setninga eller linja frå dokumentet der feilen er funnen.</p>
+    <p>Standardverdi: merka</p>
+  </section>
+</page>

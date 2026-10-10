@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_text_attributes" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_web"/>
+    <link type="seealso" xref="howto_text_attributes"/>
+    <title type="sort">8. Tekstattributtar</title>
+    <title type="link">Tekstattributter</title>
+    <desc>Stiller inn kva formatering som vert vist</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tekstinnstillingar</title>
+  <p>Omgrepet «tekstattributtar» viser til all skrifttype, stil, justering og anna formatering som er knytt til eit gitt teikn eller ein serie av teikn. Sida <app>Orca</app> sine <gui>Tekstattributt</gui> lèt deg tilpasse kva tekstattributtar <app>Orca</app> skal seie opp, saman med rekkjefølgja dei skal seiast i, og kva for nokre <app>Orca</app> skal vise i punktskrift.</p>
+  <section id="table">
+    <title>Attributt-tabellen for teksten</title>
+    <p>Tabellen for tekstattributt er staden der du spesifiserer kva attributt som skal og ikkje skal visast og under kva vilkår. Kvar rad består av fire kolonnenr.</p>
+    <list>
+      <item>
+        <p><gui>Attributtnamn</gui>: Namnet på tekstattributten.</p>
+      </item>
+      <item>
+        <p>
+          <gui>Speak</gui>: Check this checkbox if you would like
+          <app>Orca</app> to speak this attribute when you press
+          <keyseq><key>Orca Modifier</key><key>F</key></keyseq>.
+        </p>
+      </item>
+      <item>
+        <p><gui>Merk i punktskrift</gui>: Merk av i denne avkryssingsboksen om du vil at <app>Orca</app> skal «understreke» dette attributtet på punktskriftvisinga di.</p>
+      </item>
+      <item>
+        <p><gui>Vis med mindre</gui>: Dette redigerbare feltet lèt deg spesifisere når eit aktivert attributt ikkje er av interesse.</p>
+        <p>Til dømes har tekstattributtet «understrek» som standard verdien «ingen». Dette gjer at <app>Orca</app> varslar deg om understreka tekst så lenge teksten faktisk er understreka. Om du alltid vil at dette attributtet skal lesast opp uavhengig av om teksten er understreka, bør kolonnen <gui>Present unless</gui> vere tom for understrek. I tillegg bør du sørgje for at <gui>Les opp</gui>-kolonnen for understrek er merkt.</p>
+      </item>
+    </list>
+  </section>
+  <section id="reset">
+     <title>Angrar endringar</title>
+     <p>Under lista for tekstattributt finn du ein <gui>Tilbakestill</gui>-knapp (<keyseq><key>Alt</key><key>R</key></keyseq>) som vil gjenopprette verdiane i tabellen til det dei var då vindauget vart vist for fyrste gong.</p>
+  </section>
+  <section id="rearranging">
+     <title>Omstille rekkjefølgja for presentasjon</title>
+     <p>Når du fyrst viser sida <gui>Tekstattributt</gui>, vert alle aktiverte eigenskapar plasserte øvst i tabellen i den rekkjefølgja dei vert opplesne. Det er fire knappar som kan brukast til å endre framstillingsrekkjefølgja.</p>
+    <list>
+      <item>
+        <p><gui>Flytt til toppen</gui> (<keyseq><key>Alt</key><key>T</key></keyseq>): flyttar det valde attributtet til toppen av lista.</p>
+      </item>
+      <item>
+        <p><gui>Flytt opp</gui> (<keyseq><key>Alt</key><key>U</key></keyseq>): flyttar det valde attributtet opp éi rad.</p>
+      </item>
+      <item>
+        <p><gui>Flytt ned</gui> (<keyseq><key>Alt</key><key>D</key></keyseq>): flyttar det valde attributtet ned ei rad.</p>
+      </item>
+      <item>
+        <p><gui>Flytt til botn</gui> (<keyseq><key>Alt</key><key>B</key></keyseq>): flyttar det valde attributtet til botnen av lista.</p>
+      </item>
+    </list>
+  </section>
+  <section id="braille_indicator">
+    <title>Innstillingar for oppsett av punkt- «understreking» for formatering</title>
+    <p>Under trykknappane finn du radioknappgruppa <gui>Braille-indikator</gui>. Her kan du velje celle eller celler som skal brukast til å indikere tekst med minst eitt av dei angitte attributta.</p>
+    <list>
+      <item>
+        <p><gui>Ingen</gui>: Ikkje understrek tekstattributt i punktskrift (standard)</p>
+      </item>
+      <item>
+        <p><gui>Punkt 7</gui>: Understrek tekstattributt med berre Dot 7</p>
+      </item>
+      <item>
+        <p><gui>Punkt 8</gui>: Understrek tekstattributt med berre Dot 8</p>
+      </item>
+      <item>
+        <p><gui>Punkt 7 og 8</gui>: Understrek tekstattributt med både Dots 7 og Dots 8</p>
+      </item>
+    </list>
+  </section>
+</page>

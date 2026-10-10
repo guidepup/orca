@@ -24,25 +24,9 @@
   <section id="cell_row">
     <title>Κελί ή ανάγνωση γραμμής</title>
     <p>Θεωρήστε την διεργασία εξέτασης της λίστας των μηνυμάτων στα εισερχόμενα. Για να ανακοινώσει το όρκα τον αποστολέα, θέμα, ημερομηνία και παρουσίαση των συνημμένων θα χρειαστείτε το <app>Orca</app> να εκφωνήσει τη γραμμή. Από την άλλη μεριά, όταν περιηγείστε μεταξύ γραμμών σε ένα υπολογιστικό φύλλο, η εκφώνηση πλήρους γραμμής μπορεί να μην είναι επιθυμητή παρά για κανένα άλλο λόγο πέρα του καθαρού αριθμού των κελιών σε κάθε γραμμή. Έτσι σε αυτήν την περίπτωση, θα θέλατε το <app>Orca</app> να εκφωνήσει μόνο το κελί με εστίαση. Παρόμοιες καταστάσεις συμβαίνουν σε πίνακες εγγράφου.</p>
-    <p>
-      <app>Orca</app> allows you to customize whether only the cell should be
-      read, or if the full row should be, for GUI tables, document tables,
-      and spreadsheets. Because these settings are independent of one another,
-      you do not have to choose one table reading mode to fit multiple types of
-      tables.
-    </p>
-    <p>
-      You can set each of <app>Orca</app>'s table reading preferences <app>Orca</app>
-      wide as well as on an application-by-application basis. How to do each is
-      described in the guide on <link xref="preferences"><app>Orca</app>'s preferences
-      dialogs</link>. The settings can be found on the <link xref="preferences_speech">
-      <gui>Speech</gui> page</link>.
-    </p>
-    <p>
-      Lastly, there is also an <app>Orca</app> command which allows you to toggle
-      cell versus row reading on the fly for the currently-active table:
-      <keyseq><key>Orca Modifier</key><key>F11</key></keyseq>.
-    </p>
+    <p>Το <app>Orca</app> σας επιτρέπει να προσαρμόσετε εάν θα πρέπει να διαβάζεται μόνο το κελί ή ολόκληρη η γραμμή, για εφαρμογές Gtk+, ιστού και υπολογιστικών φύλλων.</p>
+    <p>Μπορείτε να ορίσετε καθεμία από τις προτιμήσεις ανάγνωσης πινάκων του <app>Orca</app> τόσο καθολικά στο <app>Orca</app> όσο και ανά εφαρμογή. Ο τρόπος περιγράφεται στον οδηγό για τον διάλογο <link xref="preferences">Προτιμήσεις του Orca</link>. Θα βρείτε αυτές τις επιλογές στην καρτέλα <gui>Γενικά</gui> στην ενότητα <gui>Περιήγηση πίνακα</gui>.</p>
+    <p>Τέλος, υπάρχει επίσης μια εντολή του <app>Orca</app> που σας επιτρέπει να αλλάζετε άμεσα μεταξύ ανάγνωσης κελιού ή γραμμής για την τρέχουσα εφαρμογή: <keyseq><key>Τροποποιητής Orca</key><key>F11</key></keyseq>.</p>
   </section>
   <section id="structural_navigation">
     <title>Δομική περιήγηση</title>
@@ -51,12 +35,7 @@
     <p>Επιπλέον, το <app>Orca</app> παρέχει διαμορφώσιμες <link xref="preferences_table_navigation">επιλογές παρουσίασης</link> που δουλεύουν μαζί με τη δομική περιήγηση και επιτρέπουν τον έλεγχο της εμφάνισης ή όχι των συντεταγμένων του κελιού, υποδεικνύονται επικαλύψεις πολλαπλού κελιού και ανακοινώνονται κεφαλίδες κελιού.</p>
     <note style="tip">
       <title>Μην ξεχάσετε να ενεργοποιήσετε την εναλλαγή της δομικής περιήγησης!</title>
-      <p>
-        Depending on where you are, it may be necessary for you to explicitly
-        toggle Structural Navigation on before you can use it. To learn more, read
-        <link xref="howto_structural_navigation#toggling_required">
-        when toggling Structural Navigation on is required.</link>
-      </p>
+      <p>Ανάλογα με το πού βρίσκεστε, ίσως χρειαστεί να ενεργοποιήσετε ρητά τη Δομική περιήγηση πριν μπορέσετε να τη χρησιμοποιήσετε. Για να μάθετε περισσότερα, διαβάστε <link xref="howto_structural_navigation">την εισαγωγή στη Δομική περιήγηση</link>.</p>
     </note>
   </section>
   <section id="dynamic_headers">
@@ -72,7 +51,7 @@
       </item>
     </steps>
     <steps>
-      <title>Setting Row Headers</title>
+      <title>Ορισμός κεφαλίδων γραμμής</title>
       <item>
         <p>Μετάβαση στη στήλη που περιέχει όλες τις κεφαλίδες γραμμής.</p>
       </item>

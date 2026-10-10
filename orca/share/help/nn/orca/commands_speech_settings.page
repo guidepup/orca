@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_speech_settings" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_braille"/>
+    <link type="guide" xref="commands#speech_braille"/>
+    <link type="seealso" xref="preferences_speech"/>
+    <title type="sort">2. Taleinnstillingar</title>
+    <title type="link">Tale</title>
+    <desc>Kommandoar for å tilpasse <app>Orca</app> sin utgang</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tale- og ordrikdomsinnstillingar</title>
+  <p>Følgjande kommandoar kan brukast til å tilpasse talemønsteret til <app>Orca</app>. Du vil sjå at fleire av desse kommandoane er «ubundne». Sjå <link xref="howto_key_bindings">Modifisere tastetrykkingar</link> for informasjon om korleis du kan binde desse kommandoane til tastetrykk.</p>
+  <list>
+    <item>
+      <p>Slå på/av tale: <keyseq><key>Orca-modifikator</key><key>S</key></keyseq></p>
+    </item>
+    <item>
+      <p>Veksle mellom celle- og radlesing i ei tabell: <keyseq><key>Orca-modifikator</key><key>F11</key></keyseq></p>
+    </item>
+    <item>
+      <p>Veksle mellom detaljerte og korte detaljnivå: <keyseq><key>Orca-modifikator</key><key>V</key></keyseq></p>
+    </item>
+    <item>
+      <p>Slå på/av tale om innrykk og justering: (Ikkje bunden)</p>
+    </item>
+    <item>
+      <p>Endre talstil for tale: (Ubind)</p>
+    </item>
+    <item>
+      <p>Syklus til neste talte teiknsetningsnivå: (Ubind)</p>
+    </item>
+    <item>
+      <p>Syklus til neste nøkkel-ekko-nivå: (Ikkje bunden)</p>
+    </item>
+    <item>
+      <p>Syklus til neste kapitaliseringsstil: (Ubundne)</p>
+    </item>
+    <item>
+      <p>Senk raten: (Uavgrensa)</p>
+    </item>
+    <item>
+      <p>Auk raten: (Uavgrensa)</p>
+    </item>
+    <item>
+      <p>Senk tonehøgda: (Uavgrensa)</p>
+    </item>
+    <item>
+      <p>Auka tonehøgda: (Uavgrensa)</p>
+    </item>
+    <item>
+      <p>Minska volumet: (Uavgrensa)</p>
+    </item>
+    <item>
+      <p>Auk lyden: (Uavgrensa)</p>
+    </item>
+    <item>
+      <p>Gå til neste talemaskin: (Ubind)</p>
+    </item>
+  </list>
+</page>

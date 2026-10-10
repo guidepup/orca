@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_learn_modes" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_keyboard_layout"/>
+    <title type="sort">5. Læringsmodus</title>
+    <desc>Oppdagar kommandoane til <app>Orca</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Læringsmodus</title>
+  <p>I læremodus vil <app>Orca</app> annonsere kvar tastetrykk du trykte på saman med alle tilhøyrande <app>Orca</app>-kommandoar som tastetrykket er bunde til. I denne modusen kan du også få ei liste over snarvegar som inneheld alle <app>Orca</app>-kommandoane du kan bruke.</p>
+  <steps>
+    <title>Brukar læringsmodus</title>
+    <item>
+      <p>Gå inn i Læringsmodus ved å trykkje <keyseq><key>Orca-modifikator</key> <key>H</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Trykk på ein tast eller tastekombinasjon. <app>Orca</app> vil lese opp tastane og tilhøyrande kommando.</p>
+    </item>
+    <item>
+      <p>Trykk <key>Esc</key> for å avslutte Læringsmodus.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Hentar ei liste med snarvegar</title>
+    <item>
+      <p>Gå inn i Læringsmodus ved å trykkje <keyseq><key>Orca-modifikator</key> <key>H</key></keyseq>.</p>
+    </item>
+    <item>
+      <p>Trykk <key>F2</key> viss du vil ha ei liste over snarvegar som gjeld for heile <app>Orca</app>, eller trykk <key>F3</key> viss du vil ha ei liste over snarvegar som er spesielt for appen som er i fokus.</p>
+    </item>
+    <item>
+      <p>Trykk <key>Opp</key> eller <key>Ned</key> for å undersøkje innhaldet i lista.</p>
+    </item>
+    <item>
+      <p>Trykk <key>Esc</key> for å gå ut av lista.</p>
+    </item>
+  </steps>
+</page>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_profiles" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_documents"/>
+    <title type="sort">9. Profilar</title>
+    <desc>Vedlikehald av fleire oppsett</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Profilar</title>
+  <p>Orca-profilane lèt deg lagre og laste fleire oppsett slik at du raskt kjem til innstillingane du treng.</p>
+  <steps>
+    <title>Lagar ein ny profil</title>
+    <item>
+      <p>Gå inn i <link xref="preferences">Orca-innstillingane</link> vindauget.</p>
+    </item>
+    <item>
+      <p>Endre kva innstillingar du vil.</p>
+    </item>
+    <item>
+      <p>På <gui>Generelt</gui>-sida, trykk på <gui>Lagre som</gui>-knappen.</p>
+    </item>
+    <item>
+      <p>Skriv inn det nye profilnamnet i <gui>Lagre profil som</gui>-vindauget som kjem opp.</p>
+    </item>
+    <item>
+      <p>Trykk på <gui>OK</gui>-knappen i <gui>Lagre profil som</gui>-vindauget.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Laster ein eksisterande profil</title>
+    <item>
+      <p>Gå inn i <link xref="preferences">Orca-innstillingane</link> vindauget.</p>
+    </item>
+    <item>
+      <p>På sida <gui>Generelt</gui>, vel profilen som skal lastast frå kombinasjonsboksen <gui>Aktiv profil</gui>.</p>
+    </item>
+    <item>
+      <p>Trykk på <gui>Last inn</gui>-knappen.</p>
+    </item>
+    <item>
+      <p>Du vil verte bedt om å stadfeste. Trykk på <gui>Ja</gui>-knappen.</p>
+    </item>
+    <item>
+      <p>Trykk på <gui>OK</gui>-knappen.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Endrar ein eksisterande profil</title>
+    <item>
+      <p>Følg stega som er skildra over for å laste opp til det oppsettet du vil endre.</p>
+    </item>
+    <item>
+      <p>Fylg stega skildra ovanfor for å lagre ein ny profil.</p>
+    </item>
+    <item>
+      <p>Når du vert bedt om det nye profilnamnet, skriv du det same namnet som det noverande profilnamnet. Når du trykkjer på <gui>OK</gui>-knappen, får du beskjed om at det er ein namnekonflikt.</p>
+    </item>
+    <item>
+      <p>Trykk på <gui>Ja</gui>-knappen for å stadfeste at du vil skrive over den eksisterande profilen med dei nye innstillingane.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Endrar <gui>Oppstartsprofil</gui></title>
+    <item>
+      <p>Gå inn i <link xref="preferences">Orca-innstillingane</link> vindauget.</p>
+    </item>
+    <item>
+      <p>På <gui>Generelt</gui>-sida, vel profilen som skal lastast frå <gui>Oppstartsprofil</gui>-kombinasjonsboksen.</p>
+    </item>
+    <item>
+      <p>Trykk på <gui>OK</gui>-knappen. Neste gong du startar <app>Orca</app>, vil det nyvalde oppsettet verte brukt.</p>
+    </item>
+  </steps>
+</page>

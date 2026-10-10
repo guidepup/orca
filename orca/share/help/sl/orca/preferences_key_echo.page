@@ -28,7 +28,7 @@
       <p>Privzeta vrednost: izbrano</p>
     </section>
     <section id="keyecho_enable_numeric">
-      <title>Enable numeric keys</title>
+      <title>Omogoči tipke številčnice</title>
       <p>
         This option controls whether or not keys like <key>1</key>,
         <key>2</key>, and <key>3</key> should be spoken when pressed.
@@ -36,7 +36,7 @@
       <p>Privzeta vrednost: izbrano</p>
     </section>
     <section id="keyecho_enable_punctuation">
-      <title>Enable punctuation keys</title>
+      <title>Omogoči tipke ločil</title>
       <p>
         This option controls whether or not keys like <key>%</key>,
         <key>;</key>, and <key>?</key> should be spoken when pressed.

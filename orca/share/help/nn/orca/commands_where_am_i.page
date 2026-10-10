@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_where_am_i" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_time_date_notifications"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <link type="seealso" xref="howto_whereami"/>
+    <title type="sort">3. Kvar er eg</title>
+    <title type="link">Kvar er eg</title>
+    <desc>Kommandoar for å lære om plasseringa di</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Kvar er eg-kommandoar</title>
+  <p><app>Orca</app> sin Where Am I-funksjon gjev deg kontekstsensitive detaljar om noverande plassering. Til dømes vil Where Am I i tabellar gje deg detaljar om tabellcella du er i, men i tekst vil han vise den noverande linja saman med all tekst som tilfeldigvis er vald. Den fulle lista over kva du kan vente deg at <app>Orca</app> viser, finn du i <link xref="howto_whereami">Innleiing til Where Am I</link>.</p>
+  <p><app>Orca</app> gjev følgjande Kvar er eg-kommandoar:</p>
+  <list>
+    <item>
+      <p>Utfør enkel Where Am I:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <key>KP Enter</key></p>
+        </item>
+        <item>
+          <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Return</key></keyseq></p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Utfør detaljert Kvar er eg:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <key>KP Enter</key> (dobbeltklikka)</p>
+        </item>
+        <item>
+          <p>Berbar: <keyseq><key>Orca-modifikator</key><key>Return</key></keyseq> (dobbeltklikka)</p>
+        </item>
+      </list>
+    </item>
+  </list>
+  <p>I tillegg til dei eigne Where Am I-kommandoane har <app>Orca</app> ekstra kommandoar for å få informasjon om noverande plassering:</p>
+  <list>
+    <item>
+      <p>Vis tittellinja:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP Enter</key></keyseq></p>
+        </item>
+        <item>
+          <p>Laptop: <keyseq><key>Orca-modifikator</key><key>Skråstrek</key></keyseq></p>
+        </item>
+      </list>
+    </item>
+    <item>
+      <p>Vis statuslinja:</p>
+      <list>
+        <item>
+          <p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP Enter</key></keyseq> (dobbeltklikka)</p>
+        </item>
+        <item>
+          <p>Laptop: <keyseq><key>Orca-modifikator</key><key>Skråstrek</key></keyseq> (dobbeltklikka)</p>
+        </item>
+        <item>
+          <p>Noverande storleik og plassering for objektet i pikslar: (Uavgrensa)</p>
+        </item>
+      </list>
+    </item>
+  </list>
+</page>

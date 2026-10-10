@@ -935,28 +935,31 @@ class AXUtilities:
     def get_nearest_block_ancestor(
         obj: Atspi.Accessible, original: Atspi.Accessible | None = None
     ) -> Atspi.Accessible | None:
-        """Returns obj or its nearest ancestor that is not an inline element."""
+        """Returns obj or its nearest ancestor that separates blocks for line grouping."""
 
         if original is None:
             original = obj
 
-        # The wrapper transparency below holds only while ascending from the inline start, not
-        # for the start itself; the start is kept out of the cache too, so its answer and the
-        # ancestor answer for the same object cannot overwrite one another.
         above_start = obj is not original
         if above_start:
             rv = AXUtilities._CACHE.get_nearest_block_ancestor(obj)
             if rv is not None:
                 return rv
 
-        inline = AXUtilitiesRole.is_inline_element(obj)
+        role = AXObject.get_role(obj)
         parent = AXObject.get_parent(obj)
-        if not inline and above_start and AXUtilitiesRole.is_section(obj):
-            # A generic section whose text is only embedded objects (e.g. like-button-view-
-            # model) is a transparent wrapper; the section gate keeps a structural [OBJ]-only
-            # element (a table row of cells) from being treated as a wrapper.
-            text = AXText.get_all_text(obj)
-            inline = "\ufffc" in text and not re.search(r"[^\s\ufffc]", text)
+        if AXUtilitiesRole.is_list_item(obj, role):
+            inline = "grid" not in AXObject.get_attribute(parent, "display")
+        else:
+            inline = AXUtilitiesRole.is_inline_element(obj, role)
+        if not inline and AXUtilitiesRole.is_widget(obj, role):
+            inline = AXUtilitiesRole.children_are_presentational(obj, role)
+        if not inline and AXUtilitiesRole.is_section(obj, role):
+            inline = (
+                "grid" not in AXObject.get_attribute(obj, "display")
+                and "grid" not in AXObject.get_attribute(parent, "display")
+                and not AXUtilitiesState.is_editable(obj)
+            )
 
         if inline:
             rv = (
@@ -1459,11 +1462,37 @@ class AXUtilities:
         return False
 
     @staticmethod
+    def get_label_covering_object(obj: Atspi.Accessible) -> Atspi.Accessible | None:
+        """Returns a non-focusable label whose bounds contain a focusable object's bounds."""
+
+        if not AXUtilitiesState.is_focusable(obj):
+            return None
+
+        bounds = AXComponent.get_rect(obj)
+        if bounds.width <= 0 or bounds.height <= 0:
+            return None
+
+        for label in AXUtilitiesRelation.get_is_labelled_by(obj):
+            if not AXUtilitiesRole.is_label(label) or AXUtilitiesState.is_focusable(label):
+                continue
+            if AXUtilitiesObject.is_ancestor(label, obj):
+                continue
+            overlap = AXUtilitiesComponent.get_rect_intersection(
+                bounds, AXComponent.get_rect(label)
+            )
+            if AXUtilitiesComponent.is_same_rect(bounds, overlap):
+                return label
+
+        return None
+
+    @staticmethod
     def get_displayed_label(obj: Atspi.Accessible) -> str:
         """Returns the displayed label of obj."""
 
         labels = AXUtilitiesRelation.get_is_labelled_by(obj)
-        strings = [AXObject.get_name(label) or AXText.get_all_text(label) for label in labels]
+        strings = [
+            AXObject.get_name(label) or AXUtilitiesHypertext.expand_eocs(label) for label in labels
+        ]
         result = " ".join(strings)
         return result
 

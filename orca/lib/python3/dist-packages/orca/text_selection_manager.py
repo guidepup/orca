@@ -297,7 +297,7 @@ class TextSelectionManager:
         )
         if document is not None:
             success, strings = AXUtilities.get_document_selected_texts(document)
-            if success:
+            if success and strings:
                 return " ".join(strings)
 
             start, end = AXUtilities.get_document_text_selection_endpoints(None, document)
@@ -522,14 +522,12 @@ class TextSelectionManager:
         reported_elements = AXUtilities.get_text_selection_elements(
             old_start[0],
             old_end[0],
-        ) + AXUtilities.get_text_selection_elements(start[0], end[0])
+        )
+        if start[0] != old_start[0] or end[0] != old_end[0]:
+            reported_elements += AXUtilities.get_text_selection_elements(start[0], end[0])
         if event_source is not None:
             reported_elements.append(event_source)
-        elements: list[Atspi.Accessible] = []
-        for element in reported_elements:
-            if element not in elements:
-                elements.append(element)
-        for element in elements:
+        for element in dict.fromkeys(reported_elements):
             AXUtilities.update_cached_selected_text(element)
 
     def _store_selection_change(
@@ -551,6 +549,7 @@ class TextSelectionManager:
         self,
         document: Atspi.Accessible | None,
         selection_root: Atspi.Accessible,
+        obj: Atspi.Accessible,
     ) -> SelectionBoundaries:
         """Returns the current selection endpoints."""
 
@@ -558,7 +557,14 @@ class TextSelectionManager:
             document
         )
         if success:
-            return endpoints
+            start, end = endpoints
+            if start[0] is not None or end[0] is not None:
+                return endpoints
+            ranges = AXText.get_selected_ranges(obj)
+            if not ranges:
+                return endpoints
+            # An unimplemented Document getter can return an empty selection.
+            return AXUtilities.get_document_text_selection_endpoints(None, obj, ranges=ranges)
 
         command = self._last_selection_command
         if command is not None and self._get_current_selection_command() is command:
@@ -581,7 +587,7 @@ class TextSelectionManager:
         key = ax_cache_manager.get_object_key(selection_root)
         old_selection = self._get_cached_selection(key)
         old_start, old_end = old_selection
-        selection = self._get_selection_endpoints_for_change(document, selection_root)
+        selection = self._get_selection_endpoints_for_change(document, selection_root, obj)
         start, end = selection
         tokens = [
             "TEXT SELECTION MANAGER: Updating text selection state for",
@@ -606,8 +612,8 @@ class TextSelectionManager:
         if (
             start[0] is None
             and end[0] is None
-            and AXUtilities.has_selected_text(selection_root)
             and (state != SelectionChangeState.NOT_ORCA or old_selection_exists)
+            and AXUtilities.has_selected_text(selection_root)
         ):
             msg = "TEXT SELECTION MANAGER: Ignoring indeterminate selection boundaries."
             debug.print_message(debug.LEVEL_INFO, msg, True)
@@ -936,6 +942,8 @@ class TextSelectionManager:
         else:
             AXUtilities.clear_all_selected_text(text_object)
             succeeded = True
+            if snapshot.anchor.accessible_object == text_object:
+                AXText.set_caret_offset(text_object, new_focus.offset)
 
         return _TextSelectionResult(
             succeeded,
@@ -1075,7 +1083,7 @@ class TextSelectionManager:
                 continue
             cleared_selection_objs.append(obj)
             AXUtilities.clear_all_selected_text(obj)
-            AXUtilities.update_cached_selected_text(obj)
+            AXUtilities.update_cached_selected_text(obj, selection=("", 0, 0))
         return cleared_selection_objs
 
     def _record_selection_command(

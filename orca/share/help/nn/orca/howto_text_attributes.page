@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_text_attributes" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_structural_navigation"/>
+    <title type="sort">2. Tekstattributtar</title>
+    <desc>Undersøk tekstformatering</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Tekstattributter</title>
+  <p>Omgrepet «tekstatributtar» viser til alle font-, stil-, justerings- og andre formateringsdetaljar som er knytte til eit gitt teikn eller ein serie teikn.</p>
+  <section id="obtaining">
+    <title>Hentar formateringsinformasjon</title>
+    <p>Når du trykkjer <keyseq><key>Orca-modifikator</key><key>F</key> </keyseq>, vil <app>Orca</app> lese opp kjend tekstattributtinformasjon om eit objekt. I tillegg vil <app>Orca</app> valfritt vise tekstattributt i punktskrift ved å «understreke» dei medan du navigerer i eit dokument.</p>
+    <p>Sidan mengda tekstattributt er stor, og ikkje alle bryr seg om kvart attributt, lèt <link xref="preferences_text_attributes"> Tekstattributt-sida i innstillingane</link> deg tilpasse kva tekstattributt <app>Orca</app> skal framføre i tale, saman med rekkjefølgja dei skal framførast i, og kva for nokre <app>Orca</app> skal vise i punktskrift.</p>
+    <p>Sidan <link xref="preferences_text_attributes">Tekstinnstillingane</link> også er ein del av app-spesifikke innstillingar, kan du tilpasse visinga av tekstattributt etter behov for kvar app du brukar.</p>
+  </section>
+  <section id="identifying_misspelled_words">
+    <title>Identifiserer feilstava ord</title>
+    <p>Dei fleste appar og verktøysett viser at eit ord er skrive feil ved å understreke ordet med ei raud, bølgjande linje. Førekomsten av denne linja vert som regel vist til hjelpeteknologiar som eit tekstattributt. Dermed finn du stavefeil blant tekstattributta du kan velje. Som standard er attributtet for stavefeil slått på for både tale og punktskrift, og vil difor verte presentert saman med alle andre attributt du har slått på.</p>
+    <p>I tillegg til å få tilgang til rettskrivingsfeil som eit tekstattributt, om du har aktivert tast-ekko og/eller ord-ekko og skriv eit ord som er feilstava, vil <app>Orca</app> seie «feilstava» når feilindikatoren kjem, slik at du med ein gong kan gå tilbake og rette feilen.</p>
+    <p>Til slutt, når du navigerer i eit dokument og markøren flyttar seg til eit ord som er stava feil, vil <app>Orca</app> melde frå om stavefeilen.</p>
+  </section>
+</page>

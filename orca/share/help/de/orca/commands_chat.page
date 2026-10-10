@@ -49,28 +49,22 @@
   <p>Folgende Befehle können zum Erhalt von Informationen über den Sofortnachrichtendienst und IRC unterstützt durch <app>Orca</app> verwendet werden. Sie werden feststellen, dass es sich bei vielen dieser Befehle um nicht zugewiesene Befehle handelt. Bitte klicken Sie auf <link xref="howto_key_bindings">Tastenkombinationen verändern</link>, um Informationen darüber zu erhalten, wie Sie diesen Befehlen Tastenkombinationen zuweisen.</p>
   <list>
     <item>
-      <p>
-        Present previous chat room message: (Unbound)
-      </p>
+      <p>Die vorherige Chatraum-Nachricht vorlesen: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>
-        Present next chat room message: (Unbound)
-      </p>
+      <p>Die nächste Chatraum-Nachricht vorlesen: (Nicht zugewiesen)</p>
     </item>
     <item>
       <p>Anzeige des Raumnamens mit Nachrichten ermöglichen/blockieren: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>
-        Toggle chat room specific message histories: (unbound)
-      </p>
+      <p>Nachrichtenverläufe je Chatraum ein/ausschalten: (Nicht zugewiesen)</p>
     </item>
     <item>
       <p>Einschalten/Ausschalten des Schreibstatus des Kontakts: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>Toggle room name presentation: (Unbound)</p>
+      <p>Ansage des Raumnamens ein/ausschalten: (Nicht zugewiesen)</p>
     </item>
   </list>
 </page>

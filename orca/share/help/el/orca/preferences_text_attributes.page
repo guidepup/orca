@@ -31,11 +31,7 @@
         <p>Το <gui>όνομα γνωρίσματος</gui>: Το όνομα του γνωρίσματος κειμένου.</p>
       </item>
       <item>
-        <p>
-          <gui>Speak</gui>: Check this checkbox if you would like
-          <app>Orca</app> to speak this attribute when you press
-          <keyseq><key>Orca Modifier</key><key>F</key></keyseq>.
-        </p>
+        <p><gui>Εκφώνηση</gui>: Επιλέξτε αυτό το πλαίσιο ελέγχου αν θέλετε το <app>Orca</app> να εκφωνεί αυτό το γνώρισμα όταν πατάτε <keyseq><key>Τροποποιητής Orca</key><key>F</key></keyseq>.</p>
       </item>
       <item>
         <p><gui>Σημείωση στο Μπράιγ</gui>: Σημειώστε αυτό το πλαίσιο ελέγχου εάν θα θέλατε το <app>Orca</app> να "υπογραμμίζει" αυτό το γνώρισμα στην εμφάνιση Μπράιγ.</p>
@@ -48,36 +44,20 @@
   </section>
   <section id="reset">
      <title>Αναίρεση αλλαγών</title>
-     <p>
-       Beneath the list of text attributes, there is a <gui>Reset</gui> button
-       (<keyseq><key>Alt</key><key>R</key></keyseq>) which will restore
-       the values of the table to what they were when the dialog was
-       first displayed.
-    </p>
+     <p>Κάτω από τη λίστα των γνωρισμάτων κειμένου, υπάρχει ένα κουμπί <gui>Επαναφορά</gui> (<keyseq><key>Alt</key><key>R</key></keyseq>) το οποίο θα επαναφέρει τις τιμές της λίστας σε αυτές που είχαν όταν πρωτοεμφανίστηκε ο διάλογος.</p>
   </section>
   <section id="rearranging">
      <title>Αναδιάταξη της σειράς παρουσίασης</title>
-     <p>
-        When you initially display the <gui>Text Attributes</gui> page, all of your enabled
-        attributes are placed at the top of the table in the order in which they
-        will be spoken. There are four buttons which can be used to rearrange
-        the order of presentation.
-    </p>
+     <p>Όταν εμφανίζετε αρχικά τη σελίδα <gui>Γνωρίσματα κειμένου</gui>, όλα τα ενεργοποιημένα γνωρίσματά σας τοποθετούνται στην κορυφή του πίνακα κατά τη σειρά που θα εκφωνούνται.</p>
     <list>
       <item>
         <p><gui>μετακίνηση στην κορυφή</gui> (<keyseq><key>Alt</key><key>T</key></keyseq>): μετακινεί το επιλεγμένο γνώρισμα στην κορυφή της λίστας.</p>
       </item>
       <item>
-        <p>
-          <gui>Move up</gui> (<keyseq><key>Alt</key><key>U</key></keyseq>):
-          moves the selected attribute up one row.
-        </p>
+        <p><gui>Μετακίνηση επάνω</gui> (<keyseq><key>Alt</key><key>U</key></keyseq>): μετακινεί το επιλεγμένο γνώρισμα μία γραμμή προς τα πάνω.</p>
       </item>
       <item>
-        <p>
-          <gui>Move down</gui> (<keyseq><key>Alt</key><key>D</key></keyseq>):
-          moves the selected attribute down one row.
-        </p>
+        <p><gui>Μετακίνηση κάτω</gui> (<keyseq><key>Alt</key><key>D</key></keyseq>): μετακινεί το επιλεγμένο γνώρισμα μία γραμμή προς τα κάτω.</p>
       </item>
       <item>
         <p><gui>μετακίνηση στο τέλος</gui> (<keyseq><key>Alt</key><key>B</key></keyseq>): μετακινεί το επιλεγμένο γνώρισμα στο τέλος της λίστας.</p>

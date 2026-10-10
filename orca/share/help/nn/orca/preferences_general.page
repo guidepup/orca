@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_general" xml:lang="nn">
+  <info>
+    <title type="sort">1. Generelt</title>
+    <title type="link">Generelt</title>
+    <desc>Konfigurerer <app>Orca</app> sine grunnleggjande oppførslar</desc>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_voice"/>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Generelle innstillingar</title>
+  <section id="keyboardlayout">
+    <info>
+      <desc>Innstillingar vindauge-val for å velje kva <app>Orca</app> tastatur-oppsett som skal brukast, skrivebord eller berbar.</desc>
+    </info>
+    <title>Tastaturoppsett</title>
+    <p>Radioknappgruppa <gui>Tastaturoppsett</gui> lèt deg velje om du skal arbeide på eit stasjonært tastatur (det vil seie med eit numerisk tastatur) eller på eit berbart tastatur. Kva oppsett du vel, avgjer både <key>Orca-modifikator</key> og eit tal tastatursnarvegar for å utføre <app>Orca</app>-kommandoar.</p>
+    <p>Standardverdi: <gui>Skrivebord</gui></p>
+  </section>
+  <section id="presenttooltips">
+    <info>
+      <desc>Innstilling i vindauget for innstillingar som slår på vising av verktøytips som kjem fram når du held musepeikaren over.</desc>
+    </info>
+    <title>Vis verktøytips</title>
+    <p>Når du slår på dette valet, vil <app>Orca</app> vise informasjon om verktøytips når dei dukkar opp som følgje av musepeiking. Spesifikke handlingar for å tvinge verktøytips til å dukke opp, slik som å trykkje <keyseq> <key>Ctrl</key><key>F1</key></keyseq> når eit objekt er i fokus, vil alltid føre til at verktøytips vert viste, uavhengig av dette valet.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="objectundermouse">
+    <info>
+      <desc>Innstilling for å slå på vising av objektet under musepeikaren.</desc>
+    </info>
+    <title>Snakk om objekt under musa</title>
+    <p>Når du slår på dette valet, vil <app>Orca</app> presentere informasjon om objektet under musepeikaren når du flyttar på skjermen med <app>Orca</app> si <link xref="howto_mouse_review">Mus-gjennomgang</link>-funksjon.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="timeanddate">
+    <info>
+      <desc>Innstillingar for vindauget Innstillingar for tilpassing av tid- og datoformat brukt av <app>Orca</app>.</desc>
+    </info>
+    <title>Tidsformat og datoformat</title>
+    <p>Med <gui>Tidsformat</gui> og <gui>Datooppsett</gui> kan du velje korleis <app>Orca</app> skal lese opp og skrive punktskrift for klokkeslett og dato.</p>
+    <p>Standardverdi: bruk systemet sin språkinnstilling for kvar</p>
+  </section>
+  <section id="navigation_in_say_all">
+    <info>
+      <desc>Innstillingar vindauge-val for å slå på spoling, spole framover og strukturell navigasjon under Sei alt.</desc>
+    </info>
+    <title>Navigering i Say All</title>
+    <p><app>Orca</app> si «Sei alt»-funksjon les opp innhaldet i dokumentet frå noverande plassering til slutten av dokumentet. Som standard vil eit tastetrykk avbryte «Sei alt»-opplesinga. Men om du markerer avmerkingsboksen <gui>Aktiver spoling og hurtigspoling i «Sei alt»</gui>, kan <key>Opp</key> og <key>Ned</key> brukast under «Sei alt»-opplesinga for å flytte seg raskt i dokumentet og høyre noko som nettopp vart lese på nytt, eller hoppe over tekst du ikkje er interessert i utan å måtte starte «Sei alt» på nytt.</p>
+    <p>Viss du les eit dokument i ein app som har støtte for strukturell navigering, og du har merkt av avkryssingsboksen <gui>Aktiver strukturell navigering i Say All</gui>, kan du bruke dei støtta strukturelle navigatørkommandoane på same måte: <key>H</key>/<keyseq><key>Shift</key> <key>H</key></keyseq> held fram lesinga frå neste/førre overskrift, <key>P</key>/<keyseq><key>Shift</key><key>P</key></keyseq> held fram lesinga frå neste/førre avsnitt, <key>T</key>/<keyseq><key>Shift</key> <key>T</key></keyseq> held fram lesinga frå neste/førre tabell, og så vidare.</p>
+    <p>Standardverdi: ikkje avkursa</p>
+  </section>
+  <section id="say_all_announce_context">
+    <title>Kunngjer kontekstuell informasjon i Sei alt</title>
+    <p><app>Orca</app> kan valfritt gje meir informasjon om dokumentinnhaldet som vert lese opp, slik som å annonsere når du går inn i og ut av ein sitatblokk, liste, tabell eller anna behaldar. Om desse annonseringane vert gjort eller ikkje, kan konfigurerast uavhengig gjennom desse avkryssingsboksane:</p>
+    <list>
+      <item><p>Kunngjer blokkutdrag i Sei alt</p></item>
+      <item><p>Kunngjer skjema i Sei alle</p></item>
+      <item><p>Kunngjer landemerke i Les alt</p></item>
+      <item><p>Kunngjer lister i Sei alle</p></item>
+      <item><p>Kunngjer panel i Sei alle</p></item>
+      <item><p>Kunngjer tabellar i Say All</p></item>
+    </list>
+    <p>Standardverdi: merka</p>
+    <note style="note">
+      <p>Om <app>Orca</app> gjev desse kunngjeringane under navigering er også konfigurerbart. Du finn tilsvarande avkryssingsruter på <gui>Tale</gui>-sida. For meir informasjon, sjå <link xref="preferences_speech#spoken_context">Tale i samanheng</link>.</p>
+    </note>
+  </section>
+  <section id="say_all_by">
+   <info>
+      <desc>Innstilling for å tilpasse <app>Orca</app> si Say All-presentasjon.</desc>
+   </info>
+   <title>Sei All By</title>
+   <p><gui>Les alt etter</gui>-nedtrekassa lèt deg velje om <app>Orca</app> skal seie éi setning om gongen eller éi linje om gongen når du brukar «Sei alt» i eit dokument.</p>
+    <p>Standardverdi: <gui>Setning</gui></p>
+  </section>
+  <section id="profiles">
+    <info>
+      <desc>Innstillingar vindauge-alternativ for å styre innstillingsprofilar.</desc>
+    </info>
+    <title>Profilar</title>
+    <p>Kontrollgruppa <gui>Profilar</gui>, som vert vist nedst på sida <gui>Generelt</gui>, gjer at du kan vedlikehalde og bruke fleire oppsett.</p>
+   <list>
+      <item>
+        <p>Rullgardinmenyen <gui>Aktiv profil</gui> viser den aktive profilen og lar deg velje ein annan profil som skal lastast.</p>
+      </item>
+      <item>
+        <p>Knappen <gui>Last inn</gui> gjer at <app>Orca</app> lastar profilen som er vist i kombinasjonsboksen <gui>Aktiv profil</gui>.</p>
+      </item>
+      <item>
+        <p>Knappen <gui>Lagre som</gui> lèt deg lagre det noverande settet med innstillingar frå innstillingsvindauget til ein namngjeven profil.</p>
+      </item>
+      <item>
+        <p><gui>Oppstartsprofil</gui>-kombinasjonsboksen lèt deg velje profilen som skal lastast automatisk kvar gong du startar <app>Orca</app>.</p>
+      </item>
+    </list>
+  </section>
+  <section id="progress_bar_updates">
+    <title>Framdriftslinjeoppdateringar</title>
+    <section id="progress_bar_updates_speak">
+      <title>Speak-oppdateringar</title>
+      <p>Viss avkryssingsboksen <gui>Les opp oppdateringar</gui> er vald, vil <app>Orca</app> med jamne mellomrom lese opp status for framdriftslinjer.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="progress_bar_updates_braille">
+      <title>Braille-oppdateringar</title>
+      <p>Viss avmerkingsboksen <gui>Oppdateringar for punktskrift</gui> er vald, vil <app>Orca</app> med jamne mellomrom vise statusen til framgangslinjene på det oppdaterbare braille-displayet ditt.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="progress_bar_updates_beep">
+      <title>Beep-oppdateringar</title>
+      <p>Viss <gui>Pipetonar oppdaterer</gui>-avmerkingsboksen er vald <app>Orca</app> vil periodisk gje pipelydar som aukar i tonehøgd etter kvart som verdien på framdriftslinja aukar.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="progress_bar_updates_frequency">
+      <title>Frekvens (sekund)</title>
+      <p>Denne knappen bestemmer kor ofte oppdateringar vert viste.</p>
+      <p>Standardverdi: 10</p>
+    </section>
+    <section id="progress_bar_updates_restrict">
+      <title>Gjeld for</title>
+      <p>Denne kombinasjonsboksen lèt deg styre kva framgangslinjer som skal visast, føresett at framstilling av oppdateringar i framgangslinjer er slått på. Valet er <gui>Alle</gui>, <gui>Program</gui> og <gui>Vindauge</gui>.</p>
+      <p>Valk av <gui>Alle</gui> fører til at <app>Orca</app> viser oppdateringar for alle framgangslinjer, uavhengig av kor framgangslinjene er plasserte.</p>
+      <p>Valet <gui>Program</gui> fører til at <app>Orca</app> viser oppdateringar frå framdriftslinjer i aktiv app, sjølv om dei ikkje er i aktivt vindauge.</p>
+      <p>Valet <gui>Vindauge</gui> fører til at <app>Orca</app> berre viser oppdateringar for framgangslinjer i det aktive vindauget.</p>
+      <p>Standardverdi: <gui>Program</gui></p>
+    </section>
+  </section>
+</page>

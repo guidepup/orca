@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_controlling_orca" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_where_am_i"/>
+    <link type="guide" xref="commands#getting_started"/>
+    <title type="sort">1. Kontroll og læring i bruk av Orca</title>
+    <title type="link">Styre og lære å bruke Orca</title>
+    <desc>Kommandoar for å samhandle med <app>Orca</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Styre og lære å bruke Orca</title>
+  <section id="controlling">
+    <title>Kommandoar for å styre <app>Orca</app></title>
+    <p>Følgjande kommandoar kan brukast for å kome inn i <app>Orca</app> sine Innstillingar-vindauge, slå <app>Orca</app> av og på, og omgå <app>Orca</app>-kommandoar for å unngå konflikt mellom snarvegar i appen som vert brukt.</p>
+    <list>
+      <item>
+        <p>Slå <app>Orca</app> av og på i støtta skrivebordsmiljø: <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
+        <note style="tip">
+           <p>Viss du brukar <app>Orca</app> i eit anna skrivebordsmiljø der det ikkje finst kommando for å slå <app>Orca</app> av og på, kan kommandoen for å avslutte <app>Orca</app> vere til hjelp. Denne kommandoen er ikkje bunden som standard. Sjå <link xref="howto_key_bindings">Endre tastetrykk</link> for informasjon om korleis du kan binde ubundne kommandoar.</p>
+        </note>
+      </item>
+      <item>
+        <p><link xref="preferences">Orca-innstillingar</link> vindauge: <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+      </item>
+      <item>
+        <p>Orca-innstillingar for den fokuserte appen: <keyseq><key>Ctrl</key><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>.</p>
+      </item>
+      <item>
+        <p>Slå av/på alle Orca-kommando: <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq></p>
+      </item>
+      <item>
+        <p>Veksle tastaturoppsett: (Ubind)</p>
+      </item>
+      <item>
+        <p>Syklus til neste nøkkel-ekko-nivå: (Ikkje bunden)</p>
+      </item>
+      <item>
+        <p>Avslutt skjermlesaren: (Ikkje bunden)</p>
+      </item>
+    </list>
+  </section>
+  <section id="braille_keyboard_bindings">
+    <title>Braille-kommandoar</title>
+    <p>Følgjande kommandoar kan brukast til å styre og tilpasse Orca sin punktskriftutgang.</p>
+    <list>
+      <item>
+        <p>Sveip punktskriftsvisinga til venstre: (Ikkje tildelt)</p>
+      </item>
+      <item>
+        <p>Sveip punktskriftsvisinga til høgre: (Ikkje tildelt)</p>
+      </item>
+      <item>
+        <p>Slå kontraktert punktskrift av og på: (Uforpliktande)</p>
+      </item>
+    </list>
+  </section>
+  <section id="learning">
+    <title>Kommandoar for å lære å bruke <app>Orca</app></title>
+    <p>I læremodus vil <app>Orca</app> annonsere kvar tastetrykk du trykte på saman med alle tilhøyrande <app>Orca</app>-kommandoar som tastetrykket er bunde til. I denne modusen kan du også få ei liste over snarvegar som inneheld alle <app>Orca</app>-kommandoane du kan bruke.</p>
+    <list>
+      <item>
+        <p>Gå inn i læringsmodus: <keyseq><key>Orca-modifikator</key><key>H</key></keyseq></p>
+      </item>
+      <item>
+        <p>Avslutt læremodus: <keyseq><key>Esc</key></keyseq></p>
+      </item>
+    </list>
+  </section>
+</page>

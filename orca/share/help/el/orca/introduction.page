@@ -21,23 +21,13 @@
   </info>
   <title>Καλώς ήρθατε στο Orca</title>
   <p>Το <app>Orca</app> είναι ένας ελεύθερος, ανοικτού λογισμικού, ευέλικτος και επεκτάσιμος αναγνώστης οθόνης που παρέχει πρόσβαση στη γραφική επιφάνεια εργασίας μέσα από ομιλία και ανανεώσιμο Μπράιγ.</p>
-  <p>
-    <app>Orca</app> works with applications and toolkits that support
-    the Assistive Technology Service Provider Interface (AT-SPI), which
-    is the primary assistive technology infrastructure for Linux and
-    Solaris. Applications and toolkits supporting the AT-SPI include
-    Gtk+, Qt, Java Swing, LibreOffice, Gecko, WebKitGtk, and Chrome/Chromium.
-  </p>
+  <p>Το <app>Orca</app> λειτουργεί με εφαρμογές και εργαλειοθήκες που υποστηρίζουν το Assistive Technology Service Provider Interface (AT-SPI). Αυτό περιλαμβάνει το GNOME και άλλες δημοφιλείς επιφάνειες εργασίας και εργαλειοθήκες εφαρμογών.</p>
   <section id="launching">
     <title>Έναρξη του <app>Orca</app></title>
     <p>Για την έναρξη του <app>Orca</app>:</p>
     <list>
       <item>
-        <p>
-          The method for configuring <app>Orca</app> to be launched
-          automatically as your preferred screen reader will depend upon
-          which desktop environment you use.
-        </p>
+        <p>Η μέθοδος για τη διαμόρφωση του <app>Orca</app> ώστε να εκκινείται αυτόματα ως ο προτιμώμενος αναγνώστης οθόνης εξαρτάται από το περιβάλλον επιφάνειας εργασίας που χρησιμοποιείτε.</p>
       </item>
       <item>
         <p>Για να ενεργοποιήσετε και να απενεργοποιήσετε το <app>Orca</app> στο GNOME, πατήστε το <keyseq><key>πλήκτρο λογότυπου</key><key>Alt</key><key>S</key></keyseq>.</p>
@@ -58,9 +48,7 @@
           <p><cmd>-v</cmd>, <cmd>--version</cmd>: Προβολή της έκδοσης του <app>Orca</app></p>
         </item>
         <item>
-          <p>
-            <cmd>-s</cmd>, <cmd>--setup</cmd>: Set up user preferences
-          </p>
+          <p><cmd>-s</cmd>, <cmd>--setup</cmd>: Ρύθμιση προτιμήσεων χρήστη</p>
         </item>
         <item>
           <p><cmd>-u</cmd>, <cmd>--user-prefs=<em>όνομακαταλόγου</em></cmd>: Χρησιμοποιείστε το <em>όνομακαταλόγου</em> ως τον εναλλακτικό κατάλογο για προτιμήσεις χρήστη</p>

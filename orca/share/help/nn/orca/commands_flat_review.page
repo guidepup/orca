@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_flat_review" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_find"/>
+    <link type="guide" xref="commands#reviewing_screen_contents"/>
+    <link type="seealso" xref="howto_flat_review"/>
+    <title type="sort">1. Flat vurdering</title>
+    <title type="link">Flat vurdering</title>
+    <desc>Kommandoar for romleg gjennomgang av vindauge</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Flat vurderingskommandoar</title>
+  <p>Orca sine <link xref="howto_flat_review">Flat Review</link>-kommandoar er laga for romleg gjennomgang av element som vert vist på skjermen. Dei gjev også eit middel for å lese den aktuelle linja, ordet og teiknet når du navigerer i teksten i eit dokument. Dei fleste av desse kommandoane er «bunde» til tastetrykk. Sjå <link xref="howto_key_bindings">Endre tastebindingar</link> for informasjon om korleis du bind ubundne kommandoar.</p>
+  <section id="line">
+    <title>Kommandoar for gjennomgang per linje</title>
+    <list>
+      <item>
+        <p>Første linje (Heimposisjon):</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP 7</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Ctrl</key><key>U</key></keyseq></p></item>
+        </list>
+      </item>
+      <item>
+        <p>Førre linje:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 7</key></keyseq></p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>U</key></keyseq></p></item>
+        </list>
+      </item>
+      <item>
+        <p>Noverande linje:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 8</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>I</key></keyseq></p></item>
+        </list>
+      </item>
+        <item><p>Spel av gjeldande linje:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 8</key></keyseq> (dobbeltklikka)</p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>I</key></keyseq> (dobbeltklikka)</p></item>
+        </list>
+      </item>
+      <item><p>Stav fonetisk ut noverande linje:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 8</key></keyseq> (trippelklikka)</p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>I</key></keyseq> (trefaldig klikka)</p></item>
+        </list>
+      </item>
+      <item><p>Neste linje:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 9</key></keyseq></p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>O</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Siste linje (Sluttposisjon):</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP 9</key></keyseq></p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>Ctrl</key><key>O</key></keyseq></p></item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="word">
+    <title>Kommandoar for å gå gjennom ord</title>
+    <list>
+      <item><p>Ord over:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP 4</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Ctrl</key><key>J</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Førre ord:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 4</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>J</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Noverande ord:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 5</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>K</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Stav det gjeldande ordet:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 5</key></keyseq> (dobbeltklikka)</p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>K</key></keyseq> (dobbeltklikka)</p></item>
+        </list>
+      </item>
+      <item><p>Fonetisk staveordet:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 5</key></keyseq> (trippelklikka)</p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>K</key></keyseq> (trippelklikka)</p></item>
+        </list>
+      </item>
+      <item><p>Neste ord:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 6</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>L</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Ord under:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP 6</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Ctrl</key><key>L</key></keyseq></p></item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="character">
+    <title>Kommandoar for å gå gjennom teikn for teikn</title>
+    <list>
+      <item><p>Føregåande teikn:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 1</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>M</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Noverande teikn:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 2</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Komma</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Uttal noverande teikn fonetisk:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 2</key></keyseq> (dobbeltklikka)</p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>Komma</key></keyseq> (dobbeltklikka)</p></item>
+        </list>
+      </item>
+      <item><p>Spel Unicode-verdien til gjeldande teikn:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 2</key></keyseq> (trippelklikka)</p></item>
+          <item><p>Berbar: <keyseq><key>Orca-modifikator</key><key>Komma</key></keyseq> (trippelklikka)</p></item>
+        </list>
+      </item>
+      <item><p>Neste teikn:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>KP 3</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Punktum</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Siste teikn på gjeldande linje:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP 1</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Ctrl</key><key>M</key></keyseq></p></item>
+        </list>
+      </item>
+    </list>
+  </section>
+  <section id="other">
+    <title>Tilleggskommandoar</title>
+    <list>
+      <item><p>Slå av og på flate vurderingar (oppdaterer den flate vurderingskonteksten):</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP Minus</key></keyseq></p></item>
+          <item><p>Berbar datamaskin: <keyseq><key>Orca-modifikator</key><key>P</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Vurder noverande element/app:</p>
+        <list>
+          <item><p>Skrivebord: <keyseq><key>Orca-modifikator</key><key>KP 5</key></keyseq></p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Ctrl</key><key>K</key></keyseq></p></item>
+        </list>
+      </item>
+      <item><p>Bruk Say All for å gå gjennom det aktuelle vindauget:</p>
+        <list>
+          <item><p>Skrivebord: <key>KP Plus</key> (dobbeltklikka)</p></item>
+          <item><p>Laptop: <keyseq><key>Orca-modifikator</key><key>Semicolon</key></keyseq> (dobbeltklikka)</p></item>
+        </list>
+      </item>
+      <item>
+      <p>Kopier innhaldet under flat vurdering til utklippstavla: (Ubind)</p>
+      </item>
+      <item>
+        <p>Føyer innhaldet under flat vurdering til utklippstavla: (Uforpliktande)</p>
+      </item>
+      <item><p>Flytt flat vurdering til nedre venstre: (Ikkje tildelt)</p></item>
+      <item><p>Vis innhald for flat vurdering: (Ikkje tildelt)</p></item>
+      <item><p>Slå på avgrensing av flat vurdering til det gjeldande objektet: (Ikkje tildelt)</p></item>
+    </list>
+  </section>
+</page>

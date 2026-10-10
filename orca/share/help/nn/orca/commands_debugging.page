@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_debugging" xml:lang="nn">
+  <info>
+    <link type="guide" xref="commands#troubleshooting"/>
+    <title type="sort">1. Feilsøking</title>
+    <title type="link">Feilsøking</title>
+    <desc>Kommandoar for feilsøking</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Fjerningskommandoar</title>
+  <p>Utviklarane ber deg kanskje om å gje nokre feilsøkingsinformasjonar for å hjelpe dei med å identifisere kjelda til eit problem du opplever. Følgjande kommando er ikkje «bunden» til eit tastetrykk. Om du treng å binde han, sjå <link xref="howto_key_bindings">Modifisere tastetrykk</link>.</p>
+  <list>
+    <item>
+      <p>Ta eit augneblink for feilsøking: (Ubind)</p>
+    </item>
+    <item>
+      <p>Syklus til neste feilsøkingsnivå: (Ubind)</p>
+    </item>
+    <item>
+      <p>Tømm AT-SPI-hurtiglagring for den noverande appen: (Ikkje bunde)</p>
+    </item>
+  </list>
+</page>

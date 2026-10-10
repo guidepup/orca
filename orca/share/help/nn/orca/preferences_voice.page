@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_voice" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_speech"/>
+    <title type="sort">2.0 Stemme</title>
+    <title type="link">Stemme</title>
+    <desc>Konfigurerer stemma som <app>Orca</app> brukar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Stemmeinnstillingar</title>
+  <section id="voice_type_settings">
+    <title>Innstillingar for stemmetype</title>
+    <section id="voice_type">
+      <title>Stemmetype</title>
+      <p>Denne kombinasjonsboksen gjer det mogleg for deg å bruke ulike røyster slik at du betre kan skilje store bokstavar og lenka tekst frå annan tekst, og skjermtekst frå tekst lagt til av <app>Orca</app>.</p>
+      <note style="tip">
+        <title>Konfigurere fleire stemmer</title>
+        <p>For kvar røyst du ynskjer å setje opp, vel du først røysta i <gui>Røystype</gui>-nedtrekassa. Deretter set du opp person, fart, tonehøgd og volum som skal brukast for den røysta.</p>
+      </note>
+    </section>
+    <section id="speech_system">
+      <title>Tale-system</title>
+      <p>Denne kombinasjonsboksen lèt deg velje det talemønsteret du føretrekkjer frå dei du har installert, slik som Speech Dispatcher.</p>
+    </section>
+    <section id="speech_synthesizer">
+      <title>Tale-syntetisator</title>
+      <p>Denne kombinasjonsboksen lèt deg velje kva talemaskin som skal brukast med det valde talemønsteret.</p>
+    </section>
+    <section id="person">
+      <title>Person</title>
+      <p>Denne kombinasjonsboksen lèt deg velje kva «person» eller «talar» som skal brukast med den valde stemma. Til dømes vil du kanskje at David skal snakke som standard, men at hyperlenker skal lesast opp av Alice. Merk at det du finn i <gui>Person</gui>-kombinasjonsboksen vil avhenge av kva syntetiske stemmer du har installert.</p>
+    </section>
+    <section id="capitalization_style">
+      <title>Store bokstavar-stil</title>
+      <p>Denne kombinasjonsboksen lèt deg velje kva kapitaliseringsvisingar for Speech Dispatcher du vil bruke i tillegg til <app>Orca</app> sin kapitaliseringsstemme. Valma, som er namngjevne med Speech Dispatcher-terminologi, er:</p>
+     <list>
+       <item><p><gui>Ikon</gui>: Spelar ein tone</p></item>
+       <item><p><gui>Stav</gui>: Uttalar ordet «hovudstad»</p></item>
+       <item><p><gui>Ingen</gui></p></item>
+    </list>
+    <note style="tip">
+      <title>Denne innstillinga kan slåast på undervegs</title>
+      <p><app>Orca</app> har også ein kommando for å sykle gjennom dei tilgjengelege store bokstav-stilane. Sjå <link xref="commands_speech_settings"> Talerinnstillingar-kommandoar</link> for meir informasjon.</p>
+    </note>
+    <p>Standardverdi: ingen</p>
+    </section>
+    <section id="rate_pitch_and_volume">
+      <title>Fart, tonehøgd og lydstyrke</title>
+      <p>Desse tre venstre-høgre-glidebrytarane let deg tilpasse lyden til personen du nettopp har valt ytterlegare.</p>
+    </section>
+  </section>
+  <section id="global_voice_settings">
+  <title>Globale stemmeinnstillingar</title>
+    <section id="pauses">
+      <title>Del opp talen i bitar mellom pausar</title>
+      <p>Avhengig av dei aktiverte taleinnstillingane kan <app>Orca</app> ha ganske mykje å seie om eit bestemt objekt, slik som namnet, rolla, tilstanden, minnet, opplæringsmeldinga og så bortetter. Viss du markerer <gui>Del opp talen i bitar mellom pausar</gui> vil <app>Orca</app> setje inn korte pausar mellom kvar av desse opplysningane.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="numbers_as_digits">
+      <title>Tal som tal</title>
+      <p>Valet <gui>Les opp tal som siffer</gui> gjer at <app>Orca</app> deler eit tal som «123» opp i separate siffer («1», «2» og «3») før det vert sendt vidare til talet-synthesizeren.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+  </section>
+</page>

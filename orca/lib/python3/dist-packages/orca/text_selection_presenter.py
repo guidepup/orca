@@ -25,6 +25,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from . import (
+    ax_cache_manager,
     debug,
     document_presenter,
     input_event_manager,
@@ -38,16 +39,30 @@ from .ax_text import AXText
 from .ax_utilities import AXUtilities
 
 if TYPE_CHECKING:
+    from collections.abc import Hashable
+
     import gi
 
     gi.require_version("Atspi", "2.0")
     from gi.repository import Atspi
 
+    from .input_event import InputEvent
     from .scripts import default
+
+    DocumentTextChange = tuple[
+        tuple[Atspi.Accessible, int],
+        tuple[Atspi.Accessible, int],
+        bool,
+        bool,
+        str,
+    ]
 
 
 class TextSelectionPresenter:
     """Presents changes in text selection."""
+
+    def __init__(self) -> None:
+        self._last_selection_removal: tuple[Hashable, InputEvent] | None = None
 
     def present_selected_text(
         self,
@@ -68,11 +83,26 @@ class TextSelectionPresenter:
         presentation_manager.get_manager().speak_message(message)
         return True
 
-    @staticmethod
-    def present_selection_removed() -> None:
+    def present_selection_removed(self, obj: Atspi.Accessible | None = None) -> None:
         """Presents that the current text selection was removed."""
 
+        event = input_event_manager.get_manager().get_last_input_event()
+        self._last_selection_removal = (
+            (ax_cache_manager.get_object_key(obj), event)
+            if obj is not None and event is not None
+            else None
+        )
         presentation_manager.get_manager().speak_message(messages.SELECTION_REMOVED)
+
+    def selection_removal_was_presented(self, obj: Atspi.Accessible) -> bool:
+        """Returns whether selection removal in obj was presented for the current input."""
+
+        if self._last_selection_removal is None:
+            return False
+        obj_key, event = self._last_selection_removal
+        if obj_key != ax_cache_manager.get_object_key(obj):
+            return False
+        return input_event_manager.get_manager().last_event_equals_or_is_release_for_event(event)
 
     @staticmethod
     def _present_pending_page_change(obj: Atspi.Accessible) -> bool:
@@ -204,7 +234,7 @@ class TextSelectionPresenter:
                     )
                 message_presented = True
             else:
-                script.say_phrase(obj, start, effective_end)
+                script.say_phrase(obj, start, effective_end, include_whole_objects=True)
                 if speak_message and (not ends_with_child or child_processed):
                     presentation_manager.get_manager().speak_message(message)
                     message_presented = True
@@ -287,7 +317,7 @@ class TextSelectionPresenter:
             and not new_string
         ):
             if speak_message:
-                presentation_manager.get_manager().speak_message(messages.SELECTION_REMOVED)
+                self.present_selection_removed(obj)
             return False
 
         changes, preceding_child_change_presented = self._compute_changes(
@@ -321,16 +351,7 @@ class TextSelectionPresenter:
         old_end: tuple[Atspi.Accessible | None, int],
         start: tuple[Atspi.Accessible | None, int],
         end: tuple[Atspi.Accessible | None, int],
-    ) -> (
-        tuple[
-            tuple[Atspi.Accessible, int],
-            tuple[Atspi.Accessible, int],
-            bool,
-            bool,
-            str,
-        ]
-        | None
-    ):
+    ) -> DocumentTextChange | None:
         """Returns the changed document range and its selection state."""
 
         old_start_obj, _old_start_offset = old_start
@@ -372,10 +393,13 @@ class TextSelectionPresenter:
         start: tuple[Atspi.Accessible | None, int],
         end: tuple[Atspi.Accessible | None, int],
         speak_message: bool,
+        *,
+        change: DocumentTextChange | None = None,
     ) -> bool:
         """Presents a document text selection change as a single phrase."""
 
-        change = self._get_document_text_change(old_start, old_end, start, end)
+        if change is None:
+            change = self._get_document_text_change(old_start, old_end, start, end)
         if change is None:
             msg = "TEXT SELECTION PRESENTER: Could not identify changed document text range."
             debug.print_message(debug.LEVEL_INFO, msg, True)
@@ -395,11 +419,12 @@ class TextSelectionPresenter:
             msg = "TEXT SELECTION PRESENTER: Presenting selection removal."
             debug.print_message(debug.LEVEL_INFO, msg, True)
             if speak_message:
-                presentation_manager.get_manager().speak_message(messages.SELECTION_REMOVED)
+                self.present_selection_removed(selection_obj)
             return True
 
         start_obj, start_offset = range_start
         end_obj, end_offset = range_end
+        unexpanded_objects: list[Atspi.Accessible] = []
         string = AXUtilities.expand_eocs_in_range(
             start_obj,
             start_offset,
@@ -407,6 +432,7 @@ class TextSelectionPresenter:
             end_offset,
             include_start=include_start,
             include_end=include_end,
+            unexpanded_objects=unexpanded_objects,
         )
         tokens: list[Any] = [
             "TEXT SELECTION PRESENTER: Expanded changed document text range",
@@ -427,30 +453,22 @@ class TextSelectionPresenter:
         speak_message = (
             speak_message and not speech_presenter.get_presenter().get_only_speak_displayed_text()
         )
-        image = None
         if not string:
-            image = next(
-                (
-                    obj
-                    for obj, _offset in (range_start, range_end)
-                    if AXUtilities.is_image_or_canvas(obj)
-                ),
-                None,
-            )
-            if image is None:
+            if any(not AXUtilities.is_image_or_canvas(obj) for obj in unexpanded_objects):
                 return False
-
-        self._present_pending_page_change(selection_obj)
-        if image is not None:
-            presentation_manager.get_manager().present_object(
-                script,
-                image,
-                generate_braille=False,
-            )
-            if speak_message:
-                presentation_manager.get_manager().speak_message(message)
+            self._present_pending_page_change(selection_obj)
+            for image in unexpanded_objects:
+                presentation_manager.get_manager().present_object(
+                    script,
+                    image,
+                    generate_braille=False,
+                )
+                if speak_message:
+                    presentation_manager.get_manager().speak_message(message)
+            # An empty boundary is handled, even when there is nothing to announce.
             return True
 
+        self._present_pending_page_change(selection_obj)
         spoken_string = string.strip() or string
         if len(string) > 5000 and speak_message:
             if message == messages.TEXT_SELECTED:
@@ -506,26 +524,55 @@ class TextSelectionPresenter:
         old_end_obj, _old_end_offset = old_end
         start_obj, _start_offset = start
         end_obj, _end_offset = end
+        if start_obj is not None and start == old_start and end == old_end:
+            msg = "TEXT SELECTION PRESENTER: Ignoring duplicate document selection boundaries."
+            debug.print_message(debug.LEVEL_INFO, msg, True)
+            return True
+
+        change = self._get_document_text_change(old_start, old_end, start, end)
+        if change is not None and self._present_document_text_change(
+            script, old_start, old_end, start, end, speak_message, change=change
+        ):
+            range_start, range_end, _include_start, _include_end, _message = change
+            elements = dict.fromkeys(
+                AXUtilities.get_text_selection_elements(range_start[0], range_end[0])
+            )
+            visited = set()
+            for endpoint in (range_start[0], range_end[0]):
+                ancestor = endpoint
+                while ancestor is not None and ancestor not in visited:
+                    visited.add(ancestor)
+                    if AXUtilities.is_document(ancestor):
+                        break
+                    elements[ancestor] = None
+                    ancestor = AXObject.get_parent(ancestor)
+            for element in elements:
+                AXUtilities.update_cached_selected_text(element)
+            return True
+
         old_elements = AXUtilities.get_text_selection_elements(old_start_obj, old_end_obj)
-        new_elements = AXUtilities.get_text_selection_elements(start_obj, end_obj)
+        new_elements = (
+            old_elements
+            if start_obj == old_start_obj and end_obj == old_end_obj
+            else AXUtilities.get_text_selection_elements(start_obj, end_obj)
+        )
         if not old_elements and not new_elements:
-            if not input_event_manager.get_manager().last_event_was_caret_selection():
+            manager = text_selection_manager.get_manager()
+            if not manager.is_selection_change_from_selection_command(obj):
                 return False
+            command = manager.get_current_selection_command(obj)
+            if command is not None and obj == command.get_selection_container():
+                presented = False
+                for selection_obj in command.get_objects():
+                    presented = (
+                        self._handle_basic_change(script, selection_obj, speak_message) or presented
+                    )
+                return presented
             msg = "TEXT SELECTION PRESENTER: Falling back to event source selection change."
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return self._handle_basic_change(script, obj, speak_message)
 
-        if start == old_start and end == old_end:
-            msg = "TEXT SELECTION PRESENTER: Ignoring duplicate document selection boundaries."
-            debug.print_message(debug.LEVEL_INFO, msg, True)
-            for element in new_elements:
-                AXUtilities.update_cached_selected_text(element)
-            return bool(new_elements)
-
-        elements = []
-        for element in old_elements + new_elements:
-            if element not in elements:
-                elements.append(element)
+        elements = dict.fromkeys(old_elements + new_elements)
 
         tokens = [
             "TEXT SELECTION PRESENTER: Document selection element count:",
@@ -535,18 +582,6 @@ class TextSelectionPresenter:
 
         if not elements:
             return False
-
-        if self._present_document_text_change(
-            script,
-            old_start,
-            old_end,
-            start,
-            end,
-            speak_message,
-        ):
-            for element in elements:
-                AXUtilities.update_cached_selected_text(element)
-            return True
 
         boundary_objects = (old_start_obj, old_end_obj, start_obj, end_obj)
         for element in elements:

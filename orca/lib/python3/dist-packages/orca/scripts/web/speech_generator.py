@@ -105,7 +105,10 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         stop_at_roles: list | None = None,
         stop_after_roles: list | None = None,
     ) -> list[Any]:
-        if not self._script.utilities.in_document_content(obj):
+        if (
+            self._context.active_mode == focus_manager.FLAT_REVIEW
+            or not self._script.utilities.in_document_content(obj)
+        ):
             return super()._generate_ancestors(
                 obj,
                 include_only=include_only,
@@ -139,6 +142,7 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         stop_at_roles = [
             Atspi.Role.DOCUMENT_WEB,
             Atspi.Role.EMBEDDED,
+            Atspi.Role.FRAME,
             Atspi.Role.INTERNAL_FRAME,
             Atspi.Role.MATH,
             Atspi.Role.MENU_BAR,
@@ -372,6 +376,8 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             return []
 
         if obj == self._get_prior_obj() and AXUtilities.is_editable(obj):
+            if self._context.presented_names is not None:
+                self._context.presented_names.add(obj)
             return []
 
         if AXUtilities.is_label(obj, self._get_resolved_role()) and AXObject.supports_text(obj):
@@ -433,6 +439,13 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             return result
 
         return []
+
+    @log_generator_output
+    def _generate_text_substring(self, obj: Atspi.Accessible) -> list[Any]:
+        if not self._script.utilities.treat_as_text_object(obj):
+            return []
+
+        return super()._generate_text_substring(obj)
 
     @log_generator_output
     def _generate_text_content(self, obj: Atspi.Accessible) -> list[Any]:
@@ -538,6 +551,9 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
 
     @log_generator_output
     def _generate_accessible_role(self, obj: Atspi.Accessible) -> list[Any]:
+        if self._only_speak_displayed_text():
+            return []
+
         if not self._script.utilities.in_document_content(obj):
             return super()._generate_accessible_role(obj)
 
@@ -546,21 +562,31 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             role_subject = self._context.role_subject
             next_obj = self._context.next_content_subject
 
+        mgr = input_event_manager.get_manager()
+        navigating_by_character_or_word = (
+            mgr.last_event_was_character_navigation() or mgr.last_event_was_word_navigation()
+        )
+        speak_whole_object_role = (
+            navigating_by_character_or_word
+            and caret_navigator.get_navigator().last_input_event_was_navigation_command()
+            and not self._script.utilities.treat_as_text_object(obj)
+            and not self._is_ancestor()
+        )
+
         if roledescription := AXObject.get_role_description(obj):
-            if obj == self._get_prior_obj() == role_subject and not self._is_where_am_i():
+            if (
+                obj == self._get_prior_obj() == role_subject
+                and not self._is_where_am_i()
+                and not speak_whole_object_role
+            ):
                 return []
 
             result: list[Any] = [roledescription]
             result.extend(self.voice(speech_generator.SYSTEM, obj=obj))
             return result
 
-        if not self._should_speak_role(obj):
-            manager = input_event_manager.get_manager()
-            if (
-                self._is_ancestor()
-                or manager.last_event_was_word_navigation()
-                or manager.last_event_was_character_navigation()
-            ):
+        if not self._should_speak_role(obj) and not speak_whole_object_role:
+            if self._is_ancestor() or navigating_by_character_or_word:
                 return []
             ancestor = self._get_ancestor_with_usable_role(obj)
             if ancestor in (None, next_obj):
@@ -568,7 +594,6 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             return self._generate_accessible_role(ancestor)
 
         result = []
-        mgr = input_event_manager.get_manager()
         is_editable = AXUtilities.is_editable(obj)
         role = self._get_resolved_role(obj)
         if is_editable and not self._script.utilities.is_content_editable_with_embedded_objects(
@@ -737,7 +762,12 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         context: SpeechGeneratorContext,
     ) -> list[Any]:
         self._context = context
-        return self._generate_web_contents(contents)
+        if context.presented_names is None:
+            self._context = replace(context, presented_names=set())
+        try:
+            return self._generate_web_contents(contents)
+        finally:
+            self._context = context
 
     @staticmethod
     def _cell_named_by(obj: Atspi.Accessible) -> Atspi.Accessible | None:
@@ -873,7 +903,7 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             start_offset,
             use_cache=True,
         )
-        return self.generate_contents(contents, replace(self._context, prior_obj=prior_obj))
+        return self.generate_contents(contents, replace(context, prior_obj=prior_obj))
 
     def generate_word(
         self,
@@ -900,5 +930,5 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         prior_obj = text_obj if AXUtilities.is_text_input(text_obj) else None
         return self.generate_contents(
             word_contents,
-            replace(self._context, prior_obj=prior_obj),
+            replace(context, prior_obj=prior_obj),
         )

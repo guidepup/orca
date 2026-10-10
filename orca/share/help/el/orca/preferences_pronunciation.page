@@ -27,9 +27,7 @@
   <steps>
     <title>Προσθήκη μιας νέας καταχώρισης λεξικού</title>
     <item>
-      <p>
-        Press the <gui>New Entry</gui> button (<keyseq><key>Alt</key><key>N</key></keyseq>)
-      </p>
+      <p>Πατήστε το κουμπί <gui>Νέα καταχώριση</gui> (<keyseq><key>Alt</key><key>N</key></keyseq>)</p>
     </item>
     <item>
       <p>Πληκτρολογήστε το κείμενο της νέας καταχώρισης και πατήστε <key>Return</key> για τερματισμό της επεξεργασίας της ενεργής συμβολοσειράς.</p>
@@ -56,9 +54,7 @@
       <p>Μετάβαση στην επιθυμητή καταχώριση για διαγραφή.</p>
     </item>
     <item>
-      <p>
-        Press the <gui>Delete</gui> button or <keyseq><key>Alt</key><key>D</key></keyseq>.
-      </p>
+      <p>Πατήστε το κουμπί <gui>Διαγραφή</gui> ή <keyseq><key>Alt</key><key>D</key></keyseq>.</p>
     </item>
   </steps>
 </page>

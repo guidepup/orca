@@ -23,13 +23,5 @@
   </info>
   <title>Διαμόρφωση Orca</title>
 
-      <p>
-        If you want to configure <app>Orca</app>, get into the
-        <link xref="preferences">Preferences</link> dialog by pressing
-        <keyseq><key>Orca Modifier</key><key>Space</key></keyseq> from
-        within any accessible application. Alternatively, you can type
-        <cmd>orca</cmd> followed by either <cmd>-s</cmd> or <cmd>--setup</cmd>
-        in a terminal window or within the <gui>Run</gui> dialog and then press
-        <key>Return</key>.
-      </p>
+      <p>Αν θέλετε να ρυθμίσετε το <app>Orca</app>, ανοίξτε τον διάλογο <link xref="preferences">Προτιμήσεις</link> πατώντας <keyseq><key>Τροποποιητής Orca</key><key>Space</key></keyseq>.</p>
 </page>

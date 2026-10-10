@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_speech" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_braille"/>
+    <title type="sort">2.1 Tale</title>
+    <title type="link">Tale</title>
+    <desc>Stiller inn kva som vert lese opp</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Taleinnstillingar</title>
+  <section id="enable_speech">
+    <title>Slå på tale-funksjon</title>
+    <p>Avkryssingsboksen <gui>Aktiver tale</gui> styrer om <app>Orca</app> skal bruke ein talestemme. Brukarar som berre brukar punktskrift vil truleg vilje fjerne avkrysset.</p>
+    <p>Standardverdi: merka</p>
+  </section>
+  <section id="verbosity">
+    <title>Detaljgrad</title>
+    <p>Innstillinga <gui>Detaljgrad</gui> avgjer kor mykje informasjon som vert lesen opp i ulike situasjonar. Om den til dømes står på detaljert, og du flyttar markøren til eit ord med skrivefeil, vil <app>Orca</app> seie at ordet er skrive feil. Når nivået står på kortfatta, vert ikkje denne meldinga gjeven.</p>
+    <p>Standardverdi: <gui>Utfyllande</gui></p>
+  </section>
+  <section id="punctuation_level">
+    <title>Teiknsetjingsnivå</title>
+    <p>Radioknappgruppa <gui>Teiknsetjingsnivå</gui> vert nytta til å justere mengda teiknsetjing som syntetisatoren les opp. Tilgjengelege nivå er <gui>Ingen</gui>, <gui>Nokre</gui>, <gui>Mest</gui> og <gui>Alle</gui>.</p>
+    <p>Standardverdi: <gui>Mest</gui></p>
+    <section id="punctuation_level_none">
+      <title>Ingen</title>
+      <p>Viss du vel eit teiknnivå på <gui>Ingen</gui>, vil det som forventa ikkje verte lese opp noko teikn. Ver likevel merksam på at spesielle teikn som nedsenka og oppløfta tal, Unicode-brøk og kuler framleis vert lese opp på dette nivået, sjølv om nokre kan rekne desse symbola som teikn.</p>
+    </section>
+    <section id="punctuation_level_some">
+      <title>Nokre</title>
+      <p>Val av teiknsetjingsnivå på <gui>Nokre</gui> fører til at alle dei tidlegare nemnde symbola vert talte opp. I tillegg vil <app>Orca</app> tale kjende matematiske symbol, valutasymbol og "^", "@", "/", "&amp;", "#".</p>
+    </section>
+    <section id="punctuation_level_most">
+      <title>Mest</title>
+      <p>Å velje eit teiknsetjingsnivå på <gui>Mest</gui> gjer at alle dei tidlegare nemnde symbola vert uttalte. I tillegg vil <app>Orca</app> uttale alle andre kjende teiknsetjingssymbol <em>utanom</em> «!», «'», «,», «.» og «?».</p>
+    </section>
+    <section id="punctuation_level_all">
+      <title>Alle</title>
+      <p>Val av eit teiknsetjingsnivå på <gui>Alle</gui> gjer som forventa at <app>Orca</app> les opp alle kjende teiknsetjingssymbol.</p>
+    </section>
+  </section>
+  <section id="spoken_context">
+    <title>Talekontekst</title>
+    <p>Dei følgjande elementa styrer framsyninga av ulike tilleggs-, «system»-opplysningar om det fokuserte elementet. Sidan den tilhøyrande teksten ikkje vert vist på skjermen, vert denne informasjonen presentert i <app>Orca</app> si systemrøyst.</p>
+    <section id="only_speak_displayed_text">
+      <title>Berre snakk vist tekst</title>
+      <p>Ved å merke av i denne avkryssingsboksen vil <app>Orca</app> berre lese opp faktisk tekst som vert vist på skjermen. Dette valet er først og fremst meint for brukarar med nedsett syn og brukarar med synshemming.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+      <note style="note">
+        <p>Følgjande element vil ikkje vere tilgjengelege for oppsett dersom avmerkingsboksen <gui>Berre snakk vist tekst</gui> er vald.</p>
+      </note>
+    </section>
+    <section id="speak_blank_lines">
+      <title>Legg inn tomme linjer</title>
+      <p>Viss <gui>Les blanke linjer</gui> -avmerkingsboksen er merkt, vil <app>Orca</app> seie «blank» kvar gong du flyttar deg til ei blank linje. Viss den ikkje er merkt, vil <app>Orca</app> ikkje seie noko når du flyttar deg til ei blank linje.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="indentation_and_justification">
+      <title>Snakk om innrykk og justering</title>
+      <p>Når du arbeider med kode eller redigerer andre dokument, er det ofte ynskjeleg å vere merksam på linjejustering og innrykk. Ved å hake av for <gui>Snakk innrykk og linjejustering</gui> vil <app>Orca</app> lese opp denne informasjonen.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="speak_misspelled_word_indicator">
+      <title>Viser feilstava ord</title>
+      <p>Den feilstava ordindikatoren er den raude bølgjelynet som kjem under feilstava ord i redigerbare tekstfelt. Viss <gui>Slå på feilstava ordindikator</gui> er valt, vil <app>Orca</app> seie «feilstava» når du navigerer inn i eit ord med denne indikatoren, eller skriv eit ord feil slik at indikatoren kjem fram.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="mnemonics">
+     <title>Snakk om objekt-mnemonikkar</title>
+      <p>Viss avmerkingsboksen <gui>Snakk objekt-mnemonikk</gui> er vald, vil <app>Orca</app> annonsere mnemonikken som er knytt til objektet som har fokus (som <keyseq><key>Alt</key><key>O</key> </keyseq> for ein <gui>OK</gui>-knapp).</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="child_position">
+      <title>Tal barneposisjon</title>
+      <p>Viss du vel avkryssingsboksen <gui>Speak child position</gui>, vil <app>Orca</app> seie posisjonen til det fokuserte elementet i menyar, lister og tre (t.d. «9 av 16»).</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="speak_tutorial_messages">
+      <title>Taleopplæringsmeldingar</title>
+      <p>Viss avmerkingsboksen <gui>Snakk opplæringsmeldingar</gui> er vald, vil <app>Orca</app> gje tilleggsinformasjon når du flyttar deg mellom objekt i eit grensesnitt, slik som korleis du samhandlar med det fokuserte objektet.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="speak_description">
+      <title>Skildring av tale</title>
+      <p>Viss <gui>Skildring av tilgjengelegheit</gui>-avmerkingsboksen er vald, vil <app>Orca</app> lese opp den tilgjengelege skildringa i tillegg til det tilgjengelege namnet til objektet når du flyttar deg mellom objekt i eit grensesnitt.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="system_messages_are_detailed">
+      <title>Systemmeldingane er detaljerte</title>
+      <p>Viss <gui>Systemmeldingar er detaljerte</gui> er valt, vil <app>Orca</app> gje deg detaljerte meldingar i tale. Til dømes, viss du brukar <app>Orca</app> sin kommando for å endre ekko, kan <app>Orca</app> seie «Ekko sett til ord». Viss du vil ha kortare meldingar, som berre «ord», bør du avvelje denne boksen.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="speak_colors_as_names">
+      <title>Opplys fargar som namn</title>
+      <p>Viss <gui>Les opp fargar som namn</gui> er vald, vil <app>Orca</app> skildre fargar ved å leite etter den næraste tilnærminga. Til dømes vil RGB 0, 27, 51 verte sagt som «midnight blue». Viss du heller vil høyre nøyaktig RGB-verdi, bør du fjerne avhaka i denne avhakinga.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="announce_blockquotes_during_navigation">
+      <title>Kunngjer sitatblokker under navigering</title>
+      <p>Viss <gui>Kunngjer blokkutdrag under navigering</gui> er valt, vil <app>Orca</app> seie frå når du navigerer inn i eller ut av eit sitat. Ver merksam på at denne innstillinga er uavhengig av om denne kunngjeringa vert gjort under Say All. Sjå <link xref="preferences_general#say_all_announce_context">Announce Contextual Information in Say All</link> for meir informasjon.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="announce_forms_during_navigation">
+      <title>Kunngjer skjema under navigering</title>
+      <p>Viss <gui>Kunngjer skjema under navigering</gui> er vald, vil <app>Orca</app> fortelje deg når du navigerer inn i eller ut av eit skjema. Merk at denne innstillinga berre gjeld skjema som ikkje er ARIA-merke. Du kan konfigurere presentasjonen av ARIA-merke gjennom avkryssingsboksen <gui>Kunngjer landemerke under navigering</gui>. Merk i tillegg at denne innstillinga er uavhengig av om denne kunngjeringa vert gjort under «Say All». Sjå <link xref="preferences_general#say_all_announce_context">Announce Contextual Information in Say All</link> for meir informasjon.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="announce_landmarks_during_navigation">
+      <title>Kunngjer landemerke under navigering</title>
+      <p>Viss <gui>Kunngjer landemerke under navigering</gui> er vald, vil <app>Orca</app> fortelje deg når du navigerer inn i eller ut av eit ARIA-landemerke. Merk at denne innstillinga er uavhengig av om denne kunngjeringa vert gjort under «Les alt». Sjå <link xref="preferences_general#say_all_announce_context">Kunngjer kontekstinformasjon i «Les alt»</link> for meir informasjon.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="announce_lists_during_navigation">
+      <title>Kunngjer lister under navigering</title>
+      <p>Viss <gui>Kunngjer lister under navigering</gui> er valt, vil <app>Orca</app> fortelje deg når du navigerer inn i eller ut av ei liste. Merk at denne innstillinga er uavhengig av om denne kunngjeringa vert gjort under Say All. Sjå <link xref="preferences_general#say_all_announce_context">Announce Contextual Information in Say All</link> for meir informasjon.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="announce_panels_during_navigation">
+      <title>Kunngjer panel under navigering</title>
+      <p>Viss <gui>Kunngjer panel under navigering</gui> er vald, vil <app>Orca</app> fortelje deg når du navigerer inn i eller ut av eit panel. Ver merksam på at denne innstillinga er uavhengig av om denne kunngjeringa vert gjort under Say All. Sjå <link xref="preferences_general#say_all_announce_context">Announce Contextual Information in Say All</link> for meir informasjon.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="announce_tables_during_navigation">
+      <title>Kunngjer tabellar under navigering</title>
+      <p>Viss <gui>Kunngjer tabellar under navigering</gui> er merkt, vil <app>Orca</app> fortelje deg når du navigerer inn i eller ut av ein tabell. Merk at denne innstillinga er uavhengig av om denne kunngjeringa vert gjort under Say All. Sjå <link xref="preferences_general#say_all_announce_context">Announce Contextual Information in Say All</link> for meir informasjon.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="speak_full_row_in_gui_tables">
+      <title>Snakk full rad i GUI-tabellar</title>
+      <p>Viss <gui>Les opp heile rada i GUI-tabellar</gui> er avkrysse, når du pil opp og ned i app-tabellar som meldingslista i innboksen din, vil <app>Orca</app> lese heile rada. Viss du heller vil høyre berre cella med fokus, bør du fjerne avkrysset i denne boksen.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="speak_full_row_in_document_tables">
+      <title>Snakk full rad i dokumenttabellar</title>
+      <p>Viss <gui>Les opp heile rada i dokumenttabellar</gui> er valt, vil <app>Orca</app> lese heile rada når du flyttar deg opp og ned i tabellar, slik som i <app>Writer</app> og webdokument. Viss du heller vil høyre berre cella som er i fokus, bør du avvelje dette avkryssingsfeltet.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="speak_full_row_in_spreadsheets">
+      <title>Snakk full rad i rekneark</title>
+      <p>Viss <gui>Les opp heile rada i rekneark</gui> er valt, når du pil opp og ned i rekneark, vil <app>Orca</app> lese heile rad. Viss du heller vil høyre berre den cella som er i fokus, bør du fjerne markeringa i denne avkryssingsboksen.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+  </section>
+</page>

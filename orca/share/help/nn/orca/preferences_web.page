@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_web" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#application"/>
+    <link type="next" xref="preferences_table_navigation"/>
+    <title type="sort">1. Webnavigering</title>
+    <title type="link">Nettnavigering</title>
+    <desc>Konfigurerer <app>Orca</app> si støtte for <app>Firefox</app>, <app>Thunderbird</app> og <app>Chrome</app>/<app>Chromium</app></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Innstillingar for nettsurf</title>
+  <section id="page_navigation">
+    <title>Sidenavigering</title>
+    <p>Kontrollgruppa <gui>Sidenavigering</gui> gjer det mogleg for deg å tilpasse korleis <app>Orca</app> viser, og la deg samhandle med, tekst og anna innhald.</p>
+    <section id="page_navigation_control_caret">
+      <title>Styr markørnavigasjon</title>
+      <p>Dette avmerkingsfeltet slår <app>Orca</app> sin markørnavigering av og på. Når den er på, tek <app>Orca</app> kontroll over markøren når du brukar piltastane i ei side; når den er av, er nettlesaren sin innebygde markørnavigering aktiv.</p>
+      <p>Standardverdi: merka</p>
+      <note style="tip">
+        <title>Denne innstillinga kan slåast på undervegs</title>
+        <p>For å slå av og på denne innstillinga utan å lagre, bruk <keyseq><key>Orca-modifikator</key><key>F12</key></keyseq>.</p>
+       </note>
+    </section>
+    <section id="page_navigation_focus_caret">
+      <title>Automatisk fokusmodus under markørenavigering</title>
+      <p>Dersom dette avmerkingsfeltet er avkrysta, vil <app>Orca</app> automatisk slå på fokusmodus når du brukar caret-navigasjonskommandoar til å navigere til eit skjemafelt. Til dømes vil eit trykk på <key>Ned</key> la deg flytte inn i eit inntastingsfelt, men når du har gjort det, vil Orca skifte til fokusmodus og påfølgjande trykk på <key>Ned</key> vil verte styrt av nettlesaren og ikkje av Orca. Dersom dette avmerkingsfeltet ikkje er avkrysta, vil <app>Orca</app> halde fram med å styre kva som skjer når du trykkjer <key>Ned</key>, og slik gjere det mogleg å bruke piltastane til å flytte seg ut av inntastingsfeltet og halde fram med å lese.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+      <note style="tip">
+        <title>Manuell veksling mellom nettlesarvogn og fokusvogn</title>
+        <p>For å byrje eller stoppe interaksjon med det fokuserte skjema-feltet, bruk <keyseq><key>Orca-modifikator</key><key>A</key></keyseq> for å byte mellom bla-modus og fokus-modus.</p>
+       </note>
+    </section>
+    <section id="page_navigation_structural">
+      <title>Slå på strukturell navigering</title>
+      <p>Denne avmerkingsboksen slår <app>Orca</app> si <link xref="howto_structural_navigation">Strukturelle navigering</link> av og på. Strukturell navigering lèt deg navigere etter element som overskrifter, lenkjer og skjemafelt.</p>
+      <p>Standardverdi: merka</p>
+      <note style="tip">
+        <title>Denne innstillinga kan slåast på undervegs</title>
+        <p>For å slå av og på denne innstillinga utan å lagre, bruk <keyseq><key>Orca-modifikator</key><key>Z</key></keyseq>.</p>
+       </note>
+    </section>
+    <section id="page_navigation_focus_structural">
+      <title>Automatisk fokusmodus under strukturell navigasjon</title>
+      <p>Viss denne avkryssinga er vald, vil <app>Orca</app> automatisk slå på fokusmodus når du brukar strukturelle navigasjonskommandoar for å navigere til eit skjema-felt. Til dømes vil eit trykk på <key>E</key> for å flytte til neste inntastingsfelt flytte fokus dit og også slå på fokusmodus, slik at neste trykk på <key>E</key> vil skrive inn eit "e" i det feltet. Viss denne avkryssinga ikkje er vald, vil <app>Orca</app> halde deg i nettlesingsmodus, og neste trykk på <key>E</key> vil flytte deg til neste inntastingsfelt på sida.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+      <note style="tip">
+        <title>Manuell veksling mellom nettlesarvogn og fokusvogn</title>
+        <p>For å byrje eller stoppe interaksjon med det fokuserte skjema-feltet, bruk <keyseq><key>Orca-modifikator</key><key>A</key></keyseq> for å byte mellom bla-modus og fokus-modus.</p>
+       </note>
+    </section>
+    <section id="page_navigation_focus_native">
+      <title>Automatisk fokusmodus under innebygd navigasjon</title>
+      <p>Dersom dette avmerkingsfeltet er avmerkt, vil <app>Orca</app> automatisk slå på fokusmodus når du brukar innebygde nettlesarkommandoar for å navigere til eit skjemafelt. Til dømes vil eit trykk på <key>Tab</key> for å flytte til neste inntastingsfelt flytte fokus dit og også slå på fokusmodus, slik at neste trykk på <key>E</key> vil skrive «e» i det feltet. Dersom dette avmerkingsfeltet ikkje er avmerkt, vil <app>Orca</app> la deg vere i nettlesingsmodus, og neste trykk på <key>E</key> vil flytte deg til neste inntastingsfelt på sida.</p>
+      <p>Standardverdi: merka</p>
+      <note style="tip">
+        <title>Manuell veksling mellom nettlesarvogn og fokusvogn</title>
+        <p>For å byrje eller stoppe interaksjon med det fokuserte skjema-feltet, bruk <keyseq><key>Orca-modifikator</key><key>A</key></keyseq> for å byte mellom bla-modus og fokus-modus.</p>
+       </note>
+    </section>
+    <section id="page_navigation_speak">
+      <title>Start automatisk å snakke ei side når den vert fyrst lada</title>
+      <p>Viss denne avmerkingsboksen er avkursa, vil <app>Orca</app> utføre ein Say All på den nyopna nettsida eller e-posten.</p>
+      <p>Standardverdi: avkrysse for Firefox; ikkje avkrysse for Thunderbird</p>
+    </section>
+    <section id="page_navigation_summary">
+      <title>Vis samandrag av ei side når ho vert først lasta</title>
+      <p>Viss denne avmerkingsboksen er vald, vil <app>Orca</app> oppsummere detaljar om den nyopna nettsida eller e-posten, slik som talet på overskrifter, landemerke og lenkjer.</p>
+      <p>Standardverdi: avkrysse for Firefox; ikkje avkrysse for Thunderbird</p>
+    </section>
+    <section id="page_navigation_layout_mode">
+      <title>Slå på oppsettmodus for innhald</title>
+      <p>Dersom dette avkryssingsfeltet er valt, vil <app>Orca</app> si markørnavigering ta omsyn til skjermoppsettet til innhaldet og vise heile linja, inkludert alle lenkjer eller skjemafelt på den linja. Dersom dette avkryssingsfeltet ikkje er valt, vil <app>Orca</app> handsame objekt som lenkjer og skjemafelt som om dei var på separate linjer, både for framsyning og navigering.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+  </section>
+  <section id="table_options">
+    <title>Tabellinnstillingar</title>
+    <note>
+      <p>For å lære meir om <app>Orca</app> sine innstillingar for navigering i tabellar, sjå <link xref="preferences_table_navigation">Tabellnavigeringsinnstillingar</link>.</p>
+    </note>
+  </section>
+  <section id="find_options">
+    <title>Alternativ for søk</title>
+    <p>Kontrollgruppa <gui>Alternativ for søk</gui> gjer det mogleg for deg å tilpasse korleis <app>Orca</app> viser resultata frå eit søk utført med appen sin innebygde søkefunksjon.</p>
+    <section id="find_options_speak_during_find">
+      <title>Talresultat under søk</title>
+      <p>Viss denne avkryssinga er vald, vil <app>Orca</app> lese linja som samsvarar med søket ditt.</p>
+      <p>Standardverdi: merka</p>
+    </section>
+    <section id="find_options_speak_changed_lines_during_find">
+      <title>Berre endra linjer under søk</title>
+      <p>Viss denne avmerkingsboksen er vald, vil <app>Orca</app> ikkje vise den samsvarande linja dersom det er den same linja som førre treff. Denne innstillinga er laga for å hindre «prating» på ei linje med fleire førekomstar av strengen du søkjer etter.</p>
+      <p>Standardverdi: ikkje avkursa</p>
+    </section>
+    <section id="find_options_minimum_match_length">
+      <title>Minimum lengd på treffande tekst</title>
+      <p>Denne redigerbare spinnknappen er der du kan angi kor mange teikn som må stemme før <app>Orca</app> annonserer den samsvarande linja. Dette valet er også laga for å hindre «prating», sidan det er mange samsvar når du fyrst byrjar å skrive strengen du søkjer etter.</p>
+      <p>Standardverdi: 4</p>
+    </section>
+  </section>
+</page>

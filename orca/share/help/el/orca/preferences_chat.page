@@ -5,9 +5,7 @@
     <link type="next" xref="preferences_spellcheck"/>
     <title type="sort">3. Συνομιλία</title>
     <title type="link">Συνομιλία</title>
-    <desc>
-      Configuring <app>Orca</app>'s support for IM and IRC
-    </desc>
+    <desc>Διαμόρφωση της υποστήριξης του <app>Orca</app> για άμεσα μηνύματα (IM) και IRC</desc>
     <credit type="author">
       <name>Joanmarie Diggs</name>
       <email>joanied@gnome.org</email>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" id="index" xml:lang="el">
   <info>
-    <title type="text"><app>Orca</app> Screen Reader</title>
-    <title type="link" role="trail"><app>Orca</app> Screen Reader</title>
-    <title type="link"><app>Orca</app> Screen Reader</title>
+    <title type="text">Αναγνώστης οθόνης <app>Orca</app></title>
+    <title type="link" role="trail">Αναγνώστης οθόνης <app>Orca</app></title>
+    <title type="link">Αναγνώστης οθόνης <app>Orca</app></title>
     <credit type="author">
       <name>Joanmarie Diggs</name>
       <email>joanied@gnome.org</email>

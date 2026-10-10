@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="preferences_pronunciation" xml:lang="nn">
+  <info>
+    <link type="guide" xref="preferences#orca"/>
+    <link type="next" xref="preferences_text_attributes"/>
+    <title type="sort">7. Uttale</title>
+    <title type="link">Uttale</title>
+    <desc>Definerer korleis spesifikke ord vert uttalt</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Uttaleinnstillingar</title>
+  <p>Nokre gongar seier ikkje tale-synthesizeren det rette for ein gitt streng. Du vil kanskje heller høyre «ler høgt» enn «LOL», eller «tilgjengelegheit» i staden for «a11y». Eller det kan vere eit namn eller eit teknisk uttrykk som synthesizeren uttalar feil.</p>
+  <p>Sida <gui>Uttale</gui> i <app>Orca</app>-innstillingane let deg leggje til, redigere og slette oppføringar i <app>Orca</app> si uttalordbok.</p>
+  <p>Sidan <gui>Uttale</gui>-sida også er ein del av app-spesifikke innstillingar, kan du tilpasse oppføringane dine etter behov for kvar app du brukar.</p>
+  <steps>
+    <title>Legg til eit nytt ordbokoppslag</title>
+    <item>
+      <p>Trykk på <gui>Ny oppføring</gui>-knappen (<keyseq><key>Alt</key><key>N</key></keyseq>)</p>
+    </item>
+    <item>
+      <p>Skriv inn teksten til det nye oppslaget og trykk <key>Return</key> for å avslutte redigeringa av sjølve strengen.</p>
+    </item>
+    <item>
+      <p>Flytt til kolonnen <gui>Erstatningsstreng</gui> og trykk <key>Return </key> for å byrje å redigere.</p>
+    </item>
+    <item>
+      <p>Skriv inn teksten du vil ha lese opp i staden og trykk <key>Return</key> for å avslutte redigeringa av erstatningsteksten.</p>
+    </item>
+  </steps>
+  <steps>
+  <title>Redigerer eit eksisterande ordbokoppslag</title>
+    <item>
+      <p>Flytt til cella du vil redigere og trykk <key>Return</key> for å byrje å redigere.</p>
+    </item>
+    <item>
+      <p>Gjer endringane dine og trykk deretter <key>Return</key> for å avslutte redigeringa.</p>
+    </item>
+  </steps>
+  <steps>
+    <title>Slettar eit eksisterande ordbokoppslag</title>
+    <item>
+      <p>Flytt til oppføringa du vil slette.</p>
+    </item>
+    <item>
+      <p>Trykk på <gui>Slett</gui>-knappen eller <keyseq><key>Alt</key><key>D</key></keyseq>.</p>
+    </item>
+  </steps>
+</page>

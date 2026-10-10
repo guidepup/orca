@@ -96,6 +96,7 @@ class _WebUtilitiesCache:
     SHOULD_FILTER = "WebUtilities.should-filter"
     SHOULD_INFER_LABEL_FOR = "WebUtilities.should-infer-label-for"
     TREAT_AS_TEXT_OBJECT = "WebUtilities.treat-as-text-object"
+    TREAT_NAMED_OBJECT_AS_WHOLE = "WebUtilities.treat-named-object-as-whole"
     TREAT_AS_DIV = "WebUtilities.treat-as-div"
     OBJECT_CONTENTS = "WebUtilities.object-contents"
     SENTENCE_CONTENTS = "WebUtilities.sentence-contents"
@@ -129,6 +130,7 @@ class _WebUtilitiesCache:
         SHOULD_FILTER,
         SHOULD_INFER_LABEL_FOR,
         TREAT_AS_TEXT_OBJECT,
+        TREAT_NAMED_OBJECT_AS_WHOLE,
         TREAT_AS_DIV,
     )
 
@@ -537,7 +539,7 @@ class Utilities(script_utilities.Utilities):
         if grab_focus:
             AXObject.grab_focus(obj)
 
-        AXUtilities.set_caret_offset_with_reason(obj, offset, reason)
+        super().set_caret_offset(obj, offset, reason=reason)
 
         # If we return earlier than here, braille cursor routing fails in sticky focus mode.
         presenter = document_presenter.get_presenter()
@@ -925,7 +927,6 @@ class Utilities(script_utilities.Utilities):
             Atspi.Role.BUTTON,
             Atspi.Role.CHECK_BOX,
             Atspi.Role.CHECK_MENU_ITEM,
-            Atspi.Role.LIST_BOX,
             Atspi.Role.MATH,
             Atspi.Role.MENU_ITEM,
             Atspi.Role.PAGE_TAB,
@@ -977,7 +978,12 @@ class Utilities(script_utilities.Utilities):
         if role == Atspi.Role.COMBO_BOX:
             return True
 
-        if role in [Atspi.Role.EMBEDDED, Atspi.Role.TREE, Atspi.Role.TREE_TABLE]:
+        if role in [
+            Atspi.Role.EMBEDDED,
+            Atspi.Role.LIST_BOX,
+            Atspi.Role.TREE,
+            Atspi.Role.TREE_TABLE,
+        ]:
             return not document_presenter.get_presenter().browse_mode_is_sticky(self._script.app)
 
         if role == Atspi.Role.LINK:
@@ -996,19 +1002,22 @@ class Utilities(script_utilities.Utilities):
         if AXUtilities.is_custom_image(obj):
             return True
 
-        # Example: Some StackExchange instances have a focusable "note"/comment role
-        # with a name (e.g. "Accepted"), and a single child div which is empty.
-        if (
-            AXUtilities.is_text_block(obj, role)
-            and AXUtilities.is_focusable(obj)
-            and AXUtilities.has_explicit_name(obj)
-        ):
-            for child in AXObject.iter_children(obj):
-                if not self._is_useless_empty_element(child):
-                    return False
-            return True
+        if not AXUtilities.has_explicit_name(obj) or not AXObject.get_name(obj):
+            return False
 
-        return False
+        namespace = self._cache.TREAT_NAMED_OBJECT_AS_WHOLE
+        cached = self._cache.get_for_object(namespace, obj)
+        if cached is not ax_cache_manager.MISSING:
+            return cached
+
+        rv = False
+        if (
+            AXUtilities.is_text_block(obj, role) and AXUtilities.is_focusable(obj)
+        ) or not AXText.get_all_text(obj).strip("\ufffc"):
+            rv = all(self._is_useless_empty_element(child) for child in AXObject.iter_children(obj))
+
+        self._cache.set_for_object(namespace, obj, rv)
+        return rv
 
     def _get_text_at_offset(
         self,
@@ -1684,6 +1693,10 @@ class Utilities(script_utilities.Utilities):
                 or document_presenter.get_presenter().in_focus_mode(self._script.app)
             )
 
+        # An overlaid label supplies the visual position of its associated control.
+        if layout_mode and (label := AXUtilities.get_label_covering_object(obj)) is not None:
+            obj, offset = label, 0
+
         objects: list[tuple[Atspi.Accessible, int, int, str]] = []
         if offset > 0 and (
             self.treat_as_end_of_line(obj, offset)
@@ -1704,13 +1717,20 @@ class Utilities(script_utilities.Utilities):
 
             x_obj, x_start, x_end, _x_string = x
 
-            # A lone newline at obj's end offset ends obj's line if obj is inline content.
+            if (label := AXUtilities.get_label_covering_object(x_obj)) is not None:
+                return any(
+                    item in seen or _include(item)
+                    for item in self._get_contents_for_obj(label, 0, Atspi.TextGranularity.LINE)
+                )
+
+            # A lone newline after the last inline object ends the assembled line.
             # After a block element it starts a blank line instead.
             if (
                 _x_string == "\n"
-                and x_start == AXHypertext.get_link_end_offset(obj)
-                and AXUtilities.is_ancestor(obj, x_obj)
-                and AXUtilities.is_inline_element(obj)
+                and objects
+                and x_start == AXHypertext.get_link_end_offset(objects[-1][0])
+                and AXUtilities.is_ancestor(objects[-1][0], x_obj)
+                and AXUtilities.is_inline_element(objects[-1][0])
             ):
                 return True
 
@@ -1723,21 +1743,40 @@ class Utilities(script_utilities.Utilities):
                 x_rect = self._get_extents(x_obj, x_start, x_end)
 
             if x_obj == obj:
-                # Contiguous ranges from the same text object are different AT-SPI lines;
-                # character extents at wrap boundaries can be unreliable.
-                if AXObject.supports_text(obj):
-                    for existing_obj, e_start, e_end, _e_string in objects:
-                        if existing_obj == x_obj and (x_start == e_end or x_end == e_start):
-                            return False
+                # Preserve explicit line breaks even when their bounds overlap the next line.
+                first_obj, first_start, _, _ = objects[0]
+                last_obj, _, last_end, last_string = objects[-1]
+                if (first_obj == x_obj and x_end == first_start and _x_string.endswith("\n")) or (
+                    last_obj == x_obj and x_start == last_end and last_string.endswith("\n")
+                ):
+                    return False
 
-                return AXUtilities.rects_are_on_same_line(rect, x_rect)
+                return AXUtilities.rects_are_on_same_line(rect, x_rect, inline_flow=True)
 
             x_obj_block = AXUtilities.get_nearest_block_ancestor(x_obj)
+            same_line = AXUtilities.rects_are_on_same_line(rect, x_rect, inline_flow=True)
+            if obj_block != x_obj_block or not same_line:
+                # A focusable tab-order control that is hidden but still holds its place (an
+                # off-screen or clipped dropdown toggle) is an inline sibling; keep it on the
+                # line when its parent shares obj's block. Non-focusable hidden content (e.g.
+                # off-screen labels) is left out.
+                x_obj_parent = AXObject.get_parent(x_obj)
+                if (
+                    x_obj_parent is not None
+                    and AXUtilities.is_focusable(x_obj)
+                    and AXUtilities.get_nearest_block_ancestor(x_obj_parent) == obj_block
+                    and (
+                        AXUtilities.object_is_outside_parent(x_obj)
+                        or (AXUtilities.is_visible(x_obj) and not AXUtilities.is_showing(x_obj))
+                    )
+                ):
+                    return True
+
             if obj_block == x_obj_block:
                 if abs(rect.x - x_rect.x) <= 1 and abs(rect.y - x_rect.y) <= 1:
                     # Coinciding position is stacked (skip links) unless one contains the other.
                     return AXUtilities.get_common_ancestor(obj, x_obj) in (obj, x_obj)
-                if not AXUtilities.rects_are_on_same_line(rect, x_rect, inline_flow=True):
+                if not same_line:
                     return False
                 # A tall image can vertically overlap text on the line below it; a text run joins
                 # this line only if it also shares the line with text already on it, not merely
@@ -1749,22 +1788,6 @@ class Utilities(script_utilities.Utilities):
                             return AXUtilities.rects_are_on_same_line(
                                 e_rect, x_rect, inline_flow=True
                             )
-                return True
-
-            # A focusable tab-order control that is hidden but still holds its place (an
-            # off-screen or clipped dropdown toggle) is an inline sibling; keep it on the line
-            # when its parent shares obj's block. Non-focusable hidden content (e.g. off-screen
-            # labels) is left out.
-            x_obj_parent = AXObject.get_parent(x_obj)
-            if (
-                x_obj_parent is not None
-                and AXUtilities.is_focusable(x_obj)
-                and AXUtilities.get_nearest_block_ancestor(x_obj_parent) == obj_block
-                and (
-                    AXUtilities.object_is_outside_parent(x_obj)
-                    or (AXUtilities.is_visible(x_obj) and not AXUtilities.is_showing(x_obj))
-                )
-            ):
                 return True
 
             reason = None
@@ -2973,6 +2996,21 @@ class Utilities(script_utilities.Utilities):
 
         return AXUtilities.find_ancestor(obj, is_same_fragment) is not None
 
+    def focus_entered_content_editable(
+        self,
+        old_focus: Atspi.Accessible | None,
+        new_focus: Atspi.Accessible,
+    ) -> bool:
+        """Returns True if focus entered content editable."""
+
+        if old_focus == new_focus or not AXUtilities.is_editable(new_focus):
+            return False
+
+        container = AXUtilities.find_outermost_ancestor_inclusive(
+            AXObject.get_parent(new_focus), AXUtilities.is_editable
+        )
+        return not AXUtilities.is_ancestor(old_focus, container or new_focus, inclusive=True)
+
     def is_content_editable_with_embedded_objects(self, obj: Atspi.Accessible) -> bool:
         """Returns true if obj is content editable with embedded objects."""
 
@@ -3176,6 +3214,21 @@ class Utilities(script_utilities.Utilities):
             msg = "WEB: Removed child is not locus of focus nor ancestor of locus of focus."
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return False
+
+        focused_event = self._script.get_queued_event("object:state-changed:focused")
+        if (
+            focused_event
+            and focused_event.detail1
+            and focused_event.source != focus
+            and AXUtilities.is_focused(focused_event.source)
+            and self.get_top_level_document_for_object(focused_event.source)
+            == self.get_top_level_document_for_object(event.source)
+        ):
+            obj = focused_event.source
+            tokens = ["WEB: Recovering removed focus using focused object", obj]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            focus_manager.get_manager().set_locus_of_focus(event, obj)
+            return True
 
         if event.detail1 == -1:
             msg = "WEB: Event detail1 is useless."

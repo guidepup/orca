@@ -188,9 +188,9 @@
       <item>
         <p>Προσάρτηση των περιεχομένων κάτω από επίπεδη επισκόπηση στο πρόχειρο: (Αδέσμευτο)</p>
       </item>
-      <item><p>Move flat review to the bottom left: (Unbound)</p></item>
-      <item><p>Show flat review contents: (Unbound)</p></item>
-      <item><p>Toggle restricting flat review to the current object: (Unbound)</p></item>
+      <item><p>Μετακίνηση επίπεδης επισκόπησης κάτω αριστερά: (Αδέσμευτο)</p></item>
+      <item><p>Εμφάνιση περιεχομένων επίπεδης επισκόπησης: (Αδέσμευτο)</p></item>
+      <item><p>Εναλλαγή περιορισμού επίπεδης επισκόπησης στο τρέχον αντικείμενο: (Αδέσμευτο)</p></item>
     </list>
   </section>
 </page>

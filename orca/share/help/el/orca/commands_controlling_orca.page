@@ -26,10 +26,7 @@
     <p>Οι επόμενες εντολές μπορούν να χρησιμοποιηθούν για να μπείτε στους διαλόγους προτιμήσεων του <app>Orca</app>, να ενεργοποιήσετε και να απενεργοποιήσετε το <app>Orca</app> και να παρακάμψετε τις εντολές <app>Orca</app> για να αποφύγετε συγκρούσεις συντομεύσεων μέσα στην εφαρμογή που προσπελάζετε.</p>
     <list>
       <item>
-        <p>
-          Toggle <app>Orca</app> on and off in supported desktop environments:
-          <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.
-        </p>
+        <p>Εναλλαγή του <app>Orca</app> σε ενεργό και ανενεργό σε υποστηριζόμενα περιβάλλοντα επιφάνειας εργασίας: <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.</p>
         <note style="tip">
            <p>Αν χρησιμοποιείτε το <app>Orca</app> σε ένα άλλο περιβάλλον επιφάνειας εργασίας στο οποίο δεν υπάρχει εντολή για εναλλαγή του <app>Orca</app> ενεργό/ανενεργό, μπορεί να βρείτε την εντολή εξόδου από το <app>Orca</app> χρήσιμη. Αυτή η εντολή δεν συνδέεται από προεπιλογή. Παρακαλούμε δείτε το <link xref="howto_key_bindings">Τροποποίηση συνδυασμών πλήκτρων</link> για πληροφορίες σχετικά με τη δέσμευση αδέσμευτων εντολών.</p>
         </note>
@@ -41,34 +38,31 @@
         <p>Ο διάλογος προτιμήσεων του Orca για την εστιασμένη εφαρμογή: <keyseq><key>Ctrl</key><key>τροποποιητής Orca</key><key>διάστημα</key></keyseq>.</p>
       </item>
       <item>
-        <p>
-          Toggle all Orca command keys:
-          <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq>
-        </p>
+        <p>Εναλλαγή όλων των πλήκτρων εντολών του Orca: <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq></p>
       </item>
       <item>
-        <p>Toggle keyboard layout: (Unbound)</p>
+        <p>Εναλλαγή διάταξης πληκτρολογίου: (Αδέσμευτο)</p>
       </item>
       <item>
         <p>Κυκλικά στο επόμενο επίπεδο ηχούς πλήκτρου: (ασύνδετο)</p>
       </item>
       <item>
-        <p>Quit the screen reader: (Unbound)</p>
+        <p>Έξοδος από τον αναγνώστη οθόνης: (Αδέσμευτο)</p>
       </item>
     </list>
   </section>
   <section id="braille_keyboard_bindings">
     <title>Εντολές Μπράιγ</title>
-    <p>The following commands can be used to control and customize Orca's braille output.</p>
+    <p>Οι ακόλουθες εντολές μπορούν να χρησιμοποιηθούν για τον έλεγχο και την προσαρμογή της εξόδου Μπράιγ του Orca.</p>
     <list>
       <item>
-        <p>Pan the braille display to the left: (Unbound)</p>
+        <p>Μετακίνηση της οθόνης Μπράιγ προς τα αριστερά: (Αδέσμευτο)</p>
       </item>
       <item>
-        <p>Pan the braille display to the right: (Unbound)</p>
+        <p>Μετακίνηση της οθόνης Μπράιγ προς τα δεξιά: (Αδέσμευτο)</p>
       </item>
       <item>
-        <p>Turn contracted braille on and off: (Unbound)</p>
+        <p>Ενεργοποίηση και απενεργοποίηση συντετμημένης γραφής Μπράιγ: (Αδέσμευτο)</p>
       </item>
     </list>
   </section>
@@ -77,16 +71,10 @@
     <p>Στην κατάσταση μάθησης, το <app>Orca</app> θα ανακοινώνει κάθε πληκτρολόγηση που πατάτε μαζί με οποιαδήποτε συσχετισμένη εντολή του <app>Orca</app> με την οποία η πληκτρολόγηση είναι συνδεμένη. Σε αυτήν την κατάσταση, μπορείτε επίσης να πάρετε έναν κατάλογο των συντομεύσεων που περιέχουν όλες τις εντολές που μπορείτε να χρησιμοποιήσετε στο <app>Orca</app>.</p>
     <list>
       <item>
-        <p>
-          Enter Learn Mode:
-          <keyseq><key>Orca Modifier</key><key>H</key></keyseq>
-        </p>
+        <p>Είσοδος στη λειτουργία εκμάθησης: <keyseq><key>Τροποποιητής Orca</key><key>H</key></keyseq></p>
       </item>
       <item>
-        <p>
-          Exit Learn Mode:
-          <keyseq><key>Esc</key></keyseq>
-        </p>
+        <p>Έξοδος από τη λειτουργία εκμάθησης: <keyseq><key>Esc</key></keyseq></p>
       </item>
     </list>
   </section>

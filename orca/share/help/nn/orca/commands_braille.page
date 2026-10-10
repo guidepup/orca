@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_braille" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_reading"/>
+    <link type="guide" xref="commands#speech_braille"/>
+    <link type="seealso" xref="preferences_braille"/>
+    <title type="sort">2. Braille</title>
+    <title type="link">Braille</title>
+    <desc>Kommandoar som kan køyrast på punktskriftskjermar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Braille-kommandoar</title>
+  <p>Følgjande kommandoar gjer at du kan styre <app>Orca</app> frå den oppdaterbare punktskriftlesaren din i staden for frå tastaturet:</p>
+  <list>
+    <item><p>Pan braille-skjerm til venstre: Linje venstre</p></item>
+    <item><p>Pan braille-skjerm til høgre: Linje høgre</p></item>
+    <item><p>Veksle flate vurderingsmodus: Frys</p></item>
+    <item><p>Gå gjennom ordet over: Line Up</p></item>
+    <item><p>Gå gjennom ordet nedanfor: Linje ned</p></item>
+    <item><p>Gjennomgang nedst til venstre: Nedst til høgre</p></item>
+    <item><p>Gå gjennom heimposisjonen: Øvst til venstre</p></item>
+    <item><p>Kontrahert punktskrift: Seks punkt</p></item>
+    <item><p>Markerer starten på eit tekstval: Klipp start</p></item>
+    <item><p>Markerer slutten på eit tekstval: Klipp linje</p></item>
+    <item><p>Handsamar ein markør-rutingnøkkel: Markør-ruting</p></item>
+    <item><p>Går tilbake til objektet med tastaturfokus: Markørposisjon</p></item>
+  </list>
+</page>

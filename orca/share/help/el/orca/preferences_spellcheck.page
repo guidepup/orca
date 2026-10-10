@@ -4,9 +4,7 @@
     <link type="guide" xref="preferences#application"/>
     <title type="sort">4. Ορθογραφικός έλεγχος</title>
     <title type="link">Ορθογραφικός έλεγχος</title>
-    <desc>
-      Configuring <app>Orca</app>'s support for Spell Check
-    </desc>
+    <desc>Διαμόρφωση της υποστήριξης του <app>Orca</app> για ορθογραφικό έλεγχο</desc>
     <credit type="author">
       <name>Joanmarie Diggs</name>
       <email>joanied@gnome.org</email>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_the_orca_modifier" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#getting_started"/>
+    <link type="next" xref="howto_learn_modes"/>
+    <title type="sort">3. Orca-modifikatoren</title>
+    <desc>Ein tast som fungerer som <key>Shift</key>, <key>Ctrl</key> og <key>Alt</key></desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Orca-modifikatoren</title>
+  <p>Orca har ein spesiell modifikasjonstast som fungerer som <key>Shift</key>, <key>Ctrl</key> og <key>Alt</key>. Han er laga spesielt for å utføre <app>Orca</app>-kommandoar og gjere det utan å skape konfliktar med kommandoane til appane du vitjar.</p>
+  <p>Kva for ein tast «Orca-modifikatoren» er knytt til, vil som standard avhenge av om du brukar <app>Orca</app> sitt berbare tastaturoppsett eller skrivebordsoppsett:</p>
+  <list>
+    <item>
+      <p>Viss du brukar berbart oppsett, vert standard Orca-modifikator <key>CapsLock</key></p>
+    </item>
+    <item>
+      <p>_Viss du brukar skrivebordsoppsettet, vil Orca-modifikatoren vere både <key>Insert</key> og <key>KP_Insert</key>, der det siste er same tast som <key>KP0</key>.</p>
+    </item>
+  </list>
+  <p>Viss du vil behalde det noverande tastaturoppsettet, men velje ein annan modifikatornøkkel, kan du gjere det ved å utføre desse stega:</p>
+  <steps>
+    <title>Endrar Orca-modifikatoren</title>
+    <item>
+      <p>Gå inn i <link xref="preferences">Orca-innstillingane</link> ved å trykkje <keyseq><key>Orca-modifikator</key><key>Mellomrom</key></keyseq>. Alternativt kan du starte Orca med innstillingsvindauget ope frå ein terminal: skriv <cmd>orca -s</cmd> og trykk <key>Return</key>.</p>
+    </item>
+    <item>
+      <p>Flytt til <gui>Tastebindingar</gui>-sida.</p>
+    </item>
+    <item>
+      <p>Flytt til <gui>Skjermlesar-modifikasjonstast(ar)</gui> kombinasjonsboks.</p>
+    </item>
+    <item>
+      <p>Pil til ønskt modifikator. Dei tilgjengelege alternativa er:</p>
+      <list>
+        <item><p>Set inn, KP_Set inn</p></item>
+        <item><p>TT_Insert</p></item>
+        <item><p>Set inn</p></item>
+        <item><p>Caps_Lock</p></item>
+      </list>
+    </item>
+    <item><p>Trykk på knappen <gui>Bruk</gui>.</p></item>
+  </steps>
+</page>

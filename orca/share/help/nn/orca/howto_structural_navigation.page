@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_structural_navigation" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_tables"/>
+    <title type="sort">3. Strukturell navigering</title>
+    <desc>Flytte etter overskrift og andre element</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Strukturell navigasjon</title>
+  <p><app>Orca</app> sin strukturelle navigasjonsfunksjon gjer at du kan navigere mellom element i eit dokument. Elementtypar du kan navigere i omfattar:</p>
+  <list>
+    <item><p>Overskrifter og andre tekstblokker</p></item>
+    <item><p>Formkontrollar</p></item>
+    <item><p>Lenkjer</p></item>
+    <item><p>Lister og listeelement</p></item>
+    <item><p>Landemerke, skiljeteikn og anker</p></item>
+    <item><p>Tabellar og tabellceller</p></item>
+  </list>
+  <p>Ei fullstendig liste over enkeltvise element og tilhøyrande tastetrykk kan du finne i <link xref="commands_structural_navigation">Strukturell navigasjonskommando</link>.</p>
+  <section id="applications">
+      <title>Støtta appar</title>
+      <p>Strukturell navigasjon er no fullt ut implementert for webinnhald, inkludert hjelpeinnhaldet du les no. <app>Orca</app> sin støtte for strukturell navigasjon i tabellceller er òg implementert for <app>OpenOffice Writer</app> og <app>LibreOffice Writer</app>. Å implementere resten av objekta for strukturell navigasjon i desse kontorpakkane krev endringar frå utviklarane sjølve. Å implementere funksjonar for strukturell navigasjon i <app>Evince</app> vil krevje ein tilsvarande innsats frå utviklarane.</p>
+      <note style="tip">
+        <title>Hugs å slå på strukturell navigering!</title>
+        <p>Avhengig av kvar du er, kan det vere nødvendig for deg å slå på Strukturell navigasjon før du kan bruke det.</p>
+      </note>
+      <section id="toggling_required">
+        <title>Når det er nødvendig å slå på strukturell navigering</title>
+        <p>I nettvisingar er det som regel ikkje nødvendig å slå på Strukturell navigering, sidan samhandlinga med dokumentet stort sett går ut på å lese innhaldet. Dermed er det ikkje noko spørsmål om 'H'-en du nettopp trykte var meint som ein skrivekommando eller ein navigasjonskommando.</p>
+        <p>På den andre sida er det langt vanskelegare for <app>Orca</app> å føreseie nøyaktig kva du forventar skal skje som følgje av å trykkje 'H' i redigerbare dokument som i <app>OpenOffice</app> og <app>LibreOffice</app>. Før du kan bruke nokon Strukturell Navigasjonskommando i eit redigerbart dokument, må du derfor først slå på Strukturell Navigasjon ved å trykkje <keyseq><key>Orca-modifikator</key><key>Z</key></keyseq>. Når du er ferdig med å navigere og klar til å skrive vidare, trykkjer du <keyseq><key>Orca-modifikator</key><key>Z</key></keyseq> på nytt for å slå av Strukturell Navigasjon.</p>
+      </section>
+  </section>
+  <section id="settings">
+    <title>Tilgjengelege innstillingar</title>
+    <p>I tillegg til dei nemnde kommandoane har <app>Orca</app> eit tal konfigurerbare innstillingar som er tilgjengelege spesielt for appar der det finst støtte for strukturell navigering.</p>
+    <steps>
+      <title>Konfigurerer strukturell navigasjon</title>
+      <item>
+        <p>Gjev fokus til ein app der <app>Orca</app> har støtte for strukturell navigering.</p>
+      </item>
+      <item>
+        <p>Opne <link xref="preferences">Orca-innstillingane</link> for den noverande appen ved å trykkje <keyseq> <key>Ctrl</key><key>Orca-modifikator</key><key>Mellomrom</key> </keyseq>.</p>
+      </item>
+      <item>
+        <p>Naviger til den siste sida i vindauget, som skal ha same namn som den noverande appen din.</p>
+      </item>
+      <item>
+        <p>Undersøk og endre innstillingane slik du sjølv vil.</p>
+      </item>
+      <item>
+        <p>Trykk på <gui>OK</gui>-knappen.</p>
+      </item>
+    </steps>
+  </section>
+</page>

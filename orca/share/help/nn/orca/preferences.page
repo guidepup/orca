@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="preferences" xml:lang="nn">
+  <info>
+    <link type="next" xref="preferences_introduction"/>
+    <link type="guide" xref="index#quick_reference"/>
+    <title type="link">Innstillingar</title>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title><app>Orca</app> sine innstillingar</title>
+  <section id="orca" style="2column">
+    <title>Orca-innstillingar</title>
+  </section>
+  <section id="application" style="2column">
+    <title>App-unike innstillingar</title>
+  </section>
+</page>

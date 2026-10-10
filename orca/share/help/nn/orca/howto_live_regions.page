@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="howto_live_regions" xml:lang="nn">
+  <info>
+    <link type="guide" xref="index#reading"/>
+    <link type="next" xref="howto_whereami"/>
+    <title type="sort">6. Levande område</title>
+    <desc>Samhandling med dynamisk webbinnhald</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Levande område</title>
+  <p>Ein live-region er ein dynamisk oppdatert del av ei nettside, slik som ein tabell med sportsstatistikk, ei liste med gjeldande aksjekursar, ein logg frå ein chat eller eit varsel som vert vist av sida du les. Sjølv om live-regionar dukkar opp ganske ofte, er tilgjengelege nettsider med live-regionar sjeldnare. Dette problemet vert aktivt handsama av fleire organisasjonar.</p>
+  <section id="politeness_levels">
+    <title>Oppførsel for levande regionar</title>
+    <p>Live-regionar har eit tilhøyrande nivå for «høflegheit» som forfattaren set for å formidle kor viktig informasjonen er, og for å tyde når brukarane bør få melding frå hjelpeteknologien om oppdateringar i den regionen. Live-regionar kan vere «av», «høfleg» eller «bestemt».</p>
+  </section>
+  <section id="orca_support">
+    <title><app>Orca</app> si støtte for levande regionar</title>
+    <p>Fordi du kanskje ikkje er samd i høflegheitsnivået som er oppgitt av forfattaren til sida du ser på, tilbyr <app>Orca</app> ei rekkje <link xref="commands_live_regions">kommandoar for live-regionar</link> som lèt deg endre nivået for alle eller enkelte av regionane på ei side. I tillegg kan du:</p>
+    <list>
+      <item>
+        <p>Slå på eller av støtte for live-region</p>
+      </item>
+      <item>
+        <p>Hopp til neste og førre levande region romleg</p>
+      </item>
+      <item>
+        <p>Hopp til den siste aktive regionen som viste informasjon</p>
+      </item>
+      <item>
+        <p>Gå gjennom dei siste ni meldinga som vart viste i live-regionen</p>
+    </item>
+    </list>
+  </section>
+</page>

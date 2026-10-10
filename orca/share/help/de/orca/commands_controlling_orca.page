@@ -50,10 +50,7 @@
     <p>Die folgenden Befehle können verwendet werden, um in <app>Orcas</app> Einstellungsdialog zu gelangen, um <app>Orca</app> ein- oder auszuschalten und um <app>Orca</app>-Befehle zu übergehen, um Tastaturkürzel-Konflikte mit der Anwendung zu vermeiden.</p>
     <list>
       <item>
-        <p>
-          Toggle <app>Orca</app> on and off in supported desktop environments:
-          <keyseq><key>Super</key><key>Alt</key><key>S</key></keyseq>.
-        </p>
+        <p>Um <app>Orca</app> in unterstützten Arbeitsumgebungen ein- und auszuschalten, drücken Sie <keyseq><key>Super-Taste</key><key>Alt</key><key>S</key></keyseq>.</p>
         <note style="tip">
            <p>Falls Sie <app>Orca</app> in einer anderen Arbeitsumgebung verwenden, in der es keinen Befehl zum Ein- oder Ausschalten von <app>Orca</app> gibt, könnten Sie den Befehl zum Schließen von <app>Orca</app> hilfreich finden. Dieser Befehl ist standardmäßig nicht zugewiesen. Bitte klicken Sie auf <link xref="howto_key_bindings">Tastenkombinationen verändern</link>, um Informationen darüber zu erhalten, wie Sie nicht zugewiesenen Befehlen Tastenkombinationen zuweisen.</p>
         </note>
@@ -65,34 +62,31 @@
         <p>Orcas Einstellungen-Dialog für die fokussierte Anwendung: <keyseq><key>Strg</key><key>Orca-Zusatztaste</key><key>Leertaste</key></keyseq>.</p>
       </item>
       <item>
-        <p>
-          Toggle all Orca command keys:
-          <keyseq><key>Alt&gt;</key><key>BackSpace</key></keyseq>
-        </p>
+        <p>Alle Orca-Befehlstasten ein/ausschalten: <keyseq><key>Alt&gt;</key><key>Rücktaste</key></keyseq></p>
       </item>
       <item>
-        <p>Toggle keyboard layout: (Unbound)</p>
+        <p>Tastaturlayout umschalten: (Nicht zugewiesen)</p>
       </item>
       <item>
         <p>Zur nächsten Stufe des Tastaturechos wechseln: (Nicht zugewiesen)</p>
       </item>
       <item>
-        <p>Quit the screen reader: (Unbound)</p>
+        <p>Den Bildschirmleser beenden: (Nicht zugewiesen)</p>
       </item>
     </list>
   </section>
   <section id="braille_keyboard_bindings">
     <title>Braille-Befehle</title>
-    <p>The following commands can be used to control and customize Orca's braille output.</p>
+    <p>Mit den folgenden Befehlen können Sie die Braille-Ausgabe von Orca steuern und anpassen.</p>
     <list>
       <item>
-        <p>Pan the braille display to the left: (Unbound)</p>
+        <p>Braillezeile nach links schwenken: (Nicht zugewiesen)</p>
       </item>
       <item>
-        <p>Pan the braille display to the right: (Unbound)</p>
+        <p>Braillezeile nach rechts schwenken: (Nicht zugewiesen)</p>
       </item>
       <item>
-        <p>Turn contracted braille on and off: (Unbound)</p>
+        <p>Braille-Kurzschrift ein/ausschalten: (Nicht zugewiesen)</p>
       </item>
     </list>
   </section>

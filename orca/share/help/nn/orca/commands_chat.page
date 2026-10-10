@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/" type="topic" id="commands_chat" xml:lang="nn">
+  <info>
+    <link type="next" xref="commands_debugging"/>
+    <link type="guide" xref="commands#accessing_dynamic_information"/>
+    <link type="seealso" xref="preferences_chat"/>
+    <title type="sort">2. Chat</title>
+    <title type="link">Prat</title>
+    <desc>Kommandoar for bruk med IM- og IRC-klientar</desc>
+    <credit type="author">
+      <name>Joanmarie Diggs</name>
+      <email>joanied@gnome.org</email>
+    </credit>
+    <license>
+      <p>Creative Commons Del på same vilkår 3.0</p>
+    </license>
+  </info>
+  <title>Chat-kommandoar</title>
+  <p>Følgjande kommandoar kan brukast for å få tilgang til informasjon i dei meldings- og nettverkschat-appane som <app>Orca</app> støttar. Du vil sjå at fleire av desse kommandoane er «ubundne». Sjå <link xref="howto_key_bindings">Endre tastetrykk</link> for informasjon om korleis du kan knyte desse kommandoane til tastetrykk.</p>
+  <list>
+    <item>
+      <p>Vis førre chatrommelding: (Ubind)</p>
+    </item>
+    <item>
+      <p>Vis neste chatrom-melding: (Uforpliktande)</p>
+    </item>
+    <item>
+      <p>Slå på/av kunngjering av romnamn med meldingar: (Ubind)</p>
+    </item>
+    <item>
+      <p>Veksle chatrom-spesifikke meldingshistorier: (unbound)</p>
+    </item>
+    <item>
+      <p>Slå på/av kunngjering av status for vennetyping: (Ubinda)</p>
+    </item>
+    <item>
+      <p>Veksle vising av romnamn: (Ubind)</p>
+    </item>
+  </list>
+</page>
