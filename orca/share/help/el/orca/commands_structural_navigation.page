@@ -79,7 +79,11 @@
       <title>Φόρμες</title>
       <list>
         <item>
-          <p>Επόμενο και προηγούμενο πεδίο φόρμας: <keyseq><key>F</key></keyseq> και <keyseq><key>Shift</key><key>F</key></keyseq></p>
+          <p>
+            Next and previous form field:
+            <keyseq><key>F</key></keyseq> and
+            <keyseq><key>Shift</key><key>F</key></keyseq>
+          </p>
         </item> 
         <item>
           <p>Εμφάνιση ενός καταλόγου από πεδία φόρμας: <keyseq><key>Alt</key><key>Shift</key><key>F</key></keyseq></p>
@@ -233,7 +237,11 @@
           <p>Εμφάνιση ενός καταλόγου εικόνων: <keyseq><key>Alt</key><key>Shift</key><key>G</key></keyseq></p>
         </item>
         <item>
-          <p>Αρχή και τέλος τρέχοντος υποδοχέα: <keyseq><key>Shift</key><key>Κόμμα</key></keyseq> και <keyseq><key>Κόμμα</key></keyseq></p>
+          <p>
+            Start and end of current container:
+            <keyseq><key>Shift</key><key>Comma</key></keyseq> and
+            <keyseq><key>Comma</key></keyseq>
+          </p>
         </item>
       </list>
     </section>

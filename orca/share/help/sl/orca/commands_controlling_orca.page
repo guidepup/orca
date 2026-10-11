@@ -52,19 +52,19 @@
         </p>
       </item>
       <item>
-        <p>Preklopi razporeditev tipkovnice: (ni povezano)</p>
+        <p>Toggle keyboard layout: (Unbound)</p>
       </item>
       <item>
         <p>Kroži na naslednjo raven odmeva: (Nedoločeno)</p>
       </item>
       <item>
-        <p>Končaj program zaslonskega bralnika: (ni povezano)</p>
+        <p>Quit the screen reader: (Unbound)</p>
       </item>
     </list>
   </section>
   <section id="braille_keyboard_bindings">
     <title>Ukazi Braillove pisave</title>
-    <p>Za upravljanje in prilagajanje brajičnega izhoda programa Orca lahko uporabite naslednje ukaze.</p>
+    <p>The following commands can be used to control and customize Orca's braille output.</p>
     <list>
       <item>
         <p>Pan the braille display to the left: (Unbound)</p>
@@ -73,7 +73,7 @@
         <p>Pan the braille display to the right: (Unbound)</p>
       </item>
       <item>
-        <p>Preklopi skrčeno obliko Brajeve pisave: (ni povezano)</p>
+        <p>Turn contracted braille on and off: (Unbound)</p>
       </item>
     </list>
   </section>

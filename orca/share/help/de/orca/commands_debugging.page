@@ -47,13 +47,13 @@
   <p>Sie werden von den Entwicklern gefragt, ob Sie einige Fehlerinformationen senden möchten, damit sie die Ursache Ihres Problems finden können. Der folgende Befehl ist keinem Tastaturkürzel zugewiesen. Falls Sie es benötigen, lesen Sie bitte <link xref="howto_key_bindings">Tastenkürzel bearbeiten</link>.</p>
   <list>
     <item>
-      <p>Momentaufnahme zur Fehlerdiagnose erstellen: (Nicht zugewiesen)</p>
+      <p>Capture snapshot for debugging: (Unbound)</p>
     </item>
     <item>
       <p>Zur nächsthöheren Stufe der Fehlerdiagnose wechseln: (Nicht zugewiesen)</p>
     </item>
     <item>
-      <p>Den AT-SPI-Zwischenspeicher der aktuellen Anwendung leeren: (Nicht zugewiesen)</p>
+      <p>Clear the AT-SPI cache for the current application: (Unbound)</p>
     </item>
   </list>
 </page>

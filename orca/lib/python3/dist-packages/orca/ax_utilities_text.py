@@ -273,10 +273,8 @@ class AXUtilitiesText:
     def _find_text_selection_endpoint(
         root: Atspi.Accessible,
         find_start: bool,
-        ranges: list[tuple[int, int]] | None = None,
     ) -> tuple[Atspi.Accessible, int] | None:
-        if ranges is None:
-            ranges = AXText.get_selected_ranges(root)
+        ranges = AXText.get_selected_ranges(root)
         if ranges:
             start, end = ranges[0] if find_start else ranges[-1]
             string = AXText.get_substring(root, start, end)
@@ -318,20 +316,17 @@ class AXUtilitiesText:
     @staticmethod
     def get_text_selection_endpoints(
         root: Atspi.Accessible,
-        ranges: list[tuple[int, int]] | None = None,
     ) -> tuple[
         tuple[Atspi.Accessible | None, int],
         tuple[Atspi.Accessible | None, int],
     ]:
         """Returns the first and last selected text positions under root."""
 
-        if ranges is None:
-            ranges = AXText.get_selected_ranges(root)
         start: tuple[Atspi.Accessible | None, int] = (None, -1)
         end: tuple[Atspi.Accessible | None, int] = (None, -1)
-        if found_start := AXUtilitiesText._find_text_selection_endpoint(root, True, ranges):
+        if found_start := AXUtilitiesText._find_text_selection_endpoint(root, True):
             start = found_start
-            end = AXUtilitiesText._find_text_selection_endpoint(root, False, ranges) or (None, -1)
+            end = AXUtilitiesText._find_text_selection_endpoint(root, False) or (None, -1)
         tokens = [
             "AXUtilitiesText: Text selection endpoints under",
             root,
@@ -376,11 +371,9 @@ class AXUtilitiesText:
             if not _is_selection_element(child):
                 continue
             elements.append(child)
-            descendants = []
             if not AXUtilitiesRole.is_code(child):
-                descendants = AXUtilitiesObject.find_all_descendants(child, _include, _exclude)
-                elements.extend(descendants)
-            if end_obj == child or end_obj in descendants:
+                elements.extend(AXUtilitiesObject.find_all_descendants(child, _include, _exclude))
+            if end_obj in elements:
                 break
 
         if end_obj == start_obj:
@@ -1169,13 +1162,11 @@ class AXUtilitiesText:
     def set_caret_offset_with_reason(
         obj: Atspi.Accessible, offset: int, reason: CaretSetReason
     ) -> bool:
-        """Records the requested caret offset, deferring selection commands to their setter."""
+        """Sets the caret offset, recording the time and reason for later use."""
 
-        # Selection commands move the caret by setting the selection. Setting it here
-        # would first collapse the existing selection.
-        result = reason.is_text_selection() or AXText.set_caret_offset(obj, offset)
+        result = AXText.set_caret_offset(obj, offset)
         AXUtilitiesText.LAST_CARET_SET = LastCaretSet(obj, offset, time.monotonic(), reason)
-        tokens = ["AXUtilitiesText: Caret target", offset, "in", obj, "reason:", reason]
+        tokens = ["AXUtilitiesText: Set caret offset to", offset, "in", obj, "reason:", reason]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return result
 
@@ -1261,14 +1252,10 @@ class AXUtilitiesText:
         return string, start, end
 
     @staticmethod
-    def update_cached_selected_text(
-        obj: Atspi.Accessible, *, selection: tuple[str, int, int] | None = None
-    ) -> None:
-        """Caches the supplied selection, querying obj when none is supplied."""
+    def update_cached_selected_text(obj: Atspi.Accessible) -> None:
+        """Updates the last known selected string, start, and end for obj."""
 
-        if selection is None:
-            selection = AXUtilitiesText.get_selected_text(obj)
-        AXUtilitiesText._CACHE.set_selected_text(obj, selection)
+        AXUtilitiesText._CACHE.set_selected_text(obj, AXUtilitiesText.get_selected_text(obj))
 
     @staticmethod
     def get_selected_text(obj: Atspi.Accessible) -> tuple[str, int, int]:

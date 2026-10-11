@@ -22,10 +22,10 @@
 import os
 
 # $ORCA_VERSION
-version     = "51.1"
+version     = "51.0"
 
 # The revision if built from git; otherwise an empty string
-revision = "289de966d"
+revision = "1da4099"
 
 # "--prefix" parameter used when configuring the build.
 import os as _guidepup_os
