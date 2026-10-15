@@ -617,11 +617,18 @@ class Utilities(script_utilities.Utilities):
         offset: int = -1,
         skip_space: bool = False,
         restrict_to: Atspi.Accessible | None = None,  # pylint: disable=unused-argument
+        *,
+        include_current: bool = False,
     ) -> tuple[Atspi.Accessible | None, int]:
         """Returns the next viable/valid caret context given obj and offset."""
 
         if obj is None:
             obj, offset = self.get_caret_context()
+
+        if include_current and offset >= 0 and self.treat_as_text_object(obj):
+            text = AXText.get_all_text(obj)
+            if offset < len(text) and not (skip_space and text[offset].isspace()):
+                offset -= 1
 
         next_obj, next_offset = AXUtilities.find_next_context(obj, offset, self.caret_policy)
         if skip_space:
@@ -1765,10 +1772,7 @@ class Utilities(script_utilities.Utilities):
                     x_obj_parent is not None
                     and AXUtilities.is_focusable(x_obj)
                     and AXUtilities.get_nearest_block_ancestor(x_obj_parent) == obj_block
-                    and (
-                        AXUtilities.object_is_outside_parent(x_obj)
-                        or (AXUtilities.is_visible(x_obj) and not AXUtilities.is_showing(x_obj))
-                    )
+                    and AXUtilities.object_is_outside_parent(x_obj)
                 ):
                     return True
 
