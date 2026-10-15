@@ -25,7 +25,7 @@ import os
 version     = "51.1"
 
 # The revision if built from git; otherwise an empty string
-revision = "289de966d"
+revision = "1da4099"
 
 # "--prefix" parameter used when configuring the build.
 import os as _guidepup_os
