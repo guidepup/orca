@@ -42,21 +42,20 @@ from gi.repository import Atspi
 from orca import (
     caret_navigator,
     debug,
-    focus_manager,
     input_event_manager,
     messages,
     object_properties,
     speech_generator,
-    speechserver,
 )
 from orca.ax_object import AXObject
 from orca.ax_table import AXTable
 from orca.ax_text import AXText
 from orca.ax_utilities import AXUtilities
-from orca.generator import ContentItem, ContentPosition, PresentationReason
+from orca.enums import ActivePresentationMode, PresentationReason, VoiceType
+from orca.generator_context import ContentItem, ContentPosition
 
 if TYPE_CHECKING:
-    from orca.speech_generator import SpeechGeneratorContext
+    from orca.generator_context import SpeechGeneratorContext
 
     from . import script
 
@@ -105,9 +104,11 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         stop_at_roles: list | None = None,
         stop_after_roles: list | None = None,
     ) -> list[Any]:
+        prior_obj = self._get_prior_obj()
         if (
-            self._context.active_mode == focus_manager.FLAT_REVIEW
+            self._context.active_mode == ActivePresentationMode.FLAT_REVIEW
             or not self._script.utilities.in_document_content(obj)
+            or (prior_obj and AXObject.get_parent(prior_obj) == AXObject.get_parent(obj))
         ):
             return super()._generate_ancestors(
                 obj,
@@ -118,10 +119,6 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             )
 
         result: list[Any] = []
-        prior_obj = self._get_prior_obj()
-        if prior_obj and AXObject.get_parent(prior_obj) == AXObject.get_parent(obj):
-            return result
-
         if prior_obj and self._script.utilities.in_document_content(prior_obj):
             prior_doc = self._script.utilities.get_document_for_object(prior_obj)
             doc = self._script.utilities.get_document_for_object(obj)
@@ -169,6 +166,19 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         )
 
         return result
+
+    @log_generator_output
+    def _generate_state_read_only(self, obj: Atspi.Accessible) -> list[Any]:
+        # Gecko exposes READ_ONLY unconditionally for this non-editable content.
+        if AXObject.get_role(obj) in (
+            Atspi.Role.DOCUMENT_WEB,
+            Atspi.Role.DOCUMENT_FRAME,
+            Atspi.Role.LIST,
+            Atspi.Role.DESCRIPTION_LIST,
+            Atspi.Role.DESCRIPTION_TERM,
+        ):
+            return []
+        return super()._generate_state_read_only(obj)
 
     @log_generator_output
     def _generate_state_has_popup(self, obj: Atspi.Accessible) -> list[Any]:
@@ -232,7 +242,7 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         if obj != self._context.focus:
             if AXUtilities.is_dialog_or_alert(obj, self._get_resolved_role()):
                 return super()._generate_accessible_description(obj)
-            if self._context.active_mode != focus_manager.MOUSE_REVIEW:
+            if self._context.active_mode != ActivePresentationMode.MOUSE_REVIEW:
                 return []
 
         if AXUtilities.is_text(obj, self._get_resolved_role()) and (
@@ -562,6 +572,14 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             role_subject = self._context.role_subject
             next_obj = self._context.next_content_subject
 
+        if (
+            self._context is not None
+            and self._context.announce_inline_code
+            and obj != role_subject
+            and AXUtilities.is_code(obj)
+        ):
+            return self._generate_end_of_code(obj)
+
         mgr = input_event_manager.get_manager()
         navigating_by_character_or_word = (
             mgr.last_event_was_character_navigation() or mgr.last_event_was_word_navigation()
@@ -809,7 +827,7 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
             contents[0][0],
         )
         prev_attrs: dict[str, str] = {}
-        system_voice = self.voice(speechserver.VoiceType.SYSTEM) if announce_attrs else []
+        system_voice = self.voice(VoiceType.SYSTEM) if announce_attrs else []
 
         original_context = self._context
         base_position = original_context.content_position
@@ -889,6 +907,9 @@ class SpeechGenerator(speech_generator.SpeechGenerator):
         context: SpeechGeneratorContext,
     ) -> list[Any]:
         """Generates speech for a web document line via DOM-walking contents."""
+
+        if context.active_mode == ActivePresentationMode.FLAT_REVIEW:
+            return super().generate_line(obj, start_offset, end_offset, line, context)
 
         if not self._script.utilities.in_document_content(obj):
             return super().generate_line(obj, start_offset, end_offset, line, context)

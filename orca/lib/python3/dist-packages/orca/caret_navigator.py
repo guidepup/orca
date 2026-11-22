@@ -49,7 +49,7 @@ from . import (
 from .ax_object import AXObject
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
-from .ax_utilities_text import CaretSetReason
+from .enums import ActivePresentationMode, CaretSetReason
 from .extension import Extension
 
 if TYPE_CHECKING:
@@ -182,12 +182,27 @@ class CaretNavigator(Extension):
         default=False,
         summary="Enable Orca-controlled text selection",
         user_visible=False,
+        preserve_default=True,
     )
+    @dbus_service.undocumented
+    @dbus_service.getter
     def get_selection_enabled(self) -> bool:
         """Returns whether Orca-controlled text selection is enabled."""
 
         return self._get_setting(self.KEY_SELECTION_ENABLED, False)
 
+    def get_selection_available(self) -> bool:
+        """Returns whether text selection has an explicit value, including false."""
+
+        return (
+            gsettings_registry.get_registry().layered_lookup(
+                self._SCHEMA, self.KEY_SELECTION_ENABLED, "b"
+            )
+            is not None
+        )
+
+    @dbus_service.undocumented
+    @dbus_service.setter
     def set_selection_enabled(self, value: bool) -> bool:
         """Sets whether Orca-controlled text selection is enabled."""
 
@@ -590,14 +605,18 @@ class CaretNavigator(Extension):
         if obj is None:
             return None, -1
 
-        # Chromium includes static text leaf nodes which we ignore; use the navigable parent.
-        obj_in_document = (
-            root_in_document if obj == root else script.utilities.in_document_content(obj)
-        )
-        if obj_in_document and not AXUtilities.is_web_element(obj):
-            parent = AXObject.get_parent(obj)
-            if AXUtilities.is_web_element(parent):
-                obj = parent
+        if AXUtilities.is_presentational_child(obj):
+            pred = AXUtilities.children_are_presentational
+            obj = AXUtilities.find_outermost_ancestor_inclusive(obj, pred)
+        else:
+            # Chromium includes static text leaf nodes which we ignore; use the navigable parent.
+            obj_in_document = (
+                root_in_document if obj == root else script.utilities.in_document_content(obj)
+            )
+            if obj_in_document and not AXUtilities.is_web_element(obj):
+                parent = AXObject.get_parent(obj)
+                if AXUtilities.is_web_element(parent):
+                    obj = parent
 
         offset = max(0, AXText.get_character_count(obj) - 1)
         while obj:
@@ -712,13 +731,13 @@ class CaretNavigator(Extension):
         focus_manager.get_manager().emit_region_changed(
             obj,
             start_offset=offset,
-            mode=focus_manager.CARET_NAVIGATOR,
+            mode=ActivePresentationMode.CARET_NAVIGATOR,
         )
         if not notify_user:
             return True
 
         script.update_braille(obj, offset=offset)
-        script.say_character(obj, offset)
+        script.say_character(obj, offset, emit_region_changed=False)
         return True
 
     @dbus_service.command
@@ -763,13 +782,13 @@ class CaretNavigator(Extension):
         focus_manager.get_manager().emit_region_changed(
             obj,
             start_offset=offset,
-            mode=focus_manager.CARET_NAVIGATOR,
+            mode=ActivePresentationMode.CARET_NAVIGATOR,
         )
         if not notify_user:
             return True
 
         script.update_braille(obj, offset=offset)
-        script.say_character(obj, offset)
+        script.say_character(obj, offset, emit_region_changed=False)
         return True
 
     @dbus_service.command
@@ -814,13 +833,13 @@ class CaretNavigator(Extension):
         focus_manager.get_manager().emit_region_changed(
             obj,
             start_offset=offset,
-            mode=focus_manager.CARET_NAVIGATOR,
+            mode=ActivePresentationMode.CARET_NAVIGATOR,
         )
         if not notify_user:
             return True
 
         script.update_braille(obj, offset=offset)
-        script.say_character(obj, offset)
+        script.say_character(obj, offset, emit_region_changed=False)
         return True
 
     @dbus_service.command
@@ -902,13 +921,13 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
         if not notify_user:
             return True
 
         script.update_braille(obj, offset=end)
-        script.say_word(obj, end)
+        script.say_word(obj, end, emit_region_changed=False)
         return True
 
     @dbus_service.command
@@ -976,14 +995,14 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
 
         if not notify_user:
             return True
 
         script.update_braille(obj, offset=start)
-        script.say_word(obj, start)
+        script.say_word(obj, start, emit_region_changed=False)
         return True
 
     @dbus_service.command
@@ -1095,7 +1114,7 @@ class CaretNavigator(Extension):
             obj,
             offset,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
 
         if notify_user:
@@ -1207,7 +1226,7 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
 
         if notify_user:
@@ -1262,13 +1281,13 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
 
         if not notify_user:
             return True
 
-        script.say_character(obj, start)
+        script.say_character(obj, start, emit_region_changed=False)
         presentation_manager.get_manager().display_contents(line)
         return True
 
@@ -1320,13 +1339,13 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
 
         if not notify_user:
             return True
 
-        script.say_character(obj, end)
+        script.say_character(obj, end, emit_region_changed=False)
         presentation_manager.get_manager().display_contents(line)
         return True
 
@@ -1379,7 +1398,7 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
 
         if not notify_user:
@@ -1453,7 +1472,7 @@ class CaretNavigator(Extension):
             obj,
             start,
             end,
-            focus_manager.CARET_NAVIGATOR,
+            ActivePresentationMode.CARET_NAVIGATOR,
         )
         if not notify_user:
             return True
@@ -1464,6 +1483,8 @@ class CaretNavigator(Extension):
         presenter.present_contents(contents, prior_obj=prior_obj)
         return True
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_next_character(
         self,
@@ -1485,6 +1506,8 @@ class CaretNavigator(Extension):
             selection_forward=True,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_previous_character(
         self,
@@ -1506,6 +1529,8 @@ class CaretNavigator(Extension):
             selection_forward=False,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_next_word(
         self,
@@ -1527,6 +1552,8 @@ class CaretNavigator(Extension):
             selection_forward=True,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_previous_word(
         self,
@@ -1548,6 +1575,8 @@ class CaretNavigator(Extension):
             selection_forward=False,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_next_line(
         self,
@@ -1570,6 +1599,8 @@ class CaretNavigator(Extension):
             selection_forward=True,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_previous_line(
         self,
@@ -1592,6 +1623,8 @@ class CaretNavigator(Extension):
             selection_forward=False,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_start_of_file(
         self,
@@ -1613,6 +1646,8 @@ class CaretNavigator(Extension):
             selection_forward=False,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_end_of_file(
         self,
@@ -1634,6 +1669,8 @@ class CaretNavigator(Extension):
             selection_forward=True,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_start_of_line(
         self,
@@ -1655,6 +1692,8 @@ class CaretNavigator(Extension):
             selection_forward=False,
         )
 
+    @dbus_service.undocumented
+    @dbus_service.command
     @navigation_command
     def select_end_of_line(
         self,

@@ -30,7 +30,7 @@ import types
 import typing
 import xml.etree.ElementTree as ET
 from collections.abc import Callable
-from typing import Any
+from typing import Any, Protocol
 
 import gi
 from dasbus.connection import SessionMessageBus
@@ -46,9 +46,16 @@ gi.require_version("Atspi", "2.0")
 from gi.repository import Atspi, GLib
 
 from . import (  # pylint: disable=no-name-in-module
+    clipboard_manager,
     debug,
     orca_platform,
 )
+
+
+def undocumented(func):
+    """Omit a method from generated reference docs without changing D-Bus publication."""
+
+    return func
 
 
 def command(func):
@@ -473,20 +480,12 @@ class _InterfaceBuilder:
         """Builds a D-Bus method (notify_user) -> bool wrapping an @command method."""
 
         def Method(_self, notify_user: bool = True) -> bool:  # pylint: disable=invalid-name
-            # Local imports break a circular import: dbus_service is imported by speech_manager,
-            # and script_manager (transitively) imports speech_manager.
-            from . import (  # pylint: disable=import-outside-toplevel
-                input_event,
-                input_event_manager,
-                script_manager,
-            )
+            if (handler := get_remote_controller().get_handler()) is None:
+                msg = "DBUS SERVICE: Cannot run command; no handler."
+                debug.print_message(debug.LEVEL_WARNING, msg, True)
+                return False
 
-            event = input_event.RemoteControllerEvent()
-            manager = script_manager.get_manager()
-            script = manager.get_active_script() or manager.get_default_script()
-            result = method(script=script, event=event, notify_user=notify_user)
-            input_event_manager.get_manager().process_remote_controller_event(event)
-            return bool(result)
+            return bool(handler.run_command(method, {"notify_user": notify_user}, False))
 
         return Method
 
@@ -556,24 +555,14 @@ class _InterfaceBuilder:
                     debug.print_tokens(debug.LEVEL_WARNING, tokens, True)
                     raise PermissionError("invalid testing token")
 
-            from . import (  # pylint: disable=import-outside-toplevel
-                input_event,
-                input_event_manager,
-                script_manager,
-            )
+            if (handler := get_remote_controller().get_handler()) is None:
+                msg = "DBUS SERVICE: Cannot run command; no handler."
+                debug.print_message(debug.LEVEL_WARNING, msg, True)
+                raise RuntimeError("no remote controller handler")
 
             is_user_command = getattr(method, "dbus_testing_command_is_user_command", False)
-            if require_token and not is_user_command:
-                event = input_event.RemoteControllerTestingEvent()
-            else:
-                event = input_event.RemoteControllerEvent()
-            manager = script_manager.get_manager()
-            script = manager.get_active_script() or manager.get_default_script()
-            bound.arguments["script"] = script
-            bound.arguments["event"] = event
-            result = method(**bound.arguments)
-            input_event_manager.get_manager().process_remote_controller_event(event)
-            return result
+            is_testing = require_token and not is_user_command
+            return handler.run_command(method, bound.arguments, is_testing)
 
         Method.__signature__ = new_sig  # type: ignore[attr-defined]
         Method.__annotations__ = annotations
@@ -650,43 +639,47 @@ class OrcaDBusServiceInterface(Publishable):
     def ShowPreferences(self) -> bool:  # pylint: disable=invalid-name
         """Shows Orca's preferences GUI."""
 
-        from . import script_manager  # pylint: disable=import-outside-toplevel
-
         msg = "DBUS SERVICE: ShowPreferences called."
         debug.print_message(debug.LEVEL_INFO, msg, True)
 
-        manager = script_manager.get_manager()
-        script = manager.get_active_script() or manager.get_default_script()
-        if script is None:
+        if (handler := get_remote_controller().get_handler()) is None:
+            msg = "DBUS SERVICE: Cannot show preferences; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
+
+        if not handler.show_preferences():
             msg = "DBUS SERVICE: No script available"
             debug.print_message(debug.LEVEL_WARNING, msg, True)
             return False
 
-        from . import screen_reader_manager  # pylint: disable=import-outside-toplevel
-
-        screen_reader_manager.get_manager().show_preferences_gui(script)
         return True
 
     def PresentMessage(self, message: str) -> bool:  # pylint: disable=invalid-name
         """Presents message to the user via speech and braille."""
 
-        from . import presentation_manager  # pylint: disable=import-outside-toplevel
-
         tokens = ["DBUS SERVICE: PresentMessage called with: '", message, "'"]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
-        presentation_manager.get_manager().present_message(message)
+        if (handler := get_remote_controller().get_handler()) is None:
+            msg = "DBUS SERVICE: Cannot present message; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
+
+        handler.present_message(message)
         return True
 
     def SpeakMessage(self, message: str) -> bool:  # pylint: disable=invalid-name
         """Speaks message to the user."""
 
-        from . import presentation_manager  # pylint: disable=import-outside-toplevel
-
         tokens = ["DBUS SERVICE: SpeakMessage called with: '", message, "'"]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
-        presentation_manager.get_manager().speak_message(message)
+        if (handler := get_remote_controller().get_handler()) is None:
+            msg = "DBUS SERVICE: Cannot speak message; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
+
+        handler.speak_message(message)
         return True
 
     def DisplayMessage(  # pylint: disable=invalid-name
@@ -696,8 +689,6 @@ class OrcaDBusServiceInterface(Publishable):
     ) -> bool:
         """Displays message on the braille display."""
 
-        from . import presentation_manager  # pylint: disable=import-outside-toplevel
-
         tokens = [
             "DBUS SERVICE: DisplayMessage called:",
             message,
@@ -706,7 +697,12 @@ class OrcaDBusServiceInterface(Publishable):
         ]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
-        presentation_manager.get_manager().display_message(message, persistent=persistent)
+        if (handler := get_remote_controller().get_handler()) is None:
+            msg = "DBUS SERVICE: Cannot display message; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
+
+        handler.display_message(message, persistent)
         return True
 
     def GetAtspiVersion(self) -> str:  # pylint: disable=invalid-name
@@ -734,16 +730,57 @@ class OrcaDBusServiceInterface(Publishable):
         msg = "DBUS SERVICE: Quit called."
         debug.print_message(debug.LEVEL_INFO, msg, True)
 
-        from . import orca  # pylint: disable=import-outside-toplevel
+        if (handler := get_remote_controller().get_handler()) is None:
+            msg = "DBUS SERVICE: Cannot quit; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
 
-        # orca.shutdown() shuts down the dbus service, so send the response immediately and then
+        # Quitting shuts down the dbus service, so send the response immediately and then
         # do the actual shutdown after a brief delay.
         def _delayed_shutdown():
-            orca.shutdown()
+            handler.quit()
             return False
 
         GLib.timeout_add(100, _delayed_shutdown)
         return True
+
+
+class RemoteControllerHandler(Protocol):
+    """Handler for requests from the D-Bus remote controller."""
+
+    def run_command(
+        self, method: Callable[..., Any], arguments: dict[str, Any], is_testing: bool
+    ) -> Any:
+        """Runs method with the active script and a remote controller event."""
+
+    def show_preferences(self) -> bool:
+        """Shows the preferences for the active script. Returns False if there is no script."""
+
+    def present_message(self, message: str) -> None:
+        """Presents message in speech and braille."""
+
+    def speak_message(self, message: str) -> None:
+        """Speaks message."""
+
+    def display_message(self, message: str, persistent: bool) -> None:
+        """Displays message in braille."""
+
+    def play_sound_file(self, path: str, interrupt: bool, volume: float) -> bool:
+        """Plays the sound file at path."""
+
+    def play_tone(
+        self, duration: float, frequency: int, volume: float, wave: str, interrupt: bool
+    ) -> bool:
+        """Plays a tone."""
+
+    def get_active_window(self) -> typing.Optional[Atspi.Accessible]:  # noqa: UP045
+        """Returns the active window."""
+
+    def get_current_object(self) -> typing.Optional[Atspi.Accessible]:  # noqa: UP045
+        """Returns the current object."""
+
+    def quit(self) -> None:
+        """Quits Orca."""
 
 
 class OrcaRemoteController:
@@ -758,6 +795,38 @@ class OrcaRemoteController:
         self._bus: SessionMessageBus | None = None
         self._registered: dict[str, _ModuleRegistration] = {}
         self._pending_registrations: dict[str, object] = {}
+        self._handler: RemoteControllerHandler | None = None
+
+    def set_handler(self, handler: RemoteControllerHandler) -> bool:
+        """Sets the remote controller handler. Returns True if the request was accepted."""
+
+        if self._handler not in (None, handler):
+            msg = "REMOTE CONTROLLER: Refusing to replace active handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
+
+        self._handler = handler
+        msg = "REMOTE CONTROLLER: Handler is now set."
+        debug.print_message(debug.LEVEL_INFO, msg, True)
+        return True
+
+    def clear_handler(self, handler: RemoteControllerHandler) -> bool:
+        """Clears the remote controller handler if handler owns it."""
+
+        if self._handler is not handler:
+            msg = "REMOTE CONTROLLER: Refusing to clear handler owned by another handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
+
+        self._handler = None
+        msg = "REMOTE CONTROLLER: Handler is now cleared."
+        debug.print_message(debug.LEVEL_INFO, msg, True)
+        return True
+
+    def get_handler(self) -> RemoteControllerHandler | None:
+        """Returns the remote controller handler, if any."""
+
+        return self._handler
 
     def start(self) -> bool:
         """Starts the D-Bus service."""
@@ -920,12 +989,20 @@ class OrcaRemoteController:
 
         return self._dbus_service_interface.DisplayMessage(message, persistent)
 
-    def play_sound_file_internal(self, path: str, interrupt: bool = True) -> bool:
+    def play_sound_file_internal(
+        self,
+        path: str,
+        interrupt: bool = True,
+        volume: float = 1.0,
+    ) -> bool:
         """Plays a sound file without a D-Bus round-trip."""
 
-        from . import presentation_manager  # pylint: disable=import-outside-toplevel
+        if self._handler is None:
+            msg = "REMOTE CONTROLLER: Cannot play sound file; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
 
-        return presentation_manager.get_manager().play_sound_file(path, interrupt=interrupt)
+        return self._handler.play_sound_file(path, interrupt, volume)
 
     def play_tone_internal(
         self,
@@ -937,45 +1014,40 @@ class OrcaRemoteController:
     ) -> bool:
         """Plays a tone without a D-Bus round-trip."""
 
-        from . import presentation_manager  # pylint: disable=import-outside-toplevel
+        if self._handler is None:
+            msg = "REMOTE CONTROLLER: Cannot play tone; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
 
-        return presentation_manager.get_manager().play_tone(
-            duration,
-            frequency,
-            volume=volume,
-            wave=wave,
-            interrupt=interrupt,
-        )
+        return self._handler.play_tone(duration, frequency, volume, wave, interrupt)
 
     def set_clipboard_text_internal(self, text: str) -> bool:
         """Attempts to set the clipboard contents without a D-Bus round-trip."""
 
-        from . import clipboard  # pylint: disable=import-outside-toplevel
-
-        clipboard.get_presenter().set_text(text)
+        clipboard_manager.get_manager().set_text(text)
         return True
 
     def append_clipboard_text_internal(self, text: str, separator: str = "\n") -> bool:
         """Attempts to append text to the clipboard contents without a D-Bus round-trip."""
 
-        from . import clipboard  # pylint: disable=import-outside-toplevel
-
-        clipboard.get_presenter().append_text(text, separator)
+        clipboard_manager.get_manager().append_text(text, separator)
         return True
 
     def get_active_window_internal(self) -> typing.Optional[Atspi.Accessible]:  # noqa: UP045
         """Returns the active window without a D-Bus round-trip."""
 
-        from . import focus_manager  # pylint: disable=import-outside-toplevel
+        if self._handler is None:
+            return None
 
-        return focus_manager.get_manager().get_active_window()
+        return self._handler.get_active_window()
 
     def get_current_object_internal(self) -> typing.Optional[Atspi.Accessible]:  # noqa: UP045
         """Returns the current object (AKA 'locus of focus') without a D-Bus round-trip."""
 
-        from . import focus_manager  # pylint: disable=import-outside-toplevel
+        if self._handler is None:
+            return None
 
-        return focus_manager.get_manager().get_locus_of_focus()
+        return self._handler.get_current_object()
 
     def execute_command_internal(
         self,
@@ -1003,18 +1075,12 @@ class OrcaRemoteController:
             debug.print_tokens(debug.LEVEL_WARNING, tokens, True)
             return False
 
-        from . import (  # pylint: disable=import-outside-toplevel
-            input_event,
-            input_event_manager,
-            script_manager,
-        )
+        if self._handler is None:
+            msg = "REMOTE CONTROLLER: Cannot run command; no handler."
+            debug.print_message(debug.LEVEL_WARNING, msg, True)
+            return False
 
-        event = input_event.RemoteControllerEvent()
-        manager = script_manager.get_manager()
-        script = manager.get_active_script() or manager.get_default_script()
-        result = method(script=script, event=event, notify_user=notify_user)
-        input_event_manager.get_manager().process_remote_controller_event(event)
-        return bool(result)
+        return bool(self._handler.run_command(method, {"notify_user": notify_user}, False))
 
     def get_value_internal(self, module_name: str, property_name: str) -> object:
         """Gets a runtime value from a module without a D-Bus round-trip."""

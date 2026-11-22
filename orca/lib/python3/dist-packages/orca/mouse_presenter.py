@@ -66,11 +66,13 @@ from .ax_component import AXComponent
 from .ax_object import AXObject
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
+from .enums import ActivePresentationMode
 from .extension import Extension
+from .mouse_presenter_preferences_grid import MousePreferencesGrid
+from .mouse_presenter_settings import MouseSettings
 
 if TYPE_CHECKING:
     from .command import Command
-    from .mouse_presenter_preferences_grid import MousePreferencesGrid
     from .scripts import default
 
 
@@ -174,7 +176,7 @@ class _StringContext:
             self._obj,
             self._start,
             self._end,
-            focus_manager.MOUSE_REVIEW,
+            ActivePresentationMode.MOUSE_REVIEW,
         )
         presenter = presentation_manager.get_manager()
         presenter.speak_accessible_text(self._obj, self._string)
@@ -349,7 +351,7 @@ class _ItemContext:
         if self._frame and self._frame != prior.get_frame():
             focus_manager.get_manager().emit_region_changed(
                 self._frame,
-                mode=focus_manager.MOUSE_REVIEW,
+                mode=ActivePresentationMode.MOUSE_REVIEW,
             )
             self._script.present_object(
                 self._frame,
@@ -360,7 +362,7 @@ class _ItemContext:
             prior_obj = prior_obj or self._get_container()
             focus_manager.get_manager().emit_region_changed(
                 self._obj,
-                mode=focus_manager.MOUSE_REVIEW,
+                mode=ActivePresentationMode.MOUSE_REVIEW,
             )
             self._script.present_object(self._obj, prior_obj=prior_obj)
             if self._string.get_string() == AXObject.get_name(self._obj):
@@ -386,8 +388,6 @@ class MousePresenter(Extension):
     """Provides mouse review and pointer interaction support."""
 
     _SCHEMA = "mouse-review"
-    KEY_PRESENT_TOOLTIPS = "present-tooltips"
-    KEY_ENABLED = "enabled"
 
     def _get_setting(self, key: str, default: bool) -> bool:
         """Returns the dconf value for key, or default if not in dconf."""
@@ -459,9 +459,6 @@ class MousePresenter(Extension):
 
     def create_preferences_grid(self) -> MousePreferencesGrid:
         """Returns the GtkGrid containing the mouse preferences UI."""
-
-        # pylint: disable-next=import-outside-toplevel
-        from .mouse_presenter_preferences_grid import MousePreferencesGrid
 
         return MousePreferencesGrid(self)
 
@@ -550,7 +547,7 @@ class MousePresenter(Extension):
         return obj
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_PRESENT_TOOLTIPS,
+        key=MouseSettings.KEY_PRESENT_TOOLTIPS,
         schema="mouse-review",
         gtype="b",
         default=False,
@@ -561,7 +558,7 @@ class MousePresenter(Extension):
     def get_present_tooltips(self) -> bool:
         """Returns whether tooltips displayed due to mouse hover are spoken (requires X11)."""
 
-        return self._get_setting(self.KEY_PRESENT_TOOLTIPS, False)
+        return self._get_setting(MouseSettings.KEY_PRESENT_TOOLTIPS, False)
 
     @dbus_service.setter
     def set_present_tooltips(self, value: bool) -> bool:
@@ -570,12 +567,12 @@ class MousePresenter(Extension):
         tokens = ["MOUSE REVIEW: Setting present tooltips to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_PRESENT_TOOLTIPS, value
+            self._SCHEMA, MouseSettings.KEY_PRESENT_TOOLTIPS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_ENABLED,
+        key=MouseSettings.KEY_ENABLED,
         schema="mouse-review",
         gtype="b",
         default=False,
@@ -586,7 +583,7 @@ class MousePresenter(Extension):
     def get_is_enabled(self) -> bool:
         """Returns whether mouse review is enabled (requires Wnck)."""
 
-        return self._get_setting(self.KEY_ENABLED, False)
+        return self._get_setting(MouseSettings.KEY_ENABLED, False)
 
     @dbus_service.setter
     def set_is_enabled(self, value: bool) -> bool:
@@ -600,7 +597,9 @@ class MousePresenter(Extension):
         if value == self._active:
             return True
 
-        gsettings_registry.get_registry().set_runtime_value(self._SCHEMA, self.KEY_ENABLED, value)
+        gsettings_registry.get_registry().set_runtime_value(
+            self._SCHEMA, MouseSettings.KEY_ENABLED, value
+        )
         if value:
             self.activate()
         else:

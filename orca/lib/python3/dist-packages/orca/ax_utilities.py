@@ -454,6 +454,13 @@ class AXUtilities:
         result = None
         if AXObject.supports_collection(obj):
             result = AXUtilitiesCollection.find_focused_object(obj)
+            while result is not None and (
+                AXUtilities.is_layout_only(result) or AXUtilitiesRole.is_split_pane(result)
+            ):
+                descendant = AXUtilitiesCollection.find_focused_object(result)
+                if descendant is None or descendant == result:
+                    break
+                result = descendant
             if not AXUtilities.COMPARE_COLLECTION_PERFORMANCE:
                 return result
 
@@ -621,6 +628,8 @@ class AXUtilities:
 
         if AXUtilitiesObject.find_ancestor(obj, AXUtilitiesRole.is_desktop_frame) is not None:
             return True, "is inside desktop frame"
+        if not AXObject.supports_selection(obj) and not AXUtilitiesState.is_focusable(obj):
+            return AXUtilities._is_layout_only_panel(obj)
         return False, ""
 
     @staticmethod
@@ -710,6 +719,13 @@ class AXUtilities:
     def _is_layout_only_table_cell(obj: Atspi.Accessible) -> tuple[bool, str]:
         """Returns True with reason if this table cell is layout-only."""
 
+        state_set = AXObject.get_state_set(obj)
+        if AXUtilitiesState.is_focusable(obj, state_set):
+            return False, "is focusable"
+        if AXUtilitiesState.is_selectable(obj, state_set):
+            return False, "is selectable"
+        if AXUtilitiesState.is_expandable(obj, state_set):
+            return False, "is expandable"
         if AXUtilitiesRole.is_table_cell(AXObject.get_child(obj, 0)):
             return True, "child of this cell is table cell"
         table = AXUtilitiesTable.get_table(obj)
@@ -1042,12 +1058,12 @@ class AXUtilities:
         obj: Atspi.Accessible,
         inclusive: bool = False,
     ) -> bool:
-        """Returns True if obj has a menu ancestor."""
+        """Returns True if obj has a menu or popup menu ancestor."""
 
         return AXUtilities._is_descendant(
             AXUtilities._CACHE.IS_MENU_DESCENDANT,
             obj,
-            AXUtilitiesRole.is_menu,
+            lambda x: AXObject.get_role(x) in (Atspi.Role.MENU, Atspi.Role.POPUP_MENU),
             inclusive,
         )
 
@@ -1667,7 +1683,14 @@ class AXUtilities:
             return not AXUtilitiesState.is_expanded(obj)
 
         if AXObject.get_name(obj):
-            return AXUtilitiesRole.is_link(obj, role) or AXUtilitiesRole.is_label(obj, role)
+            if AXUtilitiesRole.is_link(obj, role):
+                return True
+            if AXUtilitiesRole.is_label(obj, role):
+                if AXObject.get_child_count(obj):
+                    labelled = AXUtilitiesRelation.get_is_label_for(obj)
+                    if AXUtilitiesObject.label_is_ancestor_of_labelled(obj, labelled):
+                        return False
+                return True
 
         return False
 

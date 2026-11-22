@@ -32,6 +32,7 @@ from typing import TYPE_CHECKING, Any
 
 import gi
 
+gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
 from gi.repository import (
     Gdk,  # pylint: disable=no-name-in-module
@@ -264,7 +265,7 @@ class OrcaSetupGUI(Gtk.ApplicationWindow):  # pylint: disable=too-many-instance-
         registry.set_ignore_runtime(True)
 
         # Create all preference grids
-        # Profiles grid controls are insensitive for app-specific prefs
+        # Application preferences allow profile selection, but not profile management.
         prof_manager = profile_manager.get_manager()
         self.profiles_grid = prof_manager.create_preferences_grid(
             profile_loaded_callback=self._on_profile_loaded,
@@ -533,6 +534,8 @@ class OrcaSetupGUI(Gtk.ApplicationWindow):  # pylint: disable=too-many-instance-
             return
 
         OrcaSetupGUI.WINDOW = self
+        if self._app_name:
+            gsettings_registry.get_registry().set_configured_app(self._app_name)
 
         accel_group = Gtk.AccelGroup()
         OrcaSetupGUI.WINDOW.add_accel_group(accel_group)
@@ -597,11 +600,13 @@ class OrcaSetupGUI(Gtk.ApplicationWindow):  # pylint: disable=too-many-instance-
 
         registry = gsettings_registry.get_registry()
         registry.set_ignore_runtime(True)
-        for grid in self._page_to_grid.values():
-            if grid is self.profiles_grid and not include_profiles:
-                continue
-            grid.reload()
-        registry.set_ignore_runtime(False)
+        try:
+            for grid in self._page_to_grid.values():
+                if grid is self.profiles_grid and not include_profiles:
+                    continue
+                grid.reload()
+        finally:
+            registry.set_ignore_runtime(False)
 
     def apply_button_clicked(self, _widget: Gtk.Button) -> None:
         """Handle Apply button click to save and apply preferences."""
@@ -621,6 +626,7 @@ class OrcaSetupGUI(Gtk.ApplicationWindow):  # pylint: disable=too-many-instance-
             if grid is not self.profiles_grid:
                 grid.save_settings(self._profile_name, save_app)
 
+        gsettings_registry.get_registry().clear_runtime_values()
         orca.load_user_settings(self.script, skip_reload_message=True)
 
         # Speak the settings reloaded message after a delay to ensure speech has fully started.
@@ -788,6 +794,9 @@ class OrcaSetupGUI(Gtk.ApplicationWindow):  # pylint: disable=too-many-instance-
         debug.print_message(debug.LEVEL_ALL, msg, True)
 
         OrcaSetupGUI.WINDOW = None
+        gsettings_registry.get_registry().set_configured_app(None)
+        for grid in self._page_to_grid.values():
+            grid.on_window_closed()
 
         msg = "PREFERENCES WINDOW: Window destruction complete"
         debug.print_message(debug.LEVEL_ALL, msg, True)

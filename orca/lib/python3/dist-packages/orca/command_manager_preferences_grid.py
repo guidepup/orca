@@ -53,6 +53,12 @@ from . import (
     script_manager,
 )
 from .ax_object import AXObject
+from .help_metadata import (
+    PreferenceCategoryDoc,
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+    PreferenceValueDoc,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -77,61 +83,74 @@ class KeybindingsPreferencesGrid(preferences_grid_base.PreferencesGridBase):
     # pylint: disable=no-member
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for commands preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.COMMANDS,
-            panel_id="manual.commands",
-            description=(
-                "Commands settings let you choose the keyboard layout and screen reader "
-                "modifier keys, and customize command keyboard shortcuts.\n\n"
-                "Orca commands are organized into groups in the Commands list. Choose a "
-                "group from the list, then activate its row, or press Right Arrow, to "
-                "open its commands. Press Left Arrow, Escape, or Alt+Left to return to "
-                "the list.\n\n"
+            panel_id="command_manager.commands",
+            category=PreferenceCategoryDoc(
+                category_id="commands",
+                title="Commands",
+                description=(
+                    "Configure your keyboard layout, Orca Modifier keys, and shortcuts for Orca "
+                    "commands."
+                ),
+                panels=("command_manager.commands",),
+            ),
+            command_groups=("keyboard-layout.commands",),
+            instructions=(
                 "The bindings shown here are for standard keyboards. Braille-display "
                 "button bindings are not configured in the Commands list.\n\n"
-                "After choosing a command, press the new key combination, then press "
-                "Return to bind it. Press Delete or Backspace without modifiers to "
-                "unbind the command. Press Escape to cancel. Orca warns you if the "
-                "binding is already used by another active command."
+                "To bind or change a command shortcut, arrow to the command and press "
+                "Enter. Then press the new key combination and press Enter to confirm "
+                "it. Press Delete or Backspace without modifiers to unbind the command. "
+                "Press Escape to cancel editing that command.\n\n"
+                "Orca refuses a shortcut already used by another active command. Unbind "
+                "that other command first if you want to reuse its shortcut."
             ),
             schema="keybindings",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.KEYBOARD_LAYOUT,
                     kind="choice",
-                    summary="Choose the layout that matches your keyboard.",
+                    summary="Selects the keyboard layout.",
                     schema="keybindings",
                     key="keyboard-layout",
                     values=(guilabels.KEYBOARD_LAYOUT_DESKTOP, guilabels.KEYBOARD_LAYOUT_LAPTOP),
                     value_docs=(
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
+                            summary=(
+                                "Uses numeric keypad keys for some commands. Num Lock must be "
+                                "off to use these keypad shortcuts. The initial Orca Modifier "
+                                "keys are Insert and Keypad Insert."
+                            ),
                             label=guilabels.KEYBOARD_LAYOUT_DESKTOP,
                             value="desktop",
-                            summary="Intended for use with a full-size keyboard. The desktop "
-                            "layout uses the numeric keypad for some Orca commands.",
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
+                            summary=(
+                                "Does not use numeric keypad keys for commands. The initial "
+                                "Orca Modifier key is Caps Lock."
+                            ),
                             label=guilabels.KEYBOARD_LAYOUT_LAPTOP,
                             value="laptop",
-                            summary="Intended for use with a laptop-style keyboard, including "
-                            "keyboards that lack a numeric keypad.",
                         ),
                     ),
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.MODIFIER_KEYS,
                     kind="list",
                     summary=(
-                        "Chooses which keys act as the Orca modifier for the selected "
-                        "keyboard layout."
+                        "Selects modifier keys for the current layout. Enable each desired key "
+                        "using its switch; at least one must remain enabled. Orca takes over "
+                        "the normal behavior of configured modifier keys. Press a configured "
+                        "modifier twice quickly to perform its usual single-press action."
                     ),
-                    values=(
-                        guilabels.MODIFIER_INSERT,
-                        guilabels.MODIFIER_KP_INSERT,
-                        guilabels.MODIFIER_CAPS_LOCK,
+                    controls=(
+                        PreferenceControlDoc(guilabels.MODIFIER_INSERT, "switch"),
+                        PreferenceControlDoc(guilabels.MODIFIER_KP_INSERT, "switch"),
+                        PreferenceControlDoc(guilabels.MODIFIER_CAPS_LOCK, "switch"),
                     ),
                 ),
             ),

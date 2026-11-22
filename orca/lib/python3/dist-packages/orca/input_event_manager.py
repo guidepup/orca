@@ -32,12 +32,20 @@ import time
 
 import gi
 
-import orca
-
 gi.require_version("Atspi", "2.0")
 from gi.repository import Atspi
 
-from . import ax_device_manager, dbus_service, debug, focus_manager, input_event, script_manager
+import orca
+
+from . import (
+    ax_device_manager,
+    command_manager,
+    dbus_service,
+    debug,
+    focus_manager,
+    input_event,
+    script_manager,
+)
 from .ax_utilities import AXUtilities
 
 _DOUBLE_CLICK_TIMEOUT: float = 0.05 if dbus_service.get_testing_secret() else 0.5
@@ -74,18 +82,17 @@ class InputEventManager:
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         self._paused = pause
 
-    def process_braille_event(self, event: Atspi.Event) -> bool:
+    def process_braille_event(self, event: Atspi.Event) -> None:
         """Processes this Braille event."""
 
         braille_event = input_event.BrailleEvent(event)
-        result = braille_event.process()
+        braille_event.process()
         if isinstance(self._last_input_event, input_event.BrailleEvent):
             self._previous_braille_event = self._last_input_event
         else:
             self._previous_braille_event = None
         self._last_input_event = braille_event
         self._last_non_modifier_key_event = None
-        return result
 
     def process_mouse_button_event(self, event: Atspi.Event) -> None:
         """Processes this Mouse event."""
@@ -221,9 +228,6 @@ class InputEventManager:
         # have single-click bindings.
         if event.is_orca_modifier():
             return last_count + 1
-
-        # pylint: disable-next=import-outside-toplevel
-        from . import command_manager
 
         has_multi_click = command_manager.get_manager().has_multi_click_bindings(
             event.id,

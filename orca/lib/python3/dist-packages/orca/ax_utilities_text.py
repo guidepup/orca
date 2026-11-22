@@ -28,7 +28,6 @@
 
 from __future__ import annotations
 
-import enum
 import re
 import time
 from dataclasses import dataclass
@@ -53,49 +52,7 @@ if TYPE_CHECKING:
     gi.require_version("Atspi", "2.0")
     from gi.repository import Atspi
 
-
-class TextUnit(enum.Enum):
-    """Text units that can be spoken."""
-
-    CHAR = enum.auto()
-    WORD = enum.auto()
-    LINE = enum.auto()
-    PHRASE = enum.auto()
-
-
-class CaretSetReason(enum.Enum):
-    """Enum representing the reason Orca set the caret offset."""
-
-    BRAILLE_CUT = enum.auto()
-    BRAILLE_PANNING = enum.auto()
-    BRAILLE_ROUTING = enum.auto()
-    CARET_NAVIGATION = enum.auto()
-    FLAT_REVIEW = enum.auto()
-    LINE_PRESENTATION = enum.auto()
-    LIVE_REGION_NAVIGATION = enum.auto()
-    MATH_NAVIGATION = enum.auto()
-    OBJECT_PRESENTATION = enum.auto()
-    RESULT_NAVIGATION = enum.auto()
-    SAY_ALL_COMMAND = enum.auto()
-    SCROLL_INTO_VIEW = enum.auto()
-    STRUCTURAL_NAVIGATION = enum.auto()
-    TABLE_NAVIGATION = enum.auto()
-    TEXT_SELECTION_BY_CHARACTER = enum.auto()
-    TEXT_SELECTION_BY_LINE = enum.auto()
-    TEXT_SELECTION_BY_WORD = enum.auto()
-    TEXT_SELECTION_TO_FILE_BOUNDARY = enum.auto()
-    TEXT_SELECTION_TO_LINE_BOUNDARY = enum.auto()
-
-    def is_text_selection(self) -> bool:
-        """Returns True if the caret was set while changing a text selection."""
-
-        return self in {
-            CaretSetReason.TEXT_SELECTION_BY_CHARACTER,
-            CaretSetReason.TEXT_SELECTION_BY_LINE,
-            CaretSetReason.TEXT_SELECTION_BY_WORD,
-            CaretSetReason.TEXT_SELECTION_TO_FILE_BOUNDARY,
-            CaretSetReason.TEXT_SELECTION_TO_LINE_BOUNDARY,
-        }
+    from .enums import CaretSetReason, TextUnit
 
 
 @dataclass(frozen=True)
@@ -1646,8 +1603,10 @@ class AXUtilitiesText:
         return not AXText.get_all_text(obj).strip()
 
     @staticmethod
-    def has_presentable_text(obj: Atspi.Accessible) -> bool:
-        """Returns True if obj has presentable text."""
+    def has_presentable_text(
+        obj: Atspi.Accessible, *, include_punctuation_and_symbols: bool = False
+    ) -> bool:
+        """Returns True if obj has presentable text, optionally counting punctuation and symbols."""
 
         if not AXObject.supports_text(obj):
             return False
@@ -1656,4 +1615,5 @@ class AXUtilitiesText:
         if not text:
             return AXUtilitiesRole.is_paragraph(obj)
 
-        return bool(re.search(r"\w+", text))
+        pattern = r"[^\s\ufffc]" if include_punctuation_and_symbols else r"\w+"
+        return bool(re.search(pattern, text))

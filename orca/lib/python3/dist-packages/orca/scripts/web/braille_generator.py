@@ -36,10 +36,10 @@ from gi.repository import Atspi
 from orca import braille, braille_generator, debug, messages, object_properties
 from orca.ax_object import AXObject
 from orca.ax_utilities import AXUtilities
-from orca.generator import ContentItem, ContentPosition
+from orca.generator_context import ContentItem, ContentPosition
 
 if TYPE_CHECKING:
-    from orca.braille_generator import BrailleGeneratorContext
+    from orca.generator_context import BrailleGeneratorContext
 
     from . import script
 
@@ -138,6 +138,19 @@ class BrailleGenerator(braille_generator.BrailleGenerator):
                 result.extend(self._generate_accessible_role(heading))
 
         return result
+
+    @log_generator_output
+    def _generate_state_read_only(self, obj: Atspi.Accessible) -> list[Any]:
+        # Gecko exposes READ_ONLY unconditionally for this non-editable content.
+        if AXObject.get_role(obj) in (
+            Atspi.Role.DOCUMENT_WEB,
+            Atspi.Role.DOCUMENT_FRAME,
+            Atspi.Role.LIST,
+            Atspi.Role.DESCRIPTION_LIST,
+            Atspi.Role.DESCRIPTION_TERM,
+        ):
+            return []
+        return super()._generate_state_read_only(obj)
 
     @log_generator_output
     def _generate_text_substring(self, obj: Atspi.Accessible) -> list[Any]:

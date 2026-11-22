@@ -63,7 +63,9 @@ from .acss import ACSS
 from .ax_hypertext import AXHypertext
 from .ax_text import AXText, AXTextAttribute
 from .ax_utilities import AXUtilities
+from .enums import PresentationReason, VoiceType
 from .extension import Extension, SpeechOutput, SpeechOutputResult
+from .generator_context import ContentPosition, SpeechGeneratorContext
 from .speechserver import VoiceFamily
 from .text_attribute_manager import TextAttributeChangeMode
 
@@ -74,8 +76,6 @@ if TYPE_CHECKING:
 
     from .command import Command
     from .dbus_service import UInt32
-    from .generator import PresentationReason
-    from .speech_generator import SpeechGeneratorContext
     from .speech_presenter_preferences_grid import SpeechPreferencesGrid
 
     gi.require_version("Atspi", "2.0")
@@ -151,6 +151,8 @@ class SpeechPresenter(Extension):
     KEY_ANNOUNCE_DOCUMENT = "announce-document"
     KEY_ANNOUNCE_FORM = "announce-form"
     KEY_ANNOUNCE_GROUPING = "announce-grouping"
+    KEY_ANNOUNCE_HEADER_AND_FOOTER = "announce-header-and-footer"
+    KEY_ANNOUNCE_INLINE_CODE = "announce-inline-code"
     KEY_ANNOUNCE_LANDMARK = "announce-landmark"
     KEY_ANNOUNCE_LIST = "announce-list"
     KEY_ANNOUNCE_TABLE = "announce-table"
@@ -736,6 +738,82 @@ class SpeechPresenter(Extension):
             self._SCHEMA,
             self.KEY_ANNOUNCE_GROUPING,
             value,
+        )
+        return True
+
+    @gsettings_registry.get_registry().gsetting(
+        key=KEY_ANNOUNCE_HEADER_AND_FOOTER,
+        schema="speech",
+        gtype="b",
+        default=True,
+        summary="Announce headers and footers",
+        user_visible=False,
+        preserve_default=True,
+    )
+    @dbus_service.undocumented
+    @dbus_service.getter
+    def get_announce_header_and_footer(self) -> bool:
+        """Returns whether headers and footers are announced when entered."""
+
+        return self._get_setting(self.KEY_ANNOUNCE_HEADER_AND_FOOTER, "b", True)
+
+    def get_header_and_footer_available(self) -> bool:
+        """Returns whether header and footer announcements have an explicit value."""
+
+        return (
+            gsettings_registry.get_registry().layered_lookup(
+                self._SCHEMA, self.KEY_ANNOUNCE_HEADER_AND_FOOTER, "b"
+            )
+            is not None
+        )
+
+    @dbus_service.undocumented
+    @dbus_service.setter
+    def set_announce_header_and_footer(self, value: bool) -> bool:
+        """Sets whether headers and footers are announced when entered."""
+
+        tokens = ["SPEECH PRESENTER: Setting announce headers and footers to", value, "."]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+        gsettings_registry.get_registry().set_runtime_value(
+            self._SCHEMA, self.KEY_ANNOUNCE_HEADER_AND_FOOTER, value
+        )
+        return True
+
+    @gsettings_registry.get_registry().gsetting(
+        key=KEY_ANNOUNCE_INLINE_CODE,
+        schema="speech",
+        gtype="b",
+        default=False,
+        summary="Announce inline code",
+        user_visible=False,
+        preserve_default=True,
+    )
+    @dbus_service.undocumented
+    @dbus_service.getter
+    def get_announce_inline_code(self) -> bool:
+        """Returns whether inline code boundaries are announced."""
+
+        return self._get_setting(self.KEY_ANNOUNCE_INLINE_CODE, "b", False)
+
+    def get_inline_code_available(self) -> bool:
+        """Returns whether inline code announcements have an explicit value."""
+
+        return (
+            gsettings_registry.get_registry().layered_lookup(
+                self._SCHEMA, self.KEY_ANNOUNCE_INLINE_CODE, "b"
+            )
+            is not None
+        )
+
+    @dbus_service.undocumented
+    @dbus_service.setter
+    def set_announce_inline_code(self, value: bool) -> bool:
+        """Sets whether inline code boundaries are announced."""
+
+        tokens = ["SPEECH PRESENTER: Setting announce inline code to", value, "."]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+        gsettings_registry.get_registry().set_runtime_value(
+            self._SCHEMA, self.KEY_ANNOUNCE_INLINE_CODE, value
         )
         return True
 
@@ -1513,39 +1591,6 @@ class SpeechPresenter(Extension):
         pattern = re.compile(r"([^a-zA-Z0-9\s])\1{" + str(limit - 1) + ",}")
         return re.sub(pattern, replacement, text)
 
-    @staticmethod
-    def _should_verbalize_punctuation(obj: Atspi.Accessible) -> bool:
-        """Returns True if punctuation should be verbalized."""
-
-        ancestor = AXUtilities.find_ancestor_inclusive(obj, AXUtilities.is_code)
-        if ancestor is None:
-            return False
-
-        document = AXUtilities.find_ancestor_inclusive(ancestor, AXUtilities.is_document)
-        if AXUtilities.is_plain_text(document):
-            return False
-
-        # If the user has set their punctuation level to All, then the synthesizer will
-        # do the work for us. If the user has set their punctuation level to None, then
-        # they really don't want punctuation and we mustn't override that.
-
-        punct_level = speech_manager.get_manager().get_punctuation_level()
-        return punct_level not in ("all", "none")
-
-    @staticmethod
-    def _adjust_for_verbalized_punctuation(obj: Atspi.Accessible, text: str) -> str:
-        """Surrounds punctuation symbols with spaces to increase the likelihood of presentation."""
-
-        if not SpeechPresenter._should_verbalize_punctuation(obj):
-            return text
-
-        result = text
-        punctuation = set(re.findall(r"[^\w\s]", result))
-        for symbol in punctuation:
-            result = result.replace(symbol, f" {symbol} ")
-
-        return result
-
     def _apply_pronunciation_dictionary(self, text: str) -> str:
         """Applies the pronunciation dictionary to the text."""
 
@@ -1635,12 +1680,13 @@ class SpeechPresenter(Extension):
         if not self.should_speak_text_attribute_changes(obj):
             return
 
+        use_color_names = speech_manager.get_manager().get_use_color_names()
         for attr, _old, new in AXUtilities.get_text_attribute_changes(obj, offset):
             if attr == AXTextAttribute.INVALID:
                 continue
             if attr == AXTextAttribute.LANGUAGE and self._language_switch_is_active(new):
                 continue
-            if desc := attr.get_change_description(new):
+            if desc := attr.get_change_description(new, use_color_names):
                 self.speak_message(desc)
 
     def _language_switch_is_active(self, language_value: str | None) -> bool:
@@ -1688,8 +1734,6 @@ class SpeechPresenter(Extension):
         if obj is not None:
             text = self.adjust_for_digits(obj, text)
         text = self._adjust_for_repeats(text)
-        if obj is not None:
-            text = self._adjust_for_verbalized_punctuation(obj, text)
         text = self._apply_pronunciation_dictionary(text)
 
         tokens = ["SPEECH PRESENTER: Adjusted text: '", text, "'"]
@@ -1931,6 +1975,7 @@ class SpeechPresenter(Extension):
             language=family.get(VoiceFamily.LANG, "") or "",
             dialect=family.get(VoiceFamily.DIALECT, "") or "",
             voice_type=voice.get(ACSS.VOICE_TYPE) or "",
+            punctuation=voice.get(ACSS.PUNCTUATIONS) or "",
         )
 
     def write_to_monitor(self, text: str) -> None:
@@ -2157,6 +2202,8 @@ class SpeechPresenter(Extension):
                 # spoken together in whichever voice came last.
                 if pending_text and (
                     new_voice != active_voice
+                    or new_voice.get(ACSS.PUNCTUATIONS)
+                    != (active_voice.get(ACSS.PUNCTUATIONS) if active_voice is not None else None)
                     or self._resolved_voice(active_voice) != self._resolved_voice(new_voice)
                 ):
                     tokens = [
@@ -2244,15 +2291,21 @@ class SpeechPresenter(Extension):
     ) -> None:
         """Speaks text from obj, using the specified start_offset for attribute presentation."""
 
-        if obj is not None and start_offset is not None and (script := self._get_active_script()):
-            end_offset = start_offset + len(text)
+        voice = []
+        if script := self._get_active_script():
             generator = script.get_speech_generator()
             context = self._build_generator_context()
-            if utterances := generator.generate_line(obj, start_offset, end_offset, text, context):
-                self._speak(utterances, obj=obj)
-                return
+            if obj is not None and start_offset is not None:
+                end_offset = start_offset + len(text)
+                if utterances := generator.generate_line(
+                    obj, start_offset, end_offset, text, context
+                ):
+                    self._speak(utterances, obj=obj)
+                    return
 
-        voice = self._get_voice(text, obj)
+            voice = generator.voice(obj=obj, string=text, context=context)
+            generator.adjust_voice_for_presentation(obj, voice, context)
+
         text = self.adjust_for_presentation(obj, text, start_offset)
         self._speak(
             text,
@@ -2260,7 +2313,7 @@ class SpeechPresenter(Extension):
             obj=obj,
         )
 
-    def speak_message(self, text: str, voice_type: str = speechserver.VoiceType.SYSTEM) -> None:
+    def speak_message(self, text: str, voice_type: str = VoiceType.SYSTEM) -> None:
         """Speaks a message using the given voice type (the system voice by default)."""
 
         try:
@@ -2304,14 +2357,6 @@ class SpeechPresenter(Extension):
         next_obj: Atspi.Accessible | None = None,
     ) -> SpeechGeneratorContext:
         """Builds the settings context for speech generators."""
-
-        from .generator import (  # pylint: disable=import-outside-toplevel
-            ContentPosition,
-            PresentationReason,
-        )
-        from .speech_generator import (  # pylint: disable=import-outside-toplevel
-            SpeechGeneratorContext,
-        )
 
         mgr = focus_manager.get_manager()
         in_say_all = mgr.in_say_all()
@@ -2357,7 +2402,7 @@ class SpeechPresenter(Extension):
             auto_language_switching_ui=speech_mgr.get_auto_language_switching_ui() and auto_switch,
             insert_pauses_between_utterances=speech_mgr.get_insert_pauses_between_utterances(),
             punctuation_level=speech_mgr.get_punctuation_level(),
-            voices={vt: speech_mgr.get_voice_properties(vt) for vt in speechserver.VoiceType},
+            voices={vt: speech_mgr.get_voice_properties(vt) for vt in VoiceType},
             speech_server=speech_mgr.get_server(),
             only_displayed_text=self.get_only_speak_displayed_text(),
             speak_description=self.get_speak_description(),
@@ -2375,6 +2420,8 @@ class SpeechPresenter(Extension):
             announce_document=p.get_announce_document(),
             announce_form=p.get_announce_form(),
             announce_grouping=p.get_announce_grouping(),
+            announce_header_and_footer=p.get_announce_header_and_footer(),
+            announce_inline_code=p.get_announce_inline_code(),
             announce_landmark=p.get_announce_landmark(),
             announce_list=p.get_announce_list(),
             announce_table=p.get_announce_table(),
@@ -2383,6 +2430,7 @@ class SpeechPresenter(Extension):
             if self._text_attribute_change_mode_override is not None
             else p.get_text_attribute_change_mode().value,
             speak_misspelled_indicator=self.get_speak_misspelled_indicator(),
+            use_color_names=speech_mgr.get_use_color_names(),
             language="",
             dialect="",
             eliminate_pauses=eliminate_pauses,
@@ -2738,7 +2786,7 @@ class SpeechPresenter(Extension):
             ),
         )
 
-        announcements = (
+        announcements: tuple[SpeechPreference, ...] = (
             SpeechPreference(
                 self.KEY_ANNOUNCE_ARTICLE,
                 guilabels.ANNOUNCE_ARTICLES,
@@ -2768,6 +2816,30 @@ class SpeechPresenter(Extension):
                 guilabels.ANNOUNCE_FORMS,
                 self.get_announce_form,
                 self.set_announce_form,
+            ),
+            *(
+                (
+                    SpeechPreference(
+                        self.KEY_ANNOUNCE_HEADER_AND_FOOTER,
+                        guilabels.ANNOUNCE_HEADERS_AND_FOOTERS,
+                        self.get_announce_header_and_footer,
+                        self.set_announce_header_and_footer,
+                    ),
+                )
+                if self.get_header_and_footer_available()
+                else ()
+            ),
+            *(
+                (
+                    SpeechPreference(
+                        self.KEY_ANNOUNCE_INLINE_CODE,
+                        guilabels.ANNOUNCE_INLINE_CODE,
+                        self.get_announce_inline_code,
+                        self.set_announce_inline_code,
+                    ),
+                )
+                if self.get_inline_code_available()
+                else ()
             ),
             SpeechPreference(
                 self.KEY_ANNOUNCE_LANDMARK,

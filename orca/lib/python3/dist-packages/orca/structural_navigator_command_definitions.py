@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 
 from . import cmdnames, keybindings
 from .command import Command, KeyboardCommand
+from .help_metadata import CommandDoc, CommandGroupDoc, CommandSectionDoc
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -36,6 +37,91 @@ if TYPE_CHECKING:
     from .structural_navigator import StructuralNavigator
 
     CommandCallback = Callable[[default.Script, InputEvent | None, bool], bool]
+
+
+def get_documentation() -> CommandGroupDoc:
+    """Returns documentation metadata for structural navigation commands."""
+
+    return CommandGroupDoc(
+        commands=(
+            CommandDoc(
+                "structural_navigator_mode_cycle",
+                details=(
+                    "Cycles through off, document mode, and GUI mode. Document mode searches "
+                    "the current document or web page. GUI (graphical user interface) mode "
+                    "searches the current window or dialog outside document content. For "
+                    "example, GUI mode can find toolbar buttons in a browser or a native "
+                    "application, while document mode finds buttons within a web page.\n\n"
+                    "When moving to the next or previous object in GUI mode, Orca attempts to "
+                    "move keyboard focus to that object. Not all applications and toolkits "
+                    "support this for every widget. Orca checks whether the object reports "
+                    "having focus and notifies you if it does not."
+                ),
+            ),
+            CommandDoc(
+                "previous_iframe",
+                details=("An internal frame is a document embedded within another page."),
+            ),
+            CommandDoc(
+                "next_iframe",
+                details=("An internal frame is a document embedded within another page."),
+            ),
+            CommandDoc(
+                "list_iframes",
+                details=("An internal frame is a document embedded within another page."),
+            ),
+        ),
+        target="documents.structural-navigation.commands",
+        summary=(
+            "Move among headings, links, interactive controls, tables, landmarks, "
+            "and other structures."
+        ),
+        see_also=("documents.mode-commands",),
+        sections=(
+            CommandSectionDoc(title="Mode", command_names=("structural_navigator_mode_cycle",)),
+            CommandSectionDoc(
+                title="Headings",
+                command_prefixes=("previous_heading", "next_heading", "list_headings"),
+            ),
+            *(
+                CommandSectionDoc(
+                    title=title,
+                    command_names=(f"previous_{singular}", f"next_{singular}", f"list_{plural}"),
+                )
+                for title, singular, plural in (
+                    ("Annotations", "annotation", "annotations"),
+                    ("Blockquotes", "blockquote", "blockquotes"),
+                    ("Buttons", "button", "buttons"),
+                    ("Check boxes", "checkbox", "checkboxes"),
+                    ("Combo boxes", "combobox", "comboboxes"),
+                    ("Text entries", "entry", "entries"),
+                    ("Form fields", "form_field", "form_fields"),
+                    ("Internal frames", "iframe", "iframes"),
+                    ("Images", "image", "images"),
+                    ("Landmarks", "landmark", "landmarks"),
+                    ("Lists", "list", "lists"),
+                    ("List items", "list_item", "list_items"),
+                    ("Math", "math", "math"),
+                    ("Paragraphs", "paragraph", "paragraphs"),
+                    ("Radio buttons", "radio_button", "radio_buttons"),
+                    ("Tables", "table", "tables"),
+                    ("Links", "link", "links"),
+                    ("Unvisited links", "unvisited_link", "unvisited_links"),
+                    ("Visited links", "visited_link", "visited_links"),
+                    ("Large objects", "large_object", "large_objects"),
+                    ("Clickable objects", "clickable", "clickables"),
+                )
+            ),
+            CommandSectionDoc(
+                title="Separators", command_names=("previous_separator", "next_separator")
+            ),
+            CommandSectionDoc(title="Containers", command_prefixes=("container_",)),
+            CommandSectionDoc(
+                title="Live regions",
+                command_names=("previous_live_region", "next_live_region", "last_live_region"),
+            ),
+        ),
+    )
 
 
 NAVIGATION_BINDINGS = (

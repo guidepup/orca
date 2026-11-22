@@ -50,7 +50,7 @@ from . import (
 from .ax_object import AXObject
 from .ax_utilities import AXUtilities
 from .ax_value import AXValue
-from .generator import PresentationReason
+from .enums import PresentationReason, VoiceType
 
 if TYPE_CHECKING:
     import gi
@@ -255,6 +255,12 @@ class PresentationManager:
     def present_keyboard_event(self, event: KeyboardEvent) -> None:
         """Presents the KeyboardEvent event."""
 
+        if event.is_pressed_key():
+            self.interrupt_presentation()
+
+        if script_manager.get_manager().is_sleep_mode_active():
+            return
+
         typing_echo_presenter.get_presenter().echo_keyboard_event(event)
 
     def present_key_event(self, event: KeyboardEvent) -> None:
@@ -271,7 +277,7 @@ class PresentationManager:
         self,
         full: str,
         brief: str | None = None,
-        voice_type: str = speechserver.VoiceType.SYSTEM,
+        voice_type: str = VoiceType.SYSTEM,
     ) -> None:
         """Convenience method to speak a message and 'flash' it in braille."""
 
@@ -318,8 +324,8 @@ class PresentationManager:
         )
 
     @staticmethod
-    def play_sound_file(path: str, interrupt: bool = True) -> bool:
-        """Plays the sound file at path."""
+    def play_sound_file(path: str, interrupt: bool = True, volume: float = 1.0) -> bool:
+        """Plays the sound file at path, with volume relative to the sound volume."""
 
         sound_path = os.path.abspath(os.path.expanduser(path))
         if not os.path.isfile(sound_path):
@@ -327,8 +333,13 @@ class PresentationManager:
             debug.print_tokens(debug.LEVEL_WARNING, tokens, True)
             return False
 
-        icon = sound.Icon(os.path.dirname(sound_path), os.path.basename(sound_path))
-        sound_presenter.get_presenter().play(icon, interrupt)
+        presenter = sound_presenter.get_presenter()
+        icon = sound.Icon(
+            os.path.dirname(sound_path),
+            os.path.basename(sound_path),
+            presenter.get_sound_volume() * min(max(0.0, volume), 1.0),
+        )
+        presenter.play(icon, interrupt)
         return True
 
     @staticmethod
@@ -452,7 +463,7 @@ class PresentationManager:
     def speak_message(
         self,
         text: str,
-        voice_type: str = speechserver.VoiceType.SYSTEM,
+        voice_type: str = VoiceType.SYSTEM,
     ) -> None:
         """Speaks a single string."""
 

@@ -1,7 +1,6 @@
-# Utilities related to the clipboard
+# Orca
 #
-# Copyright 2024-2025 Igalia, S.L.
-# Copyright 2024 GNOME Foundation Inc.
+# Copyright 2026 Igalia, S.L.
 # Author: Joanmarie Diggs <jdiggs@igalia.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -19,27 +18,13 @@
 # Free Software Foundation, Inc., Franklin Street, Fifth Floor,
 # Boston MA  02110-1301 USA.
 
-"""Command definitions for clipboard presentation."""
+"""Settings keys for mouse review."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 
-from . import cmdnames
-from .command import Command, KeyboardCommand
+class MouseSettings:
+    """The mouse review settings keys."""
 
-if TYPE_CHECKING:
-    from .clipboard import ClipboardPresenter
-
-
-def get_commands(owner: ClipboardPresenter) -> list[Command]:
-    """Returns commands for clipboard presentation."""
-
-    return [
-        KeyboardCommand(
-            "present_clipboard_contents",
-            owner.present_clipboard_contents,
-            owner.GROUP_LABEL,
-            cmdnames.CLIPBOARD_PRESENT_CONTENTS,
-        ),
-    ]
+    KEY_ENABLED = "enabled"
+    KEY_PRESENT_TOOLTIPS = "present-tooltips"

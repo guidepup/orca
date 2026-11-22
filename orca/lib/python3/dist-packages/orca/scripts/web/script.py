@@ -56,11 +56,16 @@ from orca.ax_event_synthesizer import AXEventSynthesizer
 from orca.ax_object import AXObject
 from orca.ax_text import AXText
 from orca.ax_utilities import AXUtilities
-from orca.ax_utilities_event import TextEventReason
-from orca.ax_utilities_text import CaretSetReason, TextUnit
-from orca.generator import PresentationReason
+from orca.enums import (
+    ActivePresentationMode,
+    BraillePanDirection,
+    CaretSetReason,
+    PresentationReason,
+    StructuralNavigationMode,
+    TextEventReason,
+    TextUnit,
+)
 from orca.scripts import default
-from orca.structural_navigator import NavigationMode
 
 from .braille_generator import BrailleGenerator
 from .script_utilities import Utilities
@@ -81,7 +86,7 @@ class Script(default.Script):
         super().__init__(app)
 
         self.present_if_inactive: bool = False
-        self._default_sn_mode = NavigationMode.DOCUMENT
+        self._default_sn_mode = StructuralNavigationMode.DOCUMENT
         self._default_caret_navigation_enabled: bool = True
 
         self._loading_content = False
@@ -121,7 +126,13 @@ class Script(default.Script):
 
         return self._loading_content
 
-    def say_character(self, obj: Atspi.Accessible, offset: int) -> None:
+    def say_character(
+        self,
+        obj: Atspi.Accessible,
+        offset: int,
+        *,
+        emit_region_changed: bool = True,
+    ) -> None:
         """Speaks the character at the specified offset."""
 
         tokens = ["WEB: Say character for", obj, "offset", offset]
@@ -129,7 +140,7 @@ class Script(default.Script):
         if not self.utilities.in_document_content(obj):
             msg = "WEB: Object is not in document content."
             debug.print_message(debug.LEVEL_INFO, msg, True)
-            super().say_character(obj, offset)
+            super().say_character(obj, offset, emit_region_changed=emit_region_changed)
             return
 
         contents: list[tuple[Atspi.Accessible, int, int, str]] | None = None
@@ -144,8 +155,16 @@ class Script(default.Script):
         if not contents:
             return
 
+        obj, start, end, string = contents[0]
+        if emit_region_changed:
+            focus_manager.get_manager().emit_region_changed(
+                obj,
+                start,
+                end,
+                ActivePresentationMode.CARET_TRACKING,
+            )
+
         speech_pres = speech_presenter.get_presenter()
-        obj, start, _end, string = contents[0]
         if start > 0 and string == "\n":
             if speech_pres.get_speak_blank_lines():
                 presentation_manager.get_manager().speak_message(messages.BLANK)
@@ -163,7 +182,13 @@ class Script(default.Script):
 
         AXUtilities.set_last_text_unit_spoken(TextUnit.CHAR)
 
-    def say_word(self, obj: Atspi.Accessible, offset: int) -> None:
+    def say_word(
+        self,
+        obj: Atspi.Accessible,
+        offset: int,
+        *,
+        emit_region_changed: bool = True,
+    ) -> None:
         """Speaks the word at the specified offset."""
 
         tokens = ["WEB: Say word for", obj, "offset", offset]
@@ -171,14 +196,21 @@ class Script(default.Script):
         if not self.utilities.in_document_content(obj):
             msg = "WEB: Object is not in document content."
             debug.print_message(debug.LEVEL_INFO, msg, True)
-            super().say_word(obj, offset)
+            super().say_word(obj, offset, emit_region_changed=emit_region_changed)
             return
 
         if input_event_manager.get_manager().last_event_was_right():
             offset -= 1
 
         word_contents = self.utilities.get_word_contents_at_offset(obj, offset, use_cache=True)
-        text_obj, start_offset, _end_offset, _word = word_contents[0]
+        text_obj, start_offset, end_offset, _word = word_contents[0]
+        if emit_region_changed:
+            focus_manager.get_manager().emit_region_changed(
+                text_obj,
+                start_offset,
+                end_offset,
+                ActivePresentationMode.CARET_TRACKING,
+            )
 
         speech_pres = speech_presenter.get_presenter()
         speech_pres.present_text_attribute_state(text_obj, start_offset)
@@ -209,7 +241,7 @@ class Script(default.Script):
             return
 
         mode, _obj = focus_manager.get_manager().get_active_mode_and_object_of_interest()
-        if mode in [focus_manager.OBJECT_NAVIGATOR, focus_manager.MOUSE_REVIEW]:
+        if mode in [ActivePresentationMode.OBJECT_NAVIGATOR, ActivePresentationMode.MOUSE_REVIEW]:
             super().present_object(
                 obj,
                 offset=offset,
@@ -313,7 +345,7 @@ class Script(default.Script):
                 )
         presenter = presentation_manager.get_manager()
         if generate_braille:
-            if reason == PresentationReason.STATE_CHANGE:
+            if reason is not None and reason.is_state_change():
                 braille_presenter.get_presenter().present_generated_braille(
                     self, obj, prior_obj=prior_obj, reason=reason
                 )
@@ -406,14 +438,14 @@ class Script(default.Script):
 
     def handle_braille_pan_at_edge(
         self,
-        direction: braille_presenter.PanDirection,
+        direction: BraillePanDirection,
     ) -> bool | None:
         """Handles braille panning when the presenter reaches the edge of a line."""
 
         if not self.utilities.in_document_content():
             return super().handle_braille_pan_at_edge(direction)
 
-        if direction == braille_presenter.PanDirection.LEFT:
+        if direction == BraillePanDirection.LEFT:
             contents = self.utilities.get_previous_line_contents()
         else:
             contents = self.utilities.get_next_line_contents()
@@ -424,7 +456,7 @@ class Script(default.Script):
         self.utilities.set_caret_position(obj, start, reason=CaretSetReason.BRAILLE_PANNING)
         self.update_braille(obj, offset=start)
         presenter = braille_presenter.get_presenter()
-        if direction == braille_presenter.PanDirection.LEFT:
+        if direction == BraillePanDirection.LEFT:
             presenter.pan_to_end()
         else:
             presenter.pan_to_beginning()
@@ -468,7 +500,10 @@ class Script(default.Script):
                 debug.print_message(debug.LEVEL_INFO, msg, True)
                 return False
 
-            if last_command_was_struct_nav and sn_navigator.get_mode(self) == NavigationMode.GUI:
+            if (
+                last_command_was_struct_nav
+                and sn_navigator.get_mode(self) == StructuralNavigationMode.GUI
+            ):
                 msg = "WEB: Not refreshing grabs: Last command was GUI structural navigation"
                 debug.print_message(debug.LEVEL_INFO, msg, True)
                 return False
@@ -849,9 +884,28 @@ class Script(default.Script):
         }
         if (
             reason in selection_reasons
-            and text_selection_manager.get_manager().get_current_selection_command(document)
+            and (
+                command := text_selection_manager.get_manager().get_current_selection_command(
+                    document
+                )
+            )
             is not None
         ):
+            # Clearing a selection can produce only a caret event.
+            if (
+                command.get_selection_anchor() is None
+                and AXUtilities.get_cached_selected_text(event.source)[0]
+            ):
+                if command.should_notify_user():
+                    text_selection_presenter.get_presenter().present_text_selection_change(
+                        self, event.source
+                    )
+                else:
+                    text_selection_manager.get_manager().update_state_for_unpresentable_selection_change(
+                        event.source
+                    )
+                self.update_braille(event.source)
+                return True
             msg = "WEB: Ignoring caret-moved event caused by Orca's text selection"
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return True

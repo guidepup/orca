@@ -61,6 +61,7 @@ class SettingDescriptor:
     genum: str | None = None
     migration_key: str | None = None
     user_visible: bool = True
+    preserve_default: bool = False  # Keep explicit values when key presence has meaning.
 
 
 @dataclass
@@ -199,6 +200,8 @@ class GSettingsRegistry:
 
     def __init__(self) -> None:
         self._app_name: str | None = None
+        self._active_app_is_orca: bool = False
+        self._configured_app: str | None = None
         self._profile: str = "default"
         self._descriptors: dict[tuple[str, str], SettingDescriptor] = {}
         self._mappings: dict[str, list[SettingsMapping]] = {}
@@ -272,7 +275,7 @@ class GSettingsRegistry:
         """Returns a setting value via layered GSettings lookup, default, or None."""
 
         profile = self.get_active_profile()
-        effective_app = app_name if app_name is not None else (self._app_name or "")
+        effective_app = app_name if app_name is not None else (self.get_active_app() or "")
         cache_key = LookupCacheKey(
             schema,
             key,
@@ -528,11 +531,23 @@ class GSettingsRegistry:
             return {}
         return user_value.unpack()
 
-    def set_active_app(self, app_name: str | None) -> None:
+    def set_active_app(self, app_name: str | None, is_orca: bool = False) -> None:
         """Sets the active app name for GSettings lookups."""
 
         self._app_name = app_name or None
+        self._active_app_is_orca = is_orca
         self.clear_value_cache()
+
+    def set_configured_app(self, app_name: str | None) -> None:
+        """Sets the app whose preferences window is open, used while Orca's own window is active."""
+
+        self._configured_app = app_name or None
+        self.clear_value_cache()
+
+    def get_configured_app(self) -> str | None:
+        """Returns the app whose preferences window is open."""
+
+        return self._configured_app
 
     def add_profile_change_observer(self, observer: Callable[[str], None]) -> None:
         """Registers a callback invoked with the new profile name after the profile changes."""
@@ -550,6 +565,8 @@ class GSettingsRegistry:
     def get_active_app(self) -> str | None:
         """Returns the active app name for GSettings lookups."""
 
+        if self._configured_app and (self._active_app_is_orca or self._app_name is None):
+            return self._configured_app
         return self._app_name
 
     def get_active_profile(self) -> str:
@@ -568,6 +585,7 @@ class GSettingsRegistry:
         voice_type: str | None = None,
         migration_key: str | None = None,
         user_visible: bool = True,
+        preserve_default: bool = False,
     ) -> Callable[[Callable], Callable]:
         """Decorator marking a method's associated GSettings key."""
 
@@ -581,6 +599,7 @@ class GSettingsRegistry:
                 genum=genum,
                 migration_key=migration_key,
                 user_visible=user_visible,
+                preserve_default=preserve_default,
             )
             func.gsetting_key = key  # type: ignore[attr-defined]
             return func
@@ -735,8 +754,10 @@ class GSettingsRegistry:
                     if resolved is None:
                         continue
                     nick = resolved
-                is_redundant = skip_defaults and nick == setting.default
-                if not is_redundant and global_gs is not None:
+                is_redundant = (
+                    not setting.preserve_default and skip_defaults and nick == setting.default
+                )
+                if not setting.preserve_default and not is_redundant and global_gs is not None:
                     is_redundant = nick == global_gs.get_string(key)
                 if is_redundant:
                     if gs.get_user_value(key) is not None:
@@ -746,8 +767,10 @@ class GSettingsRegistry:
                     gs.set_string(key, nick)
                 continue
 
-            is_redundant = skip_defaults and value == setting.default
-            if not is_redundant and global_gs is not None:
+            is_redundant = (
+                not setting.preserve_default and skip_defaults and value == setting.default
+            )
+            if not setting.preserve_default and not is_redundant and global_gs is not None:
                 global_reader = global_readers.get(setting.gtype)
                 if global_reader is not None:
                     is_redundant = value == global_reader(key)
@@ -757,7 +780,9 @@ class GSettingsRegistry:
                 continue
             reader = readers.get(setting.gtype)
             if reader is not None and reader(key) == value:
-                if not app_name or gs.get_user_value(key) is not None:
+                if (not app_name and not setting.preserve_default) or gs.get_user_value(
+                    key
+                ) is not None:
                     continue
             if value is None:
                 tokens = ["GSETTINGS: Skipping None value for", schema_name, "/", key]

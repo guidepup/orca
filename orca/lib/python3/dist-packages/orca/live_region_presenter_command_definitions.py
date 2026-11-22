@@ -25,9 +25,58 @@ from typing import TYPE_CHECKING
 
 from . import cmdnames, keybindings
 from .command import Command, KeyboardCommand
+from .help_metadata import CommandDoc, CommandGroupDoc, CommandSectionDoc
 
 if TYPE_CHECKING:
     from .live_region_presenter import LiveRegionPresenter
+
+
+def get_documentation() -> CommandGroupDoc:
+    """Returns documentation metadata for live region commands."""
+
+    return CommandGroupDoc(
+        title="Presentation and history",
+        target="documents.live-regions.commands",
+        commands=(
+            CommandDoc(
+                "toggle_live_region_presentation",
+                details=(
+                    "Turns announcements off for the current page. Use it again to restore "
+                    "announcements. It does not change your saved default settings."
+                ),
+            ),
+            CommandDoc(
+                "toggle_live_region_support",
+                details=(
+                    "Turns live region support on or off. When enabled, Orca keeps the last "
+                    "nine live region messages so you can review them later."
+                ),
+            ),
+            CommandDoc(
+                "advance_live_politeness",
+                details=(
+                    "Cycles through off, polite, and assertive politeness levels for the "
+                    "current live region."
+                ),
+            ),
+        ),
+        summary=(
+            "Live regions are areas of a web page that update automatically, "
+            "such as stock tickers, weather updates, or chat messages."
+        ),
+        sections=(
+            CommandSectionDoc(
+                title="Commands",
+                command_names=(
+                    "toggle_live_region_support",
+                    "advance_live_politeness",
+                    "toggle_live_region_presentation",
+                    "present_previous_live_region_message",
+                    "present_next_live_region_message",
+                ),
+            ),
+        ),
+    )
 
 
 def get_commands(owner: LiveRegionPresenter) -> list[Command]:

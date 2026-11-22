@@ -27,9 +27,90 @@ from typing import TYPE_CHECKING
 
 from . import cmdnames, keybindings
 from .command import Command, KeyboardCommand
+from .help_metadata import CommandDoc, CommandGroupDoc, CommandSectionDoc
 
 if TYPE_CHECKING:
     from .speech_manager import SpeechManager
+
+
+def get_documentation() -> CommandGroupDoc:
+    """Returns documentation metadata for speech management commands."""
+
+    return CommandGroupDoc(
+        commands=(
+            CommandDoc(
+                "toggleSilenceSpeechHandler",
+                details=(
+                    "Temporarily turns speech off or back on without changing your saved "
+                    "preference. This silences all Orca speech, including flat review. Braille "
+                    "output remains available."
+                ),
+            ),
+            CommandDoc(
+                "cycleVoiceSetHandler",
+                details=(
+                    "Cycles through configured voice sets. Selecting a language-specific voice set "
+                    "manually suspends automatic language switching until you return to the global "
+                    "voice set."
+                ),
+            ),
+        ),
+        target="speech.commands",
+        summary="Control Orca's spoken output.",
+        sections=(
+            CommandSectionDoc(
+                title="Speech support",
+                target="speech.commands.support",
+                command_names=("toggleSilenceSpeechHandler",),
+            ),
+            CommandSectionDoc(
+                title="Capitalization, punctuation, and numbers",
+                target="speech.commands.output",
+                command_names=(
+                    "cycleCapitalizationStyleHandler",
+                    "cycleSpeakingPunctuationLevelHandler",
+                    "changeNumberStyleHandler",
+                ),
+            ),
+            CommandSectionDoc(
+                title="Synthesizer",
+                target="speech.commands.system-and-synthesizer",
+                command_names=("cycleSynthesizerHandler",),
+            ),
+            CommandSectionDoc(
+                summary=(""),
+                title="Voice sets",
+                target="speech.commands.voice-sets",
+                instructions=(
+                    "Orca creates a separate command to switch directly to each configured "
+                    "voice set, including the global voice set. These commands are unbound by "
+                    "default. When you add a language-specific voice set, its command becomes "
+                    "available for you to assign a shortcut."
+                ),
+                command_names=("cycleVoiceSetHandler",),
+                command_prefixes=("switch-voice-set-",),
+            ),
+            CommandSectionDoc(
+                title="Voice parameters",
+                target="speech.commands.voice-parameters",
+                instructions=(
+                    "These commands temporarily change the active voice set's rate, pitch, "
+                    "inflection, or volume. For saved changes or individual voice-type settings, "
+                    "use the settings above."
+                ),
+                command_names=(
+                    "decreaseSpeechRateHandler",
+                    "increaseSpeechRateHandler",
+                    "decreaseSpeechPitchHandler",
+                    "increaseSpeechPitchHandler",
+                    "decreaseSpeechInflectionHandler",
+                    "increaseSpeechInflectionHandler",
+                    "decreaseSpeechVolumeHandler",
+                    "increaseSpeechVolumeHandler",
+                ),
+            ),
+        ),
+    )
 
 
 def get_commands(owner: SpeechManager) -> list[Command]:

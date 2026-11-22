@@ -45,6 +45,12 @@ from . import (
     speechserver,
 )
 from .acss import ACSS
+from .enums import VoiceType
+from .help_metadata import (
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+    PreferenceValueDoc,
+)
 from .speechserver import CapitalizationStyle, PunctuationStyle
 
 if TYPE_CHECKING:
@@ -58,158 +64,202 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
     _VOICE_SCHEMA = "voice"
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for speech output preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.VOICE_GLOBAL_VOICE_SETTINGS,
-            panel_id="manual.global-voice-settings",
-            summary="Use these settings to enable speech, select the speech backend, and "
-            "configure global speech behavior.",
-            description=(
-                "Global voice settings apply to Orca's spoken output overall, including "
-                "which speech system and synthesizer are used and how numbers, "
-                "punctuation, capitalization, and languages are handled."
-            ),
+            target="speech.global-voice-settings",
+            panel_id="speech_manager.global-voice-settings",
+            command_groups=("speech.commands.system-and-synthesizer", "speech.commands.output"),
+            link_summary="Use these settings to configure speech behavior that is not tied to "
+            "a voice type.",
             schema="speech",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.VOICE_SPEECH_SYSTEM,
-                    kind="choice",
-                    summary="Selects the speech system Orca uses. Supported systems include "
-                    "Speech Dispatcher and Spiel.",
-                    schema="speech",
-                    key="speech-server",
-                    dynamic_values=True,
-                ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.VOICE_SPEECH_SYNTHESIZER,
-                    kind="choice",
-                    summary="Selects the speech synthesizer. Examples include espeak-ng and Voxin.",
-                    schema="speech",
-                    key="synthesizer",
-                    dynamic_values=True,
-                ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.PUNCTUATION_STYLE,
-                    kind="choice",
-                    summary="Controls how much punctuation Orca speaks.",
-                    schema="speech",
-                    key="punctuation-level",
-                    values=(
-                        guilabels.PUNCTUATION_STYLE_NONE,
-                        guilabels.PUNCTUATION_STYLE_SOME,
-                        guilabels.PUNCTUATION_STYLE_MOST,
-                        guilabels.PUNCTUATION_STYLE_ALL,
-                    ),
-                    value_docs=(
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.PUNCTUATION_STYLE_NONE,
-                            summary="Requests that punctuation symbols not be spoken.",
-                        ),
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.PUNCTUATION_STYLE_SOME,
+                PreferenceControlDoc(
+                    label=guilabels.VOICE_GLOBAL_VOICE_SETTINGS,
+                    kind="group",
+                    controls=(
+                        PreferenceControlDoc(
+                            label=guilabels.VOICE_SPEECH_SYSTEM,
+                            kind="choice",
                             summary=(
-                                "Requests that some punctuation symbols be spoken. The "
-                                "speech system determines which symbols are included."
+                                "Selects the software Orca uses to communicate with speech "
+                                "synthesizers. Supported systems include Speech Dispatcher "
+                                "and Spiel."
+                            ),
+                            schema="speech",
+                            key="speech-server",
+                            dynamic_values=True,
+                        ),
+                        PreferenceControlDoc(
+                            label=guilabels.VOICE_SPEECH_SYNTHESIZER,
+                            kind="choice",
+                            summary=(
+                                "Selects the engine that converts text into speech. Examples "
+                                "include espeak-ng and Voxin. The choices come from the selected "
+                                "speech system: output modules in Speech Dispatcher or providers "
+                                "in Spiel. To install and configure additional synthesizers or "
+                                "voices, refer to your speech system's or synthesizer's "
+                                "documentation."
+                            ),
+                            schema="speech",
+                            key="synthesizer",
+                            dynamic_values=True,
+                        ),
+                        PreferenceControlDoc(
+                            label=guilabels.PUNCTUATION_STYLE,
+                            kind="choice",
+                            summary="Controls how much punctuation Orca speaks.",
+                            schema="speech",
+                            key="punctuation-level",
+                            values=(
+                                guilabels.PUNCTUATION_STYLE_NONE,
+                                guilabels.PUNCTUATION_STYLE_SOME,
+                                guilabels.PUNCTUATION_STYLE_MOST,
+                                guilabels.PUNCTUATION_STYLE_ALL,
+                            ),
+                            value_docs=(
+                                PreferenceValueDoc(
+                                    label=guilabels.PUNCTUATION_STYLE_NONE,
+                                    summary="Requests that punctuation symbols not be spoken.",
+                                ),
+                                PreferenceValueDoc(
+                                    label=guilabels.PUNCTUATION_STYLE_SOME,
+                                    summary=(
+                                        "Requests that some punctuation symbols be spoken. The "
+                                        "speech system determines which symbols are included."
+                                    ),
+                                ),
+                                PreferenceValueDoc(
+                                    label=guilabels.PUNCTUATION_STYLE_MOST,
+                                    summary=(
+                                        "Requests that most punctuation symbols be spoken. The "
+                                        "speech system determines which symbols are included."
+                                    ),
+                                ),
+                                PreferenceValueDoc(
+                                    label=guilabels.PUNCTUATION_STYLE_ALL,
+                                    summary="Requests that all punctuation symbols be spoken.",
+                                ),
                             ),
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.PUNCTUATION_STYLE_MOST,
-                            summary=(
-                                "Requests that most punctuation symbols be spoken. The "
-                                "speech system determines which symbols are included."
+                        PreferenceControlDoc(
+                            label=guilabels.VOICE_CAPITALIZATION_STYLE,
+                            kind="choice",
+                            summary="Controls how Orca indicates uppercase letters.",
+                            schema="speech",
+                            key="capitalization-style",
+                            default_labels=(
+                                PreferenceValueDoc(
+                                    guilabels.CAPITALIZATION_STYLE_VOICE_ONLY, "none"
+                                ),
+                            ),
+                            values=(
+                                guilabels.CAPITALIZATION_STYLE_VOICE_ONLY,
+                                guilabels.CAPITALIZATION_STYLE_ICON,
+                                guilabels.CAPITALIZATION_STYLE_SPELL,
+                            ),
+                            value_docs=(
+                                PreferenceValueDoc(
+                                    label=guilabels.CAPITALIZATION_STYLE_VOICE_ONLY,
+                                    summary=(
+                                        "Uses the configured uppercase voice without adding "
+                                        "another indication. To hear uppercase letters at a "
+                                        "higher pitch, configure the uppercase voice in "
+                                        f'"{guilabels.LANGUAGE_VOICE_SETTINGS}" preferences.'
+                                    ),
+                                ),
+                                PreferenceValueDoc(
+                                    label=guilabels.CAPITALIZATION_STYLE_ICON,
+                                    summary=(
+                                        "Uses the configured uppercase voice and plays a tone "
+                                        "before speaking an uppercase letter."
+                                    ),
+                                ),
+                                PreferenceValueDoc(
+                                    label=guilabels.CAPITALIZATION_STYLE_SPELL,
+                                    summary=(
+                                        "Uses the configured uppercase voice and says capital "
+                                        "before speaking an uppercase letter."
+                                    ),
+                                ),
                             ),
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.PUNCTUATION_STYLE_ALL,
-                            summary="Requests that all punctuation symbols be spoken.",
+                        PreferenceControlDoc(
+                            label=guilabels.VOICE_SPEAK_NUMBERS_AS_DIGITS,
+                            kind="switch",
+                            summary="When enabled, Orca speaks 123 as 1 2 3. When disabled, "
+                            "Orca sends the number to the synthesizer, which likely speaks it "
+                            "as one hundred and twenty three.",
+                            schema="speech",
+                            key="speak-numbers-as-digits",
+                        ),
+                        PreferenceControlDoc(
+                            label=guilabels.SPEECH_SPEAK_COLORS_AS_NAMES,
+                            kind="switch",
+                            summary="Controls whether Orca speaks colors by name, such as light "
+                            "blue, instead of as RGB values.",
+                            schema="speech",
+                            key="use-color-names",
+                        ),
+                        PreferenceControlDoc(
+                            label=guilabels.SPEECH_BREAK_INTO_CHUNKS,
+                            kind="switch",
+                            summary="Controls whether Orca inserts brief pauses between parts "
+                            "of a spoken presentation, such as name, role, state, mnemonic, "
+                            "and tutorial message.",
+                            schema="speech",
+                            key="insert-pauses-between-utterances",
+                        ),
+                        PreferenceControlDoc(
+                            label=guilabels.SPEECH_USE_PRONUNCIATION_DICTIONARY,
+                            kind="switch",
+                            target="speech.use-pronunciation-dictionary",
+                            summary="Controls whether Orca uses pronunciation dictionary entries.",
+                            schema="speech",
+                            key="use-pronunciation-dictionary",
                         ),
                     ),
                 ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.VOICE_CAPITALIZATION_STYLE,
-                    kind="choice",
-                    summary="Controls how Orca indicates uppercase letters.",
-                    schema="speech",
-                    key="capitalization-style",
-                    values=(
-                        guilabels.CAPITALIZATION_STYLE_VOICE_ONLY,
-                        guilabels.CAPITALIZATION_STYLE_ICON,
-                        guilabels.CAPITALIZATION_STYLE_SPELL,
-                    ),
-                    value_docs=(
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.CAPITALIZATION_STYLE_VOICE_ONLY,
-                            summary="Uses the configured uppercase voice without adding "
-                            "another indication.",
-                        ),
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.CAPITALIZATION_STYLE_ICON,
-                            summary=(
-                                "Uses the configured uppercase voice and plays a tone "
-                                "before speaking an uppercase letter."
-                            ),
-                        ),
-                        preferences_grid_base.PreferenceValueDoc(
-                            label=guilabels.CAPITALIZATION_STYLE_SPELL,
-                            summary=(
-                                "Uses the configured uppercase voice and says capital "
-                                "before speaking an uppercase letter."
-                            ),
-                        ),
-                    ),
-                ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.VOICE_SPEAK_NUMBERS_AS_DIGITS,
-                    kind="switch",
-                    summary="When enabled, Orca speaks 123 as 1 2 3. When disabled, "
-                    "Orca sends the number to the synthesizer, which likely speaks it "
-                    "as one hundred and twenty three.",
-                    schema="speech",
-                    key="speak-numbers-as-digits",
-                ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.SPEECH_SPEAK_COLORS_AS_NAMES,
-                    kind="switch",
-                    summary="Controls whether Orca speaks colors by name, such as light "
-                    "blue, instead of as RGB values.",
-                    schema="speech",
-                    key="use-color-names",
-                ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.SPEECH_BREAK_INTO_CHUNKS,
-                    kind="switch",
-                    summary="Controls whether Orca inserts brief pauses between parts "
-                    "of a spoken presentation, such as name, role, state, mnemonic, "
-                    "and tutorial message.",
-                    schema="speech",
-                    key="insert-pauses-between-utterances",
-                ),
-                preferences_grid_base.PreferenceControlDoc(
-                    label=guilabels.SPEECH_USE_PRONUNCIATION_DICTIONARY,
-                    kind="switch",
-                    schema="speech",
-                    key="use-pronunciation-dictionary",
-                ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.LANGUAGE_SWITCHING,
                     kind="group",
+                    target="speech.language-switching",
                     summary="Controls when Orca switches voices based on language.",
                     controls=(
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
+                            summary=(
+                                "Controls automatic language switching for document content. "
+                                "For example, disable it in global preferences but enable it in "
+                                "application preferences for one or more web browsers. Other "
+                                "applications continue to use the global setting unless they "
+                                "have their own override. See [[screen-reader.configuration]] "
+                                "for opening global and application preferences and removing "
+                                "overrides."
+                            ),
                             label=guilabels.AUTO_LANGUAGE_SWITCHING,
                             kind="switch",
                             schema="speech",
                             key="auto-language-switching",
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.AUTO_LANGUAGE_SWITCHING_UI,
                             kind="switch",
+                            summary=(
+                                "Controls automatic language switching for application "
+                                "user-interface elements."
+                            ),
                             schema="speech",
                             key="auto-language-switching-ui",
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
+                            summary=(
+                                "Limits automatic switching to languages for which you have "
+                                "configured a voice set. With this limit off, Orca can use any "
+                                "language supported by the synthesizer, even without a matching "
+                                "voice set."
+                            ),
                             label=guilabels.ONLY_SWITCH_CONFIGURED_LANGUAGES,
                             kind="switch",
                             schema="speech",
@@ -227,8 +277,9 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         self._initializing = True
 
         self._voices: dict[str, ACSS] = {}
-        for vt in speechserver.VoiceType:
+        for vt in VoiceType:
             self._voices[vt] = manager.get_voice_properties(vt, app_name=self._app_name)
+        self._changed_voice_types: set[str] = set()
 
         self._voice_families: list[speechserver.VoiceFamily] = []
 
@@ -244,6 +295,11 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         self._build()
         self._populate_speech_systems()
         self.refresh()
+
+    def on_window_closed(self) -> None:
+        """Updates the speech server to the settings that apply once the window is closed."""
+
+        self._manager.restore_live_settings()
 
     def _build(self) -> None:
         """Create the Gtk widgets composing the grid."""
@@ -417,8 +473,9 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         """Reload settings from manager and refresh the UI."""
 
         app = self._app_name
-        for vt in speechserver.VoiceType:
+        for vt in VoiceType:
             self._voices[vt] = self._manager.get_voice_properties(vt, app_name=app)
+        self._changed_voice_types.clear()
 
         self._voice_families = self._manager.get_voice_families()
         self._families_sorted = False
@@ -515,7 +572,7 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
     def _get_acss_for_voice_type(self, voice_type: str) -> ACSS:
         """Return the local ACSS copy for the given voice type."""
 
-        return self._voices.get(voice_type, self._voices[speechserver.VoiceType.DEFAULT])
+        return self._voices.get(voice_type, self._voices[VoiceType.DEFAULT])
 
     def _populate_speech_systems(self) -> None:
         """Populate the speech systems combo."""
@@ -536,22 +593,18 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
 
         current = self._manager.get_current_server()
         found = False
-        selected_server = None
         for i, row in enumerate(model):
             if row[0] == current:
                 self._speech_systems_combo.set_active(i)
-                selected_server = current
                 found = True
                 break
 
+        # Switching restarts speech, so only do it when the current server isn't listed.
         if not found and len(model) > 0:
             self._speech_systems_combo.set_active(0)
             tree_iter = model.get_iter_first()
             if tree_iter:
-                selected_server = model.get_value(tree_iter, 0)
-
-        if selected_server:
-            self._manager.set_current_server(selected_server)
+                self._manager.set_current_server(model.get_value(tree_iter, 0))
 
         self._initializing = False
         self._populate_speech_synthesizers()
@@ -729,7 +782,7 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         tree_iter = model.get_iter(active)
         synth_name = model.get_value(tree_iter, 0)
 
-        # Without the override, update_synthesizer() on script activation reverts
+        # Without the override, script activation reverts
         # the live module to the dconf value before the user has clicked save.
         gsettings_registry.get_registry().set_runtime_value(
             self._manager.SPEECH_SCHEMA,
@@ -745,19 +798,20 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         # from the new synthesizer. Without this, import_voice only writes
         # keys present in the ACSS dict, so old family values persist in dconf.
         default_family = self._voice_families[0] if self._voice_families else None
-        for voice_type in speechserver.VoiceType:
+        for voice_type in VoiceType:
             voice_acss = self._get_acss_for_voice_type(voice_type)
             if ACSS.FAMILY in voice_acss:
                 del voice_acss[ACSS.FAMILY]
             if default_family is not None:
                 voice_acss[ACSS.FAMILY] = default_family
+            self._changed_voice_types.add(voice_type)
 
         self._has_unsaved_changes = True
 
     def get_voice_for_type(self, voice_type: str) -> ACSS:
         """Returns a copy of the primary voice currently configured for voice_type."""
 
-        return ACSS(self._voices.get(voice_type, self._voices[speechserver.VoiceType.DEFAULT]))
+        return ACSS(self._voices.get(voice_type, self._voices[VoiceType.DEFAULT]))
 
     def set_voice_for_type(self, voice_type: str, voice: ACSS) -> None:
         """Updates the primary voice for voice_type and marks the grid as changed."""
@@ -765,12 +819,13 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         configured = ACSS(voice)
         configured["established"] = True
         self._voices[voice_type] = configured
+        self._changed_voice_types.add(voice_type)
         self._has_unsaved_changes = True
 
-    def get_all_voices(self) -> dict[str, ACSS]:
-        """Returns copies of the staged primary voices keyed by voice type."""
+    def get_changed_voices(self) -> dict[str, ACSS]:
+        """Returns copies of the primary voices changed but not yet saved, keyed by voice type."""
 
-        return {voice_type: ACSS(voice) for voice_type, voice in self._voices.items()}
+        return {vt: ACSS(self._voices[vt]) for vt in self._changed_voice_types}
 
     def get_voice_families(self) -> list[speechserver.VoiceFamily]:
         """Returns the full list of voice families from the current synthesizer."""
@@ -780,12 +835,12 @@ class VoicesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
     def get_primary_voice_family(self) -> dict[str, str]:
         """Returns the family dict of the primary default voice."""
 
-        return self._voices.get(speechserver.VoiceType.DEFAULT, ACSS({})).get(ACSS.FAMILY, {})
+        return self._voices.get(VoiceType.DEFAULT, ACSS({})).get(ACSS.FAMILY, {})
 
     def get_primary_language_codes(self) -> list[str]:
         """Returns the language codes of the primary default voice."""
 
-        family = self._voices.get(speechserver.VoiceType.DEFAULT, ACSS({})).get(ACSS.FAMILY, {})
+        family = self._voices.get(VoiceType.DEFAULT, ACSS({})).get(ACSS.FAMILY, {})
         lang = family.get(speechserver.VoiceFamily.LANG, "")
         if not lang:
             return []
@@ -827,81 +882,98 @@ class VoiceTypesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
     _PRIMARY_LABEL = guilabels.VOICE_SET_GLOBAL
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for voice type preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.LANGUAGE_VOICE_SETTINGS,
-            panel_id="manual.voice-sets",
-            summary="Use these settings to configure voice sets and the voice used for each "
-            "kind of spoken content.",
-            description=guilabels.VOICE_SET_INFO,
+            target="speech.voice-sets",
+            panel_id="speech_manager.voice-sets",
+            command_groups=("speech.commands.voice-sets", "speech.commands.voice-parameters"),
+            link_summary="Use these settings to choose and adjust the voices Orca uses.",
             schema="voice",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.LANGUAGE_VOICE_SETTINGS,
                     kind="group",
-                    summary="Lists the global voice set and any language-specific voice sets.",
+                    summary=f'Lists the "{guilabels.VOICE_SET_GLOBAL}" voice set and any '
+                    "language-specific voice sets.",
                     controls=(
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_SET,
                             kind="choice",
                             summary="Selects the voice set to review or change.",
                             dynamic_values=True,
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_SET_CREATE_NEW,
                             kind="button",
                             summary="Creates a voice set for a specific language.",
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
-                            label="Delete Voice Set",
+                        PreferenceControlDoc(
+                            label=guilabels.GENERAL_REMOVE,
                             kind="button",
                             summary="Removes the selected language-specific voice set.",
                         ),
                     ),
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.VOICE_VOICE_TYPE_SETTINGS,
                     kind="group",
                     summary="Lists the voice types in the selected voice set. Activate the "
                     "settings button for a voice type to change how that voice sounds.",
                     controls=(
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_LANGUAGE,
                             kind="choice",
-                            summary="Selects the language for the selected voice type.",
+                            summary=(
+                                "Selects the language for the selected voice type. Available "
+                                "languages come from the voices reported by the current "
+                                "synthesizer."
+                            ),
                             dynamic_values=True,
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_PERSON,
                             kind="choice",
-                            summary="Selects the synthesizer voice for the selected voice type.",
+                            summary=(
+                                "Selects the synthesizer voice for the selected voice type. "
+                                "Choices depend on the current synthesizer and selected "
+                                "language. If an installed voice is missing, check that it is "
+                                "available through the selected speech system and synthesizer "
+                                "and that its language is selected."
+                            ),
                             schema="voice",
                             key="family-name",
                             dynamic_values=True,
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_RATE,
                             kind="integer",
+                            summary="Sets the speech rate for the selected voice type (0-100).",
                             schema="voice",
                             key="rate",
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_PITCH,
                             kind="number",
+                            summary="Sets the pitch for the selected voice type (0.0-10.0).",
                             schema="voice",
                             key="pitch",
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_INFLECTION,
                             kind="number",
+                            summary=(
+                                "Sets the pitch variation for the selected voice type (0.0-10.0)."
+                            ),
                             schema="voice",
                             key="pitch-range",
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.VOICE_VOLUME,
                             kind="number",
+                            summary="Sets the volume for the selected voice type (0.0-10.0).",
                             schema="voice",
                             key="volume",
                         ),
@@ -947,7 +1019,10 @@ class VoiceTypesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
     def _build(self) -> None:
         row = 0
 
-        msg = f"{guilabels.VOICE_SET_INFO} {guilabels.VOICE_SET_INFO_COMMANDS}"
+        # TODO - JD: Restore VOICE_SET_INFO_COMMANDS in the UI once marked for translation in v52.
+        # Uncomment the original assignment and delete the temporary one below.
+        # msg = f"{guilabels.VOICE_SET_INFO} {guilabels.VOICE_SET_INFO_COMMANDS}"
+        msg = guilabels.VOICE_SET_INFO
         info_listbox = orca_gui_helpers.create_info_listbox(msg)
         self.attach(info_listbox, 0, row, 1, 1)
         row += 1
@@ -1018,7 +1093,7 @@ class VoiceTypesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         is_primary = voice_set == gsettings_registry.PRIMARY_VOICE_SET
         self._delete_button.set_sensitive(not is_primary)
 
-        for vt in speechserver.VoiceType:
+        for vt in VoiceType:
             label = guilabels.VOICE_TYPE_LABELS.get(vt, vt)
 
             def _make_handler(voice_type: str = vt):
@@ -1123,9 +1198,9 @@ class VoiceTypesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
             if response_id not in (Gtk.ResponseType.CANCEL, Gtk.ResponseType.DELETE_EVENT):
                 lang_code = lang_combo.get_active_id()
                 if lang_code:
-                    self._staged_configs.setdefault(lang_code, {})[
-                        speechserver.VoiceType.DEFAULT
-                    ] = self._default_voice_set_config(lang_code)
+                    self._staged_configs.setdefault(lang_code, {})[VoiceType.DEFAULT] = (
+                        self._default_voice_set_config(lang_code)
+                    )
                     self._deleted_sets.discard(lang_code)
                     self._refresh_voice_set_combo()
                     self._select_voice_set(lang_code)
@@ -1365,10 +1440,10 @@ class VoiceTypesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
                 else:
                     self._staged_configs.setdefault(voice_set, {})[voice_type] = ACSS(props)
                     self._has_unsaved_changes = True
-            # Make the staged global voices live (each by type), replacing the audition
-            # override. So an OK'd default/system/etc. voice stays in effect; a set's voice
+            # Make the changed global voices live (each by type), replacing the audition
+            # override; unchanged voice types go back to their saved values. A set's voice
             # was staged separately and only applies when that set is active.
-            self._manager.restore_live_voices(self._voices_grid.get_all_voices())
+            self._manager.restore_live_voices(self._voices_grid.get_changed_voices())
             dlg.destroy()
 
         def on_parent_destroy(*_args: Any) -> None:
@@ -1388,7 +1463,7 @@ class VoiceTypesPreferencesGrid(preferences_grid_base.PreferencesGridBase):
         profile = registry.get_active_profile()
 
         for voice_set in self._deleted_sets:
-            for vt in speechserver.VoiceType:
+            for vt in VoiceType:
                 sub = gsettings_registry.get_registry().voice_set_sub_path(vt, voice_set)
                 gs = registry.get_settings("voice", profile, sub)
                 if gs is not None:

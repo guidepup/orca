@@ -27,7 +27,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from . import braille_presenter, gsettings_registry, guilabels, preferences_grid_base
+from . import gsettings_registry, guilabels, preferences_grid_base
+from .braille_presenter_settings import (
+    BrailleIndicator,
+    BrailleSettings,
+    ProgressBarVerbosity,
+    VerbosityLevel,
+)
+from .help_metadata import (
+    PreferenceCategoryDoc,
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+    PreferenceValueDoc,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -38,29 +50,24 @@ if TYPE_CHECKING:
 class BrailleVerbosityPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the Braille Verbosity preferences page."""
 
-    _documentation_summary = (
-        "Use these settings to choose how much context and object information appears in braille."
-    )
-
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for braille verbosity preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.VERBOSITY,
             panel_id="braille_presenter.verbosity",
-            description=(
-                "Braille verbosity controls how much contextual and object information "
-                "Orca shows on the braille display."
-            ),
             schema="braille",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.OBJECT_PRESENTATION_IS_DETAILED,
                     kind="switch",
+                    schema="braille",
+                    key="verbosity-level",
+                    default_labels=(PreferenceValueDoc("on", "verbose"),),
                     summary="Controls whether Orca shows more detailed object information.",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_SHOW_CONTEXT,
                     kind="switch",
                     summary=(
@@ -68,21 +75,25 @@ class BrailleVerbosityPreferencesGrid(preferences_grid_base.AutoPreferencesGrid)
                         "current object, such as the panel it is inside."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_DISPLAY_ANCESTORS,
+                    key=BrailleSettings.KEY_DISPLAY_ANCESTORS,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_ABBREVIATED_ROLE_NAMES,
                     kind="switch",
+                    schema="braille",
+                    key="rolename-style",
+                    default_labels=(PreferenceValueDoc("off", "verbose"),),
                     summary=(
                         "Controls whether Orca uses abbreviated role names, such as btn for button."
                     ),
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.PRESENT_OBJECT_MNEMONICS,
                     kind="switch",
-                    summary="Controls whether Orca shows object mnemonics in braille.",
+                    summary="Controls whether Orca shows shortcut letters, such as the F "
+                    "used with Alt to open a File menu, in braille.",
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_PRESENT_MNEMONICS,
+                    key=BrailleSettings.KEY_PRESENT_MNEMONICS,
                 ),
             ),
         )
@@ -99,7 +110,7 @@ class BrailleVerbosityPreferencesGrid(preferences_grid_base.AutoPreferencesGrid)
                 label=guilabels.BRAILLE_SHOW_CONTEXT,
                 getter=presenter.get_display_ancestors,
                 setter=presenter.set_display_ancestors,
-                prefs_key=braille_presenter.BraillePresenter.KEY_DISPLAY_ANCESTORS,
+                prefs_key=BrailleSettings.KEY_DISPLAY_ANCESTORS,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.BRAILLE_ABBREVIATED_ROLE_NAMES,
@@ -110,7 +121,7 @@ class BrailleVerbosityPreferencesGrid(preferences_grid_base.AutoPreferencesGrid)
                 label=guilabels.PRESENT_OBJECT_MNEMONICS,
                 getter=presenter.get_present_mnemonics,
                 setter=presenter.set_present_mnemonics,
-                prefs_key=braille_presenter.BraillePresenter.KEY_PRESENT_MNEMONICS,
+                prefs_key=BrailleSettings.KEY_PRESENT_MNEMONICS,
             ),
         ]
 
@@ -120,86 +131,80 @@ class BrailleVerbosityPreferencesGrid(preferences_grid_base.AutoPreferencesGrid)
         """Save settings, writing enum values for verbosity and rolename style."""
 
         result = super().save_settings(profile, app_name)
-        result[braille_presenter.BraillePresenter.KEY_VERBOSITY_LEVEL] = (
-            self._presenter.get_verbosity_level()
-        )
+        result[BrailleSettings.KEY_VERBOSITY_LEVEL] = self._presenter.get_verbosity_level()
         rolename_style = self._presenter.get_rolename_style().upper()
-        result[braille_presenter.BraillePresenter.KEY_ROLENAME_STYLE] = (
-            braille_presenter.VerbosityLevel[rolename_style].value
-        )
+        result[BrailleSettings.KEY_ROLENAME_STYLE] = VerbosityLevel[rolename_style].value
         return result
 
 
 class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the Braille Display Settings preferences page."""
 
-    _documentation_summary = (
-        "Use these settings to control braille wrapping, contracted braille, and indicator dots."
-    )
-
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for braille display settings."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.BRAILLE_DISPLAY_SETTINGS,
             panel_id="braille_presenter.display-settings",
-            description=(
-                "Display settings control how text is arranged on the braille display, "
-                "which braille rules are used, and which dots mark links, selections, "
-                "and text attributes."
+            link_summary=(
+                "Configure wrapping, contraction, and the dots used to mark text in braille."
             ),
+            command_groups=("braille.commands.contraction",),
             schema="braille",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_ENABLE_END_OF_LINE_SYMBOL,
                     kind="switch",
                     summary=(
-                        "Controls whether Orca shows the end-of-line indicator at the "
-                        "end of each line of text."
+                        "Distinguishes the end of a line of text from the edge of the braille "
+                        "display."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_END_OF_LINE_INDICATOR,
+                    key=BrailleSettings.KEY_END_OF_LINE_INDICATOR,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_ENABLE_WORD_WRAP,
                     kind="switch",
                     summary=(
-                        "Controls whether Orca adjusts displayed text so only full words are "
-                        "shown. When word wrap is off, Orca uses all available cells so more "
-                        "text can be shown at once."
+                        "Keeps words from being split across successive pans of the braille "
+                        "display."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_WORD_WRAP,
+                    key=BrailleSettings.KEY_WORD_WRAP,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_ENABLE_CONTRACTED_BRAILLE,
                     kind="switch",
                     summary=(
-                        "Controls whether Orca uses contracted braille, such as shorter "
-                        "forms of common letter combinations and words."
+                        "Controls whether Orca uses contracted braille through liblouis, "
+                        "a braille translation library."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_CONTRACTED_BRAILLE,
+                    key=BrailleSettings.KEY_CONTRACTED_BRAILLE,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_COMPUTER_BRAILLE_AT_CURSOR,
                     kind="switch",
                     summary=(
-                        "When contracted braille is enabled, controls whether the word at "
-                        "the cursor is shown in uncontracted computer braille."
+                        "Shows the word at the cursor in computer braille so you can inspect "
+                        "its individual characters while keeping surrounding text contracted."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_COMPUTER_BRAILLE_AT_CURSOR,
+                    key=BrailleSettings.KEY_COMPUTER_BRAILLE_AT_CURSOR,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_CONTRACTION_TABLE,
-                    kind="combo",
-                    summary=("Selects the table Orca uses for braille symbols and contractions."),
+                    kind="choice",
+                    summary=(
+                        "Selects the liblouis translation table Orca uses for braille "
+                        "symbols and contractions."
+                    ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_CONTRACTION_TABLE,
+                    key=BrailleSettings.KEY_CONTRACTION_TABLE,
+                    default_labels=(PreferenceValueDoc("chosen for your locale", ""),),
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_INDICATORS,
                     kind="group",
                     summary=(
@@ -208,82 +213,86 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
                         "on the braille display."
                     ),
                     controls=(
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.BRAILLE_HYPERLINK_INDICATOR,
-                            kind="combo",
+                            kind="choice",
                             summary=(
                                 "Selects the dot or dots Orca uses to mark text that is "
                                 "part of a link."
                             ),
                             schema="braille",
-                            key=braille_presenter.BraillePresenter.KEY_LINK_INDICATOR,
+                            key=BrailleSettings.KEY_LINK_INDICATOR,
                             value_docs=(
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_NONE,
                                     value="none",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_7,
                                     value="dot7",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_8,
                                     value="dot8",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_7_8,
                                     value="dots78",
                                 ),
                             ),
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.BRAILLE_SELECTION_INDICATOR,
-                            kind="combo",
+                            kind="choice",
                             summary=("Selects the dot or dots Orca uses to mark selected text."),
                             schema="braille",
-                            key=braille_presenter.BraillePresenter.KEY_SELECTOR_INDICATOR,
+                            key=BrailleSettings.KEY_SELECTOR_INDICATOR,
                             value_docs=(
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_NONE,
                                     value="none",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_7,
                                     value="dot7",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_8,
                                     value="dot8",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_7_8,
                                     value="dots78",
                                 ),
                             ),
                         ),
-                        preferences_grid_base.PreferenceControlDoc(
+                        PreferenceControlDoc(
                             label=guilabels.BRAILLE_TEXT_ATTRIBUTES_INDICATOR,
-                            kind="combo",
+                            kind="choice",
+                            target="braille.text-attributes-indicator",
                             summary=(
-                                "Selects the dot or dots Orca uses to mark text attributes, "
-                                "such as bold."
+                                "Selects the dots used to mark text attributes in braille, like "
+                                "underlining. The same indicator is used for all attributes "
+                                "enabled for braille; it shows where an attribute is present, "
+                                "rather than which attribute it is. Choosing no indicator hides "
+                                "the markers."
                             ),
                             schema="braille",
-                            key=braille_presenter.BraillePresenter.KEY_TEXT_ATTRIBUTES_INDICATOR,
+                            key=BrailleSettings.KEY_TEXT_ATTRIBUTES_INDICATOR,
                             value_docs=(
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_NONE,
                                     value="none",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_7,
                                     value="dot7",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_8,
                                     value="dot8",
                                 ),
-                                preferences_grid_base.PreferenceValueDoc(
+                                PreferenceValueDoc(
                                     label=guilabels.BRAILLE_DOT_7_8,
                                     value="dots78",
                                 ),
@@ -303,7 +312,7 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
             label=guilabels.BRAILLE_ENABLE_CONTRACTED_BRAILLE,
             getter=presenter.get_contracted_braille_is_enabled,
             setter=presenter.set_contracted_braille_is_enabled,
-            prefs_key=braille_presenter.BraillePresenter.KEY_CONTRACTED_BRAILLE,
+            prefs_key=BrailleSettings.KEY_CONTRACTED_BRAILLE,
         )
 
         controls: list[
@@ -314,20 +323,20 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
                 label=guilabels.BRAILLE_ENABLE_END_OF_LINE_SYMBOL,
                 getter=presenter.get_end_of_line_indicator_is_enabled,
                 setter=presenter.set_end_of_line_indicator_is_enabled,
-                prefs_key=braille_presenter.BraillePresenter.KEY_END_OF_LINE_INDICATOR,
+                prefs_key=BrailleSettings.KEY_END_OF_LINE_INDICATOR,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.BRAILLE_ENABLE_WORD_WRAP,
                 getter=presenter.get_word_wrap_is_enabled,
                 setter=presenter.set_word_wrap_is_enabled,
-                prefs_key=braille_presenter.BraillePresenter.KEY_WORD_WRAP,
+                prefs_key=BrailleSettings.KEY_WORD_WRAP,
             ),
             self._enable_contracted_control,
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.BRAILLE_COMPUTER_BRAILLE_AT_CURSOR,
                 getter=presenter.get_computer_braille_at_cursor_is_enabled,
                 setter=presenter.set_computer_braille_at_cursor_is_enabled,
-                prefs_key=braille_presenter.BraillePresenter.KEY_COMPUTER_BRAILLE_AT_CURSOR,
+                prefs_key=BrailleSettings.KEY_COMPUTER_BRAILLE_AT_CURSOR,
                 determine_sensitivity=self._contracted_enabled,
             ),
             preferences_grid_base.EnumPreferenceControl(
@@ -336,7 +345,7 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
                 values=table_paths,
                 getter=presenter.get_contraction_table_path,
                 setter=presenter.set_contraction_table_from_path,
-                prefs_key=braille_presenter.BraillePresenter.KEY_CONTRACTION_TABLE,
+                prefs_key=BrailleSettings.KEY_CONTRACTION_TABLE,
                 determine_sensitivity=self._contracted_enabled,
             ),
             preferences_grid_base.EnumPreferenceControl(
@@ -348,14 +357,14 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
                     guilabels.BRAILLE_DOT_7_8,
                 ],
                 values=[
-                    braille_presenter.BrailleIndicator.NONE.value,
-                    braille_presenter.BrailleIndicator.DOT7.value,
-                    braille_presenter.BrailleIndicator.DOT8.value,
-                    braille_presenter.BrailleIndicator.DOTS78.value,
+                    BrailleIndicator.NONE.value,
+                    BrailleIndicator.DOT7.value,
+                    BrailleIndicator.DOT8.value,
+                    BrailleIndicator.DOTS78.value,
                 ],
                 getter=presenter._get_link_indicator_as_int,
                 setter=presenter.set_link_indicator_from_int,
-                prefs_key=braille_presenter.BraillePresenter.KEY_LINK_INDICATOR,
+                prefs_key=BrailleSettings.KEY_LINK_INDICATOR,
                 member_of=guilabels.BRAILLE_INDICATORS,
             ),
             preferences_grid_base.EnumPreferenceControl(
@@ -367,14 +376,14 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
                     guilabels.BRAILLE_DOT_7_8,
                 ],
                 values=[
-                    braille_presenter.BrailleIndicator.NONE.value,
-                    braille_presenter.BrailleIndicator.DOT7.value,
-                    braille_presenter.BrailleIndicator.DOT8.value,
-                    braille_presenter.BrailleIndicator.DOTS78.value,
+                    BrailleIndicator.NONE.value,
+                    BrailleIndicator.DOT7.value,
+                    BrailleIndicator.DOT8.value,
+                    BrailleIndicator.DOTS78.value,
                 ],
                 getter=presenter._get_selector_indicator_as_int,
                 setter=presenter.set_selector_indicator_from_int,
-                prefs_key=braille_presenter.BraillePresenter.KEY_SELECTOR_INDICATOR,
+                prefs_key=BrailleSettings.KEY_SELECTOR_INDICATOR,
                 member_of=guilabels.BRAILLE_INDICATORS,
             ),
             preferences_grid_base.EnumPreferenceControl(
@@ -386,14 +395,14 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
                     guilabels.BRAILLE_DOT_7_8,
                 ],
                 values=[
-                    braille_presenter.BrailleIndicator.NONE.value,
-                    braille_presenter.BrailleIndicator.DOT7.value,
-                    braille_presenter.BrailleIndicator.DOT8.value,
-                    braille_presenter.BrailleIndicator.DOTS78.value,
+                    BrailleIndicator.NONE.value,
+                    BrailleIndicator.DOT7.value,
+                    BrailleIndicator.DOT8.value,
+                    BrailleIndicator.DOTS78.value,
                 ],
                 getter=presenter._get_text_attributes_indicator_as_int,
                 setter=presenter.set_text_attributes_indicator_from_int,
-                prefs_key=braille_presenter.BraillePresenter.KEY_TEXT_ATTRIBUTES_INDICATOR,
+                prefs_key=BrailleSettings.KEY_TEXT_ATTRIBUTES_INDICATOR,
                 member_of=guilabels.BRAILLE_INDICATORS,
             ),
         ]
@@ -409,54 +418,49 @@ class BrailleDisplaySettingsPreferencesGrid(preferences_grid_base.AutoPreference
 class BrailleFlashMessagesPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the Braille Flash Messages preferences page."""
 
-    _documentation_summary = "Use these settings to control temporary braille announcements."
-
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for braille flash message preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.BRAILLE_FLASH_MESSAGES,
             panel_id="braille_presenter.flash-messages",
-            description=(
-                "Braille flash messages are announcements, such as Orca messages or "
-                "command feedback, shown on the braille display. Temporary flash "
-                "messages are shown briefly, after which the original display contents "
-                "are restored."
-            ),
             schema="braille",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_ENABLE_FLASH_MESSAGES,
                     kind="switch",
                     summary="Controls whether Orca shows messages and command feedback in braille.",
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_FLASH_MESSAGES,
+                    key=BrailleSettings.KEY_FLASH_MESSAGES,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_MESSAGES_ARE_DETAILED,
                     kind="switch",
                     summary=(
-                        "Controls whether Orca shows detailed braille messages when a "
-                        "brief alternative is available. For instance, detailed command "
-                        "feedback might include both the setting name and its new value."
+                        "Chooses detailed rather than brief messages when both forms are "
+                        "available. For example, detailed feedback can include a setting's name "
+                        "and its new value, while brief feedback gives just the value."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_FLASH_MESSAGES_DETAILED,
+                    key=BrailleSettings.KEY_FLASH_MESSAGES_DETAILED,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_MESSAGES_ARE_PERSISTENT,
                     kind="switch",
                     summary=(
-                        "Controls whether flash messages remain displayed until the display "
-                        "is updated instead of disappearing after the configured duration."
+                        "Keeps a flash message displayed until another update replaces it, "
+                        "instead of restoring the previous contents after a timeout."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_FLASH_MESSAGES_PERSISTENT,
+                    key=BrailleSettings.KEY_FLASH_MESSAGES_PERSISTENT,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_DURATION_SECS,
-                    kind="spin",
+                    kind="integer",
+                    schema="braille",
+                    key="flash-message-duration",
+                    default_labels=(PreferenceValueDoc("5 seconds", "5000"),),
                     summary=(
                         "Sets how long temporary braille messages are displayed when "
                         "they are not persistent. This setting is ignored when messages "
@@ -474,7 +478,7 @@ class BrailleFlashMessagesPreferencesGrid(preferences_grid_base.AutoPreferencesG
             label=guilabels.BRAILLE_MESSAGES_ARE_PERSISTENT,
             getter=presenter.get_flash_messages_are_persistent,
             setter=presenter.set_flash_messages_are_persistent,
-            prefs_key=braille_presenter.BraillePresenter.KEY_FLASH_MESSAGES_PERSISTENT,
+            prefs_key=BrailleSettings.KEY_FLASH_MESSAGES_PERSISTENT,
         )
 
         controls: list[
@@ -485,13 +489,13 @@ class BrailleFlashMessagesPreferencesGrid(preferences_grid_base.AutoPreferencesG
                 label=guilabels.BRAILLE_ENABLE_FLASH_MESSAGES,
                 getter=presenter.get_flash_messages_are_enabled,
                 setter=presenter.set_flash_messages_are_enabled,
-                prefs_key=braille_presenter.BraillePresenter.KEY_FLASH_MESSAGES,
+                prefs_key=BrailleSettings.KEY_FLASH_MESSAGES,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.BRAILLE_MESSAGES_ARE_DETAILED,
                 getter=presenter.get_flash_messages_are_detailed,
                 setter=presenter.set_flash_messages_are_detailed,
-                prefs_key=braille_presenter.BraillePresenter.KEY_FLASH_MESSAGES_DETAILED,
+                prefs_key=BrailleSettings.KEY_FLASH_MESSAGES_DETAILED,
             ),
             self._flash_persistent_control,
             preferences_grid_base.IntRangePreferenceControl(
@@ -515,7 +519,7 @@ class BrailleFlashMessagesPreferencesGrid(preferences_grid_base.AutoPreferencesG
         """Persist staged values, including flash-message-duration in milliseconds."""
 
         result = super().save_settings(profile, app_name)
-        result[braille_presenter.BraillePresenter.KEY_FLASH_MESSAGE_DURATION] = (
+        result[BrailleSettings.KEY_FLASH_MESSAGE_DURATION] = (
             self._presenter.get_flash_message_duration()
         )
         return result
@@ -524,58 +528,52 @@ class BrailleFlashMessagesPreferencesGrid(preferences_grid_base.AutoPreferencesG
 class BrailleProgressBarsPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the Braille Progress Bars preferences page."""
 
-    _documentation_summary = (
-        "Use these settings to decide whether progress-bar changes are shown in braille and "
-        "how often they are updated."
-    )
-
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for braille progress-bar preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.PROGRESS_BARS,
             panel_id="braille_presenter.progress-bars",
-            description=(
-                "Progress bar settings control whether Orca shows progress-bar changes "
-                "in braille, how often updates are shown, and which progress bars apply."
-            ),
             schema="braille",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.GENERAL_BRAILLE_UPDATES,
                     kind="switch",
                     summary="Controls whether Orca periodically shows progress-bar updates.",
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_BRAILLE_PROGRESS_BAR_UPDATES,
+                    key=BrailleSettings.KEY_BRAILLE_PROGRESS_BAR_UPDATES,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.GENERAL_FREQUENCY_SECS,
-                    kind="spin",
-                    summary="Sets how often Orca shows progress-bar updates.",
+                    kind="integer",
+                    summary=(
+                        "Sets the minimum number of seconds between updates for the same "
+                        "progress bar. Zero removes this minimum delay."
+                    ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_PROGRESS_BAR_BRAILLE_INTERVAL,
+                    key=BrailleSettings.KEY_PROGRESS_BAR_BRAILLE_INTERVAL,
                     minimum="0",
                     maximum="100",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.GENERAL_APPLIES_TO,
-                    kind="combo",
-                    summary="Selects which progress bars produce braille updates.",
+                    kind="choice",
+                    summary=("Selects which progress bars provide updates."),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_PROGRESS_BAR_BRAILLE_VERBOSITY,
+                    key=BrailleSettings.KEY_PROGRESS_BAR_BRAILLE_VERBOSITY,
                     value_docs=(
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
                             label=guilabels.PROGRESS_BAR_ALL,
-                            summary="Progress bars in all applications.",
+                            summary=("Progress bars in all applications."),
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
                             label=guilabels.PROGRESS_BAR_APPLICATION,
-                            summary="Progress bars in the active application.",
+                            summary=("Progress bars in the active application."),
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
                             label=guilabels.PROGRESS_BAR_WINDOW,
-                            summary="Progress bars in the active window.",
+                            summary=("Progress bars in the active window."),
                         ),
                     ),
                 ),
@@ -588,13 +586,13 @@ class BrailleProgressBarsPreferencesGrid(preferences_grid_base.AutoPreferencesGr
                 label=guilabels.GENERAL_BRAILLE_UPDATES,
                 getter=presenter.get_braille_progress_bar_updates,
                 setter=presenter.set_braille_progress_bar_updates,
-                prefs_key=braille_presenter.BraillePresenter.KEY_BRAILLE_PROGRESS_BAR_UPDATES,
+                prefs_key=BrailleSettings.KEY_BRAILLE_PROGRESS_BAR_UPDATES,
             ),
             preferences_grid_base.IntRangePreferenceControl(
                 label=guilabels.GENERAL_FREQUENCY_SECS,
                 getter=presenter.get_progress_bar_braille_interval,
                 setter=presenter.set_progress_bar_braille_interval,
-                prefs_key=braille_presenter.BraillePresenter.KEY_PROGRESS_BAR_BRAILLE_INTERVAL,
+                prefs_key=BrailleSettings.KEY_PROGRESS_BAR_BRAILLE_INTERVAL,
                 minimum=0,
                 maximum=100,
             ),
@@ -602,16 +600,16 @@ class BrailleProgressBarsPreferencesGrid(preferences_grid_base.AutoPreferencesGr
                 label=guilabels.GENERAL_APPLIES_TO,
                 getter=presenter.get_progress_bar_braille_verbosity,
                 setter=presenter.set_progress_bar_braille_verbosity,
-                prefs_key=braille_presenter.BraillePresenter.KEY_PROGRESS_BAR_BRAILLE_VERBOSITY,
+                prefs_key=BrailleSettings.KEY_PROGRESS_BAR_BRAILLE_VERBOSITY,
                 options=[
                     guilabels.PROGRESS_BAR_ALL,
                     guilabels.PROGRESS_BAR_APPLICATION,
                     guilabels.PROGRESS_BAR_WINDOW,
                 ],
                 values=[
-                    braille_presenter.ProgressBarVerbosity.ALL.value,
-                    braille_presenter.ProgressBarVerbosity.APPLICATION.value,
-                    braille_presenter.ProgressBarVerbosity.WINDOW.value,
+                    ProgressBarVerbosity.ALL.value,
+                    ProgressBarVerbosity.APPLICATION.value,
+                    ProgressBarVerbosity.WINDOW.value,
                 ],
             ),
         ]
@@ -622,30 +620,28 @@ class BrailleProgressBarsPreferencesGrid(preferences_grid_base.AutoPreferencesGr
 class BrailleOSDPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the braille on-screen display preferences page."""
 
-    _documentation_summary = "Use these settings to control the visual braille monitor window."
-
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for braille on-screen display preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.ON_SCREEN_DISPLAY,
             panel_id="braille_presenter.on-screen-display",
-            description=guilabels.BRAILLE_MONITOR_INFO,
+            command_groups=("braille.commands.on-screen-display",),
             schema="braille",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_MONITOR_CELL_COUNT,
-                    kind="spin",
+                    kind="integer",
                     summary=(
                         "Sets the number of braille cells shown in the on-screen braille display."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_MONITOR_CELL_COUNT,
+                    key=BrailleSettings.KEY_MONITOR_CELL_COUNT,
                     minimum="1",
                     maximum="80",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_MONITOR_SHOW_DOTS,
                     kind="switch",
                     summary=(
@@ -653,21 +649,21 @@ class BrailleOSDPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                         "braille dot patterns instead of text characters."
                     ),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_MONITOR_SHOW_DOTS,
+                    key=BrailleSettings.KEY_MONITOR_SHOW_DOTS,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_MONITOR_FOREGROUND,
                     kind="color",
                     summary="Selects the text color for the on-screen braille display.",
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_MONITOR_FOREGROUND,
+                    key=BrailleSettings.KEY_MONITOR_FOREGROUND,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_MONITOR_BACKGROUND,
                     kind="color",
                     summary=("Selects the background color for the on-screen braille display."),
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_MONITOR_BACKGROUND,
+                    key=BrailleSettings.KEY_MONITOR_BACKGROUND,
                 ),
             ),
         )
@@ -678,7 +674,7 @@ class BrailleOSDPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                 label=guilabels.BRAILLE_MONITOR_CELL_COUNT,
                 getter=presenter.get_monitor_cell_count,
                 setter=presenter.set_monitor_cell_count,
-                prefs_key=braille_presenter.BraillePresenter.KEY_MONITOR_CELL_COUNT,
+                prefs_key=BrailleSettings.KEY_MONITOR_CELL_COUNT,
                 minimum=1,
                 maximum=80,
             ),
@@ -686,19 +682,19 @@ class BrailleOSDPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                 label=guilabels.BRAILLE_MONITOR_SHOW_DOTS,
                 getter=presenter.get_monitor_show_dots,
                 setter=presenter.set_monitor_show_dots,
-                prefs_key=braille_presenter.BraillePresenter.KEY_MONITOR_SHOW_DOTS,
+                prefs_key=BrailleSettings.KEY_MONITOR_SHOW_DOTS,
             ),
             preferences_grid_base.ColorPreferenceControl(
                 label=guilabels.BRAILLE_MONITOR_FOREGROUND,
                 getter=presenter.get_monitor_foreground,
                 setter=presenter.set_monitor_foreground,
-                prefs_key=braille_presenter.BraillePresenter.KEY_MONITOR_FOREGROUND,
+                prefs_key=BrailleSettings.KEY_MONITOR_FOREGROUND,
             ),
             preferences_grid_base.ColorPreferenceControl(
                 label=guilabels.BRAILLE_MONITOR_BACKGROUND,
                 getter=presenter.get_monitor_background,
                 setter=presenter.set_monitor_background,
-                prefs_key=braille_presenter.BraillePresenter.KEY_MONITOR_BACKGROUND,
+                prefs_key=BrailleSettings.KEY_MONITOR_BACKGROUND,
             ),
         ]
 
@@ -714,49 +710,60 @@ class BraillePreferencesGrid(preferences_grid_base.PreferencesGridBase):
     """GtkGrid containing the Braille preferences page with nested stack navigation."""
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for the braille preferences landing page."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.BRAILLE,
-            panel_id="manual.braille",
-            description=(
-                "Braille settings control what Orca presents in braille. The list "
-                "contains braille-related settings and pages.\n\n"
-                "Activate a row, or press Right Arrow, to open its settings. Press "
-                "Left Arrow, Escape, or Alt+Left to return to the list."
+            panel_id="braille_presenter.braille",
+            category=PreferenceCategoryDoc(
+                category_id="braille",
+                title="Braille",
+                description=(
+                    "Configure Orca's braille output, including display behavior, text "
+                    "formatting, and temporary messages."
+                ),
+                panels=(
+                    "braille_presenter.braille",
+                    "braille_presenter.verbosity",
+                    "braille_presenter.display-settings",
+                    "braille_presenter.flash-messages",
+                    "braille_presenter.progress-bars",
+                    "braille_presenter.on-screen-display",
+                ),
             ),
+            command_groups=("braille.commands.panning-and-routing",),
             show_available_settings=False,
             schema="braille",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_ENABLE_BRAILLE_SUPPORT,
                     kind="switch",
                     summary="Turns braille output on or off.",
                     schema="braille",
-                    key=braille_presenter.BraillePresenter.KEY_ENABLED,
+                    key=BrailleSettings.KEY_ENABLED,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.VERBOSITY,
                     kind="page",
                     summary="Opens settings for how much information Orca shows in braille.",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_DISPLAY_SETTINGS,
                     kind="page",
                     summary="Opens settings for braille wrapping, contraction, and indicators.",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.BRAILLE_FLASH_MESSAGES,
                     kind="page",
                     summary="Opens settings for temporary braille messages.",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.PROGRESS_BARS,
                     kind="page",
                     summary="Opens settings for when Orca shows progress-bar updates in braille.",
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.ON_SCREEN_DISPLAY,
                     kind="page",
                     summary="Opens settings for the on-screen braille display.",
@@ -831,9 +838,7 @@ class BraillePreferencesGrid(preferences_grid_base.PreferencesGridBase):
 
         assert self._multipage_enable_switch is not None
         result: dict[str, Any] = {}
-        result[braille_presenter.BraillePresenter.KEY_ENABLED] = (
-            self._multipage_enable_switch.get_active()
-        )
+        result[BrailleSettings.KEY_ENABLED] = self._multipage_enable_switch.get_active()
         result.update(self._verbosity_grid.save_settings())
         result.update(self._display_settings_grid.save_settings())
         result.update(self._flash_messages_grid.save_settings())

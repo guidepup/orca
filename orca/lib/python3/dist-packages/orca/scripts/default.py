@@ -39,7 +39,7 @@ from orca import (
     bypass_mode_manager,
     caret_navigator,
     chat_presenter,
-    clipboard,
+    clipboard_presenter,
     command_manager,
     debug,
     debugging_tools_manager,
@@ -80,9 +80,15 @@ from orca.ax_object import AXObject
 from orca.ax_selection import AXSelection
 from orca.ax_text import AXText
 from orca.ax_utilities import AXUtilities
-from orca.ax_utilities_event import AXUtilitiesEvent, TextEventReason
-from orca.ax_utilities_text import CaretSetReason, TextUnit
-from orca.generator import PresentationReason
+from orca.ax_utilities_event import AXUtilitiesEvent
+from orca.enums import (
+    ActivePresentationMode,
+    BraillePanDirection,
+    CaretSetReason,
+    PresentationReason,
+    TextEventReason,
+    TextUnit,
+)
 
 if TYPE_CHECKING:
     import gi
@@ -103,7 +109,7 @@ class Script(script.Script):
         builtins = [
             (braille_presenter.get_presenter, guilabels.BRAILLE),
             (notification_presenter.get_presenter, guilabels.KB_GROUP_NOTIFICATIONS),
-            (clipboard.get_presenter, guilabels.KB_GROUP_CLIPBOARD),
+            (clipboard_presenter.get_presenter, guilabels.KB_GROUP_CLIPBOARD),
             (say_all_presenter.get_presenter, guilabels.GENERAL_SAY_ALL),
             (typing_echo_presenter.get_presenter, guilabels.ECHO),
             (speech_manager.get_manager, guilabels.KB_GROUP_SPEECH_VERBOSITY),
@@ -249,7 +255,9 @@ class Script(script.Script):
 
         active_window = self.utilities.top_level_object(new_focus)
         focus_manager.get_manager().set_active_window(active_window)
-        if old_focus is None:
+        if old_focus is None and (
+            new_focus != active_window or not AXUtilities.is_dialog_or_alert(new_focus)
+        ):
             old_focus = active_window
 
         manager = presentation_manager.get_manager()
@@ -293,10 +301,7 @@ class Script(script.Script):
         tokens = ["DEFAULT: Activating script for", self.app]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
-        if not focus_manager.get_manager().is_in_preferences_window():
-            speech_manager.get_manager().update_punctuation_level()
-            speech_manager.get_manager().update_capitalization_style()
-            speech_manager.get_manager().update_synthesizer()
+        speech_manager.get_manager().update_server_settings()
 
         presenter = document_presenter.get_presenter()
         if presenter.has_state_for_app(self.app):
@@ -336,7 +341,7 @@ class Script(script.Script):
 
     def handle_braille_pan_at_edge(
         self,
-        _direction: braille_presenter.PanDirection,
+        _direction: BraillePanDirection,
     ) -> bool | None:
         """Handles braille panning when the presenter reaches the edge of a line."""
 
@@ -398,7 +403,7 @@ class Script(script.Script):
 
         if AXUtilities.is_presentable_checked_change(event):
             presentation_manager.get_manager().interrupt_if_needed_for_object_presentation()
-            self.present_object(event.source, reason=PresentationReason.STATE_CHANGE)
+            self.present_object(event.source, reason=PresentationReason.CHECKED_STATE_CHANGE)
 
         return True
 
@@ -470,14 +475,8 @@ class Script(script.Script):
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return True
 
-        obj, offset = manager.get_last_cursor_position()
-        if offset == event.detail1 and obj == event.source:
-            if text_selection_presenter.get_presenter().selection_removal_was_presented(
-                event.source
-            ):
-                msg = "DEFAULT: Selection removal already presented for this input"
-                debug.print_message(debug.LEVEL_INFO, msg, True)
-                return True
+        obj, previous_offset = manager.get_last_cursor_position()
+        if previous_offset == event.detail1 and obj == event.source:
             navigation_reasons = {
                 TextEventReason.NAVIGATION_BY_WORD,
                 TextEventReason.NAVIGATION_BY_CHARACTER,
@@ -495,13 +494,17 @@ class Script(script.Script):
             msg = "DEFAULT: Position matches but proceeding due to navigation reason"
             debug.print_message(debug.LEVEL_INFO, msg, True)
             # Don't interrupt selection speech when handling the accompanying caret event.
-            if not AXUtilities.has_selected_text(event.source):
+            if not text_selection_presenter.get_presenter().selection_removal_was_presented(
+                event.source
+            ) and not AXUtilities.has_selected_text(event.source):
                 presentation_manager.get_manager().interrupt_presentation()
 
         offset = AXText.get_caret_offset(event.source)
 
         # TODO - JD: These need to be harmonized / unified / simplified.
-        manager.set_last_cursor_position(event.source, offset)
+        # Preserve the previous position if the focus event already saved this one.
+        if offset != previous_offset or obj != event.source:
+            manager.set_last_cursor_position(event.source, offset)
         self.utilities.set_caret_context(event.source, offset)
 
         # The text-changed and text-selection-changed handlers already refreshed braille
@@ -578,7 +581,7 @@ class Script(script.Script):
             return True
 
         presentation_manager.get_manager().interrupt_if_needed_for_object_presentation()
-        self.present_object(event.source, reason=PresentationReason.STATE_CHANGE)
+        self.present_object(event.source, reason=PresentationReason.EXPANDED_STATE_CHANGE)
         details = AXUtilities.get_details_content(event.source)
         for detail in details:
             presentation_manager.get_manager().speak_message(detail)
@@ -590,7 +593,7 @@ class Script(script.Script):
 
         if AXUtilities.is_presentable_indeterminate_change(event):
             presentation_manager.get_manager().interrupt_if_needed_for_object_presentation()
-            self.present_object(event.source, reason=PresentationReason.STATE_CHANGE)
+            self.present_object(event.source, reason=PresentationReason.CHECKED_STATE_CHANGE)
 
         return True
 
@@ -713,6 +716,11 @@ class Script(script.Script):
         if child is not None:
             if AXUtilities.is_page_tab(child) and not AXUtilities.is_focused(child):
                 self.present_object(child, generate_braille=False)
+            elif (
+                input_event_manager.get_manager().last_event_was_space()
+                and not AXUtilities.is_focused(child)
+            ):
+                return True
             else:
                 focus_manager.get_manager().set_locus_of_focus(event, child)
 
@@ -750,21 +758,8 @@ class Script(script.Script):
         """Callback for object:state-changed:showing accessibility events."""
 
         obj = event.source
-        if AXUtilities.is_notification(obj):
-            if not event.detail1:
-                return True
-
-            presentation_manager.get_manager().speak_message(
-                self.get_speech_generator().get_localized_role_name(obj),
-            )
-            msg = self.utilities.get_notification_content(obj)
-            presenter = presentation_manager.get_manager()
-            presenter.speak_accessible_text(obj, msg)
-            presenter.present_braille_message(msg)
-            notification_presenter.get_presenter().save_notification(msg)
-            return True
-
-        if AXUtilities.is_tool_tip(obj):
+        role = AXObject.get_role(obj)
+        if AXUtilities.is_tool_tip(obj, role):
             was_f1 = input_event_manager.get_manager().last_event_was_f1()
             if not was_f1 and not mouse_presenter.get_presenter().get_present_tooltips():
                 return True
@@ -779,6 +774,28 @@ class Script(script.Script):
                 presentation_manager.get_manager().interrupt_if_needed_for_object_presentation()
                 self.present_object(obj, prior_obj=event.source)
                 return True
+
+        if not event.detail1:
+            return True
+
+        if AXUtilities.is_notification(obj, role):
+            presentation_manager.get_manager().speak_message(
+                self.get_speech_generator().get_localized_role_name(obj),
+            )
+            notification_content = self.utilities.get_notification_content(obj)
+            presenter = presentation_manager.get_manager()
+            presenter.speak_accessible_text(obj, notification_content)
+            presenter.present_braille_message(notification_content)
+            notification_presenter.get_presenter().save_notification(notification_content)
+            return True
+
+        if AXUtilities.is_popup_menu(obj, role) and AXUtilities.is_application(
+            AXObject.get_parent(obj),
+        ):
+            msg = "DEFAULT: Setting locus of focus to newly-shown popup menu."
+            debug.print_message(debug.LEVEL_INFO, msg, True)
+            focus_manager.get_manager().set_locus_of_focus(event, obj)
+            return True
 
         return True
 
@@ -798,8 +815,10 @@ class Script(script.Script):
         if error := speech_pres.get_error_description(event.source, start):
             presentation_manager.get_manager().speak_message(error)
 
+        use_color_names = speech_manager.get_manager().get_use_color_names()
         for attr, _old_value, new_value in changes:
-            presentation_manager.get_manager().speak_message(attr.get_change_description(new_value))
+            description = attr.get_change_description(new_value, use_color_names)
+            presentation_manager.get_manager().speak_message(description)
 
         return True
 
@@ -863,15 +882,26 @@ class Script(script.Script):
             debug.print_message(debug.LEVEL_INFO, msg, True)
             return True
 
-        if reason == TextEventReason.TERMINAL_LINE_NAVIGATION_REPAINT:
+        if reason in (
+            TextEventReason.TERMINAL_LINE_NAVIGATION_REPAINT,
+            TextEventReason.TERMINAL_SCROLLING_REPAINT,
+        ):
             msg = "DEFAULT: Presenting line due to terminal line-navigation repaint"
             debug.print_message(debug.LEVEL_INFO, msg, True)
             offset = AXText.get_caret_offset(event.source)
+            manager = input_event_manager.get_manager()
+            presentation_offset = offset
+            if (
+                reason == TextEventReason.TERMINAL_SCROLLING_REPAINT
+                and not event.detail1 <= offset < event.detail1 + event.detail2
+            ):
+                # Pagers can leave the caret on a status line outside the scrolling content.
+                presentation_offset = event.detail1
+                if manager.last_event_was_down():
+                    presentation_offset += event.detail2 - 1
             self.update_braille(event.source)
-            self.say_line(event.source, offset)
-            AXUtilitiesEvent.save_terminal_line_navigation_repaint_line(
-                event, input_event_manager.get_manager()
-            )
+            self.say_line(event.source, presentation_offset)
+            AXUtilitiesEvent.save_terminal_line_navigation_repaint_line(event, manager)
             focus_manager.get_manager().set_last_cursor_position(event.source, offset)
             self.utilities.set_caret_context(event.source, offset)
             return True
@@ -1014,7 +1044,11 @@ class Script(script.Script):
                     self,
                     selection_obj,
                 )
-        self.update_braille(event.source)
+        selection_focus = selection_command.get_selection_focus() if selection_command else None
+        if selection_focus is not None:
+            self.update_braille(selection_focus.accessible_object, offset=selection_focus.offset)
+        else:
+            self.update_braille(event.source)
         return True
 
     def _on_column_reordered(self, event: Atspi.Event) -> bool:
@@ -1215,7 +1249,13 @@ class Script(script.Script):
                 return True
         return False
 
-    def say_character(self, obj: Atspi.Accessible, offset: int) -> None:
+    def say_character(
+        self,
+        obj: Atspi.Accessible,
+        offset: int,
+        *,
+        emit_region_changed: bool = True,
+    ) -> None:
         """Speak the character at the specified offset."""
 
         if input_event_manager.get_manager().last_event_was_forward_caret_selection():
@@ -1224,27 +1264,33 @@ class Script(script.Script):
         character, start_offset, end_offset = AXText.get_character_at_offset(
             obj, offset, ensure_whole_characters=True
         )
-        focus_manager.get_manager().emit_region_changed(
-            obj,
-            start_offset,
-            end_offset,
-            focus_manager.CARET_TRACKING,
-        )
-
-        presentation_manager.get_manager().speak_character_at_offset(obj, offset, character)
-        AXUtilities.set_last_text_unit_spoken(TextUnit.CHAR)
-
-    def say_line(self, obj: Atspi.Accessible, offset: int) -> None:
-        """Speaks the line at the specified offset."""
-
-        line, start_offset = AXText.get_line_at_offset(obj, offset)[0:2]
-        if line and line != "\n":
-            end_offset = start_offset + len(line)
+        if emit_region_changed:
             focus_manager.get_manager().emit_region_changed(
                 obj,
                 start_offset,
                 end_offset,
-                focus_manager.CARET_TRACKING,
+                ActivePresentationMode.CARET_TRACKING,
+            )
+
+        presentation_manager.get_manager().speak_character_at_offset(obj, offset, character)
+        AXUtilities.set_last_text_unit_spoken(TextUnit.CHAR)
+
+    def say_line(
+        self,
+        obj: Atspi.Accessible,
+        offset: int,
+        *,
+        emit_region_changed: bool = True,
+    ) -> None:
+        """Speaks the line at the specified offset."""
+
+        line, start_offset = AXText.get_line_at_offset(obj, offset)[0:2]
+        if emit_region_changed:
+            focus_manager.get_manager().emit_region_changed(
+                obj,
+                start_offset,
+                start_offset + len(line),
+                ActivePresentationMode.CARET_TRACKING,
             )
 
         speech_presenter.get_presenter().speak_line(
@@ -1264,6 +1310,7 @@ class Script(script.Script):
         end_offset: int,
         *,
         include_whole_objects: bool = False,
+        emit_region_changed: bool = True,
     ) -> None:
         """Speaks the substring between start and end offset."""
 
@@ -1273,18 +1320,24 @@ class Script(script.Script):
         if not phrase:
             return
 
-        if len(phrase) > 1 or phrase.isalnum():
+        if emit_region_changed:
             focus_manager.get_manager().emit_region_changed(
                 obj,
                 start_offset,
                 end_offset,
-                focus_manager.CARET_TRACKING,
+                ActivePresentationMode.CARET_TRACKING,
             )
 
         speech_presenter.get_presenter().speak_phrase(self, obj, start_offset, end_offset, phrase)
         AXUtilities.set_last_text_unit_spoken(TextUnit.PHRASE)
 
-    def say_word(self, obj: Atspi.Accessible, offset: int) -> None:
+    def say_word(
+        self,
+        obj: Atspi.Accessible,
+        offset: int,
+        *,
+        emit_region_changed: bool = True,
+    ) -> None:
         """Speaks the word at the specified offset, taking into account the previous position."""
 
         word, start_offset, end_offset = self.utilities.get_word_at_offset_adjusted_for_navigation(
@@ -1292,7 +1345,7 @@ class Script(script.Script):
             offset,
         )
         if not word and offset == AXText.get_character_count(obj):
-            self.say_character(obj, offset)
+            self.say_character(obj, offset, emit_region_changed=emit_region_changed)
             AXUtilities.set_last_text_unit_spoken(TextUnit.WORD)
             return
 
@@ -1334,7 +1387,7 @@ class Script(script.Script):
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
         speech_presenter.get_presenter().present_text_attribute_state(obj, start_offset)
-        self.say_phrase(obj, start_offset, end_offset)
+        self.say_phrase(obj, start_offset, end_offset, emit_region_changed=emit_region_changed)
         AXUtilities.set_last_text_unit_spoken(TextUnit.WORD)
 
     def present_object(

@@ -33,8 +33,6 @@ from typing import TYPE_CHECKING
 
 import gi
 
-import orca
-
 gi.require_version("Atspi", "2.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import (
@@ -42,6 +40,8 @@ from gi.repository import (
     Gdk,  # pylint: disable=no-name-in-module
     GLib,
 )
+
+import orca
 
 from . import (
     command_manager,
@@ -672,24 +672,6 @@ class KeyboardEvent(InputEvent):
 
         raise PermissionError(f"Unauthorized setter of input event property: {method_name}")
 
-    def _present(self) -> None:
-        if not self._script:
-            return
-
-        if self.is_pressed_key():
-            presentation_manager.get_manager().interrupt_presentation()
-
-        # pylint: disable-next=import-outside-toplevel
-        from . import learn_mode_presenter, sleep_mode_manager
-
-        if learn_mode_presenter.get_presenter().is_active():
-            return
-
-        if sleep_mode_manager.get_manager().is_active_for_app(self._script.app):
-            return
-
-        presentation_manager.get_manager().present_keyboard_event(self)
-
     def process(self) -> None:
         """Processes this input event."""
 
@@ -750,10 +732,12 @@ class KeyboardEvent(InputEvent):
             if numlock_on is not None:
                 command_manager.get_manager().handle_numlock_toggled(numlock_on)
 
-        self._present()
+        if self._script:
+            presentation_manager.get_manager().present_keyboard_event(self)
 
         if self.is_pressed_key() and self._handler:
-            GLib.timeout_add(1, self._handle)
+            # Execute commands before processing queued accessibility events.
+            GLib.idle_add(self._handle, priority=GLib.PRIORITY_DEFAULT)
 
         tokens = ["TOTAL PROCESSING TIME:", round(time.time() - start_time, 4)]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
@@ -762,7 +746,7 @@ class KeyboardEvent(InputEvent):
         debug.print_tokens(debug.LEVEL_INFO, tokens, False)
 
     def _handle(self) -> bool:
-        """Handles this event after a timeout. Returns False to stop the timeout."""
+        """Handles this event after the keyboard callback returns. Runs only once."""
 
         start_time = time.time()
         data = f"'{self.keyval_name}' ({self.hw_code})"
@@ -805,47 +789,45 @@ class BrailleEvent(InputEvent):
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return command
 
-    def process(self):
+    def process(self) -> None:
         """Processes this event."""
 
         tokens = ["\nvvvvv PROCESS", self, "vvvvv"]
         debug.print_tokens(debug.LEVEL_INFO, tokens, False)
 
         start_time = time.time()
-        result = self._process()
+        self._process()
         tokens = ["TOTAL PROCESSING TIME:", round(time.time() - start_time, 4)]
         debug.print_tokens(debug.LEVEL_INFO, tokens, False)
 
         tokens = ["^^^^^ PROCESS", self, "^^^^^"]
         debug.print_tokens(debug.LEVEL_INFO, tokens, False)
-        return result
 
-    def _process(self):
-        # pylint: disable-next=import-outside-toplevel
-        from . import learn_mode_presenter
-
-        presenter = learn_mode_presenter.get_presenter()
+    def _process(self) -> None:
+        if self._script is None:
+            tokens = ["BRAILLE EVENT: No active script for", self]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            return
 
         command = self.get_command()
         if not command:
-            if presenter.is_active():
-                tokens = ["BRAILLE EVENT: No command, but in learn mode", self]
-                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-                return True
-
             tokens = ["BRAILLE EVENT: No command found for", self]
             debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-            return False
+            return
 
         tokens = ["BRAILLE EVENT: Command is:", command]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
-        if presenter.is_active():
-            if presenter.handle_braille_event(self._script, self, command):
-                return True
+        modal_handler = command_manager.get_manager().get_modal_braille_handler()
+        if modal_handler is not None and modal_handler.will_handle_braille_event(
+            self._script, self, command
+        ):
+            tokens = ["BRAILLE EVENT: Modal handler claimed the event", self]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            modal_handler.handle_braille_event(self._script, self, command)
+            return
 
         command.execute(self._script, self)
-        return True
 
 
 class MouseButtonEvent(InputEvent):

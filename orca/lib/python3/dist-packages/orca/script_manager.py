@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import contextlib
 import importlib
+import os
 
 import gi
 
@@ -314,6 +315,11 @@ class ScriptManager:
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return self._active_script
 
+    def is_sleep_mode_active(self) -> bool:
+        """Returns True if the active script is a sleep mode script."""
+
+        return isinstance(self._active_script, sleepmode.Script)
+
     def get_active_script_app(self) -> Atspi.Accessible | None:
         """Returns the app associated with the active script."""
 
@@ -344,7 +350,13 @@ class ScriptManager:
             command_manager.get_manager().check_keyboard_settings()
             return
 
-        gsettings_registry.get_registry().set_active_app(new_script.app_name)
+        registry = gsettings_registry.get_registry()
+        is_orca = (
+            registry.get_configured_app() is not None
+            and new_script.app is not None
+            and AXUtilities.get_process_id(new_script.app) == os.getpid()
+        )
+        registry.set_active_app(new_script.app_name, is_orca)
 
         tokens = ["SCRIPT MANAGER: Setting active script to", new_script, "reason:", reason]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)

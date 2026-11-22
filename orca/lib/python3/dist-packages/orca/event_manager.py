@@ -39,6 +39,7 @@ gi.require_version("Atspi", "2.0")
 from gi.repository import Atspi, GLib
 
 from . import (
+    braille,
     braille_presenter,
     dbus_service,
     debug,
@@ -66,6 +67,7 @@ class EventPriority(enum.IntEnum):
     HIGHER = enum.auto()
     HIGH = enum.auto()
     MEDIUM_HIGH = enum.auto()
+    MEDIUM = enum.auto()
     NORMAL = enum.auto()
     LOWER = enum.auto()
     LOW = enum.auto()
@@ -105,7 +107,7 @@ class EventManager:
         self._gidle_id: int = 0
         self._gidle_lock = threading.Lock()
         self._listener: Atspi.EventListener = Atspi.EventListener.new(self._enqueue_object_event)
-        self._event_history: dict[str, tuple[int | None, float]] = {}
+        self._event_history: dict[str, tuple[int | None, int | None, float]] = {}
         self._latest_event: dict[tuple[str, int], int] = {}
         dbus_service.get_remote_controller().register_decorated_module("EventManager", self)
         debug.print_message(debug.LEVEL_INFO, "Event manager initialized", True)
@@ -231,6 +233,9 @@ class EventManager:
             priority = EventPriority.LOW
         elif event_type.startswith("object:text-changed"):
             priority = self._get_text_changed_priority(event)
+        elif event_type.startswith("object:text-selection-changed"):
+            # Present selection changes before caret events update the selection cache.
+            priority = EventPriority.MEDIUM
         elif event_type.startswith("object:property-change:accessible-description"):
             priority = EventPriority.LOWER
         else:
@@ -435,10 +440,20 @@ class EventManager:
         """Returns True if the event is spam, or None if inconclusive."""
 
         event_type = event.type
-        last_app, last_time = self._event_history.get(event_type, (None, 0))
+        # Let the queue discard older busy events in favor of the latest state.
+        if event_type == "object:state-changed:busy":
+            return None
+
+        last_app_hash, last_source_hash, last_time = self._event_history.get(
+            event_type, (None, None, 0)
+        )
         app = AXUtilities.get_application(event.source)
-        ignore = last_app == hash(app) and time.time() - last_time < 0.1
-        self._event_history[event_type] = hash(app), time.time()
+        app_hash = hash(app)
+        source_hash = hash(event.source)
+        ignore = last_app_hash == app_hash and time.time() - last_time < 0.1
+        if ignore and event_type == "object:selection-changed" and last_source_hash != source_hash:
+            ignore = not AXUtilities.is_focused(event.source)
+        self._event_history[event_type] = app_hash, source_hash, time.time()
         if ignore:
             tokens = [
                 "EVENT_MANAGER: Ignoring",
@@ -532,7 +547,7 @@ class EventManager:
 
     @staticmethod
     def _ignore_state_changed(event: Atspi.Event, role: Atspi.Role) -> bool | None:
-        """Returns True/False for state-changed events, or None if not applicable."""
+        """Returns True to ignore a state change, or None to continue filtering."""
 
         event_type = event.type
         if not event_type.startswith("object:state-changed"):
@@ -560,18 +575,7 @@ class EventManager:
         event_type: str,
         role: int,
     ) -> bool | None:
-        """Returns True/False for state-changed subtypes, or None if not applicable."""
-
-        showing_roles = [
-            Atspi.Role.ALERT,
-            Atspi.Role.ANIMATION,
-            Atspi.Role.DIALOG,
-            Atspi.Role.INFO_BAR,
-            Atspi.Role.MENU,
-            Atspi.Role.NOTIFICATION,
-            Atspi.Role.STATUS_BAR,
-            Atspi.Role.TOOL_TIP,
-        ]
+        """Returns True to ignore a state-change subtype, or None to continue filtering."""
 
         ignore: bool | None = None
         reason = ""
@@ -585,16 +589,26 @@ class EventManager:
             ignore = role not in [Atspi.Role.TEXT, Atspi.Role.ENTRY]
             reason = "role of unfocused source"
         elif "showing" in event_type:
+            showing_roles = [
+                Atspi.Role.ALERT,
+                Atspi.Role.ANIMATION,
+                Atspi.Role.DIALOG,
+                Atspi.Role.INFO_BAR,
+                Atspi.Role.MENU,
+                Atspi.Role.NOTIFICATION,
+                Atspi.Role.POPUP_MENU,
+                Atspi.Role.STATUS_BAR,
+                Atspi.Role.TOOL_TIP,
+            ]
             ignore = role not in showing_roles
             reason = "role"
 
-        if ignore is None:
+        if not ignore:
             return None
 
-        if ignore:
-            tokens = ["EVENT MANAGER: Ignoring", event_type, "due to", reason]
-            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-        return ignore
+        tokens = ["EVENT MANAGER: Ignoring", event_type, "due to", reason]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+        return True
 
     @staticmethod
     def _ignore_active_descendant_or_selection(event: Atspi.Event) -> bool | None:
@@ -672,10 +686,10 @@ class EventManager:
             lambda: self._ignore_by_role(event, role),
             lambda: self._ignore_by_focus_state(event, focus, role),
             lambda: self._ignore_property_change(event, role),
+            lambda: self._ignore_state_changed(event, role),
             lambda: self._ignore_by_spam_filter(event),
             lambda: self._ignore_active_descendant_or_selection(event),
             lambda: self._ignore_children_changed(event, focus),
-            lambda: self._ignore_state_changed(event, role),
             lambda: self._ignore_text_events(event, focus, role),
         ):
             result = check()
@@ -710,6 +724,17 @@ class EventManager:
 
     def _enqueue_object_event(self, e: Atspi.Event) -> None:
         """Callback for Atspi object events."""
+
+        if e.type.startswith(
+            (
+                "object:text-changed",
+                "object:text-attributes-changed",
+                "object:children-changed",
+                "object:state-changed:defunct",
+                "object:state-changed:focused",
+            )
+        ):
+            braille.clear_cache()
 
         if e.type.startswith(("object:text-changed:insert", "object:text-changed:delete")):
             generator.Generator.clear_cached_text(e.source)
@@ -812,6 +837,8 @@ class EventManager:
                 self._gidle_id = GLib.idle_add(self._dequeue_object_event)
             raise
 
+        if not rerun:
+            braille.clear_cache()
         return rerun
 
     def register_listener(self, event_type: str) -> None:

@@ -38,6 +38,13 @@ from . import (
     presentation_manager,
     script_manager,
 )
+from .ax_object import AXObject
+from .help_metadata import (
+    PreferenceActionDoc,
+    PreferenceCategoryDoc,
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -56,23 +63,29 @@ class PronunciationDictionaryPreferencesGrid(  # pylint: disable=too-many-instan
     BUILD_BATCH_SIZE: int = 50
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for pronunciation preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.PRONUNCIATION,
-            panel_id="manual.pronunciation",
-            description=(
-                guilabels.PRONUNCIATION_DICTIONARY_INFO
-                + "\n\n"
-                + "The pronunciation dictionary is a list of words and replacement text. "
+            panel_id="pronunciation_dictionary_manager.pronunciation",
+            category=PreferenceCategoryDoc(
+                category_id="pronunciation",
+                title="Pronunciation",
+                description=(
+                    "The pronunciation dictionary replaces words or phrases before Orca speaks "
+                    "them. Add or edit your replacements."
+                ),
+                panels=("pronunciation_dictionary_manager.pronunciation",),
+            ),
+            instructions=(
                 "Add a new entry from the dictionary header. Edit or delete an existing "
                 "entry from its row."
             ),
             schema="pronunciations",
             show_available_settings=False,
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.PRONUNCIATION_DICTIONARY,
                     kind="list",
                     summary=(
@@ -80,7 +93,7 @@ class PronunciationDictionaryPreferencesGrid(  # pylint: disable=too-many-instan
                         "speaking them."
                     ),
                     actions=(
-                        preferences_grid_base.PreferenceActionDoc(
+                        PreferenceActionDoc(
                             label=guilabels.ADD_NEW_PRONUNCIATION,
                             summary=(
                                 "Opens a dialog where you can add a word and the replacement "
@@ -90,14 +103,14 @@ class PronunciationDictionaryPreferencesGrid(  # pylint: disable=too-many-instan
                         ),
                     ),
                     item_actions=(
-                        preferences_grid_base.PreferenceActionDoc(
+                        PreferenceActionDoc(
                             label=guilabels.EDIT_PRONUNCIATION,
                             summary=(
                                 "Opens a dialog where you can change the selected pronunciation "
                                 "entry."
                             ),
                         ),
-                        preferences_grid_base.PreferenceActionDoc(
+                        PreferenceActionDoc(
                             label=guilabels.DICTIONARY_DELETE,
                             summary="Removes the selected pronunciation entry.",
                         ),
@@ -495,8 +508,6 @@ class PronunciationDictionaryPreferencesGrid(  # pylint: disable=too-many-instan
             profile = registry.get_active_profile()
             app_name = ""
             if self._script and self._script.app:
-                from .ax_object import AXObject  # pylint: disable=import-outside-toplevel
-
                 app_name = AXObject.get_name(self._script.app)
 
             pronunciation_dict = registry.layered_lookup(

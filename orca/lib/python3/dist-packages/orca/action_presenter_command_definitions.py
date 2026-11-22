@@ -26,9 +26,29 @@ from typing import TYPE_CHECKING
 
 from . import cmdnames, keybindings
 from .command import Command, KeyboardCommand
+from .help_metadata import CommandDoc, CommandGroupDoc
 
 if TYPE_CHECKING:
     from .action_presenter import ActionPresenter
+
+
+def get_documentation() -> CommandGroupDoc:
+    """Returns documentation metadata for action commands."""
+
+    return CommandGroupDoc(
+        commands=(
+            CommandDoc(
+                "show_actions_list",
+                details=(
+                    "Opens a window listing the actions available for the current item. Use Up "
+                    "Arrow and Down Arrow to choose an action, then press Enter to perform it. "
+                    "Press Escape to close the list without performing an action. If the item "
+                    "does not expose any actions, Orca tells you."
+                ),
+            ),
+        ),
+        summary="Actions are operations exposed by the current application for the focused item.",
+    )
 
 
 def get_commands(owner: ActionPresenter) -> list[Command]:
