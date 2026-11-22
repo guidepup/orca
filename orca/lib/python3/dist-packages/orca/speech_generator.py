@@ -30,10 +30,11 @@
 from __future__ import annotations
 
 import contextlib
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from typing import TYPE_CHECKING, Any
 
 import gi
@@ -43,7 +44,6 @@ from gi.repository import Atspi
 
 from . import (
     debug,
-    focus_manager,
     generator,
     input_event_manager,
     math_presenter,
@@ -60,54 +60,15 @@ from .ax_table import AXTable
 from .ax_text import AXText, AXTextAttribute
 from .ax_utilities import AXUtilities
 from .ax_value import AXValue
-from .generator import GeneratorContext, GeneratorMode, PresentationReason
+from .enums import ActivePresentationMode, PresentationReason, VoiceType
+from .generator import GeneratorMode
 from .speechserver import VoiceFamily
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
     from . import script
-
-
-@dataclass(frozen=True)
-class SpeechGeneratorContext(GeneratorContext):
-    """Settings context for speech generators."""
-
-    next_content_subject: Atspi.Accessible | None
-    in_preferences_window: bool
-    auto_language_switching_content: bool
-    auto_language_switching_ui: bool
-    only_switch_configured_languages: bool
-    voice_set_languages: tuple[str, ...]
-    insert_pauses_between_utterances: bool
-    punctuation_level: str
-    voices: dict[str, ACSS]
-    speech_server: speechserver.SpeechServer | None
-    only_displayed_text: bool
-    speak_description: bool
-    speak_tutorial_messages: bool
-    speak_position_in_set: bool
-    speak_widget_mnemonic: bool
-    speak_blank_lines: bool
-    speak_indentation: bool
-    announce_cell_headers: bool
-    announce_cell_coordinates: bool
-    announce_spreadsheet_cell_coordinates: bool
-    announce_article: bool
-    announce_blockquote: bool
-    announce_code_block: bool
-    announce_document: bool
-    announce_form: bool
-    announce_grouping: bool
-    announce_landmark: bool
-    announce_list: bool
-    announce_table: bool
-    announce_tracked_changes: bool
-    text_attribute_change_mode: int
-    speak_misspelled_indicator: bool
-    language: str
-    dialect: str
-    eliminate_pauses: bool
+    from .generator_context import SpeechGeneratorContext
 
 
 class Pause:
@@ -131,12 +92,12 @@ STATE = "state"  # Candidate for sound
 VALUE = "value"  # Candidate for sound
 
 voice_type = {
-    DEFAULT: speechserver.VoiceType.DEFAULT,
-    UPPERCASE: speechserver.VoiceType.UPPERCASE,
-    HYPERLINK: speechserver.VoiceType.HYPERLINK,
-    SYSTEM: speechserver.VoiceType.SYSTEM,
-    STATE: speechserver.VoiceType.SYSTEM,  # Users may prefer VoiceType.DEFAULT here
-    VALUE: speechserver.VoiceType.SYSTEM,  # Users may prefer VoiceType.DEFAULT here
+    DEFAULT: VoiceType.DEFAULT,
+    UPPERCASE: VoiceType.UPPERCASE,
+    HYPERLINK: VoiceType.HYPERLINK,
+    SYSTEM: VoiceType.SYSTEM,
+    STATE: VoiceType.SYSTEM,  # Users may prefer VoiceType.DEFAULT here
+    VALUE: VoiceType.SYSTEM,  # Users may prefer VoiceType.DEFAULT here
 }
 
 
@@ -338,14 +299,14 @@ class SpeechGenerator(generator.Generator):
         """Applies voice overrides and auto-language-switching for default voice key."""
 
         voice_override: ACSS | None = None
-        resolved_voice_type = speechserver.VoiceType.DEFAULT
+        resolved_voice_type = VoiceType.DEFAULT
         if context is not None:
             if AXUtilities.is_link_descendant(obj, inclusive=True):
-                voice_override = context.voices.get(speechserver.VoiceType.HYPERLINK)
-                resolved_voice_type = speechserver.VoiceType.HYPERLINK
+                voice_override = context.voices.get(VoiceType.HYPERLINK)
+                resolved_voice_type = VoiceType.HYPERLINK
             elif isinstance(string, str) and string.isupper() and string.strip().isalpha():
-                voice_override = context.voices.get(speechserver.VoiceType.UPPERCASE)
-                resolved_voice_type = speechserver.VoiceType.UPPERCASE
+                voice_override = context.voices.get(VoiceType.UPPERCASE)
+                resolved_voice_type = VoiceType.UPPERCASE
 
         voice_props[ACSS.VOICE_TYPE] = resolved_voice_type
         if voice_override and voice_override.get("established"):
@@ -409,7 +370,7 @@ class SpeechGenerator(generator.Generator):
             debug.print_tokens(debug.LEVEL_WARNING, tokens, True, True)
             return []
 
-        voice = ACSS(dict(effective_context.voices[speechserver.VoiceType.DEFAULT]))
+        voice = ACSS(dict(effective_context.voices[VoiceType.DEFAULT]))
 
         language = language or effective_context.language
         dialect = dialect or effective_context.dialect
@@ -469,6 +430,40 @@ class SpeechGenerator(generator.Generator):
         tokens = ["SPEECH GENERATOR: Final voice is", voice]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return [voice]
+
+    def should_verbalize_punctuation(
+        self,
+        obj: Atspi.Accessible | None,
+        context: SpeechGeneratorContext | None = None,
+    ) -> bool:
+        """Returns True if presentation should override punctuation to All for obj."""
+
+        effective_context = context or self._context
+        if obj is None or effective_context is None:
+            return False
+
+        # All already speaks punctuation; None must not be overridden.
+        if effective_context.punctuation_level not in ("some", "most"):
+            return False
+
+        ancestor = AXUtilities.find_ancestor_inclusive(obj, AXUtilities.is_code)
+        if ancestor is None:
+            return False
+
+        document = AXUtilities.find_ancestor_inclusive(ancestor, AXUtilities.is_document)
+        return not AXUtilities.is_plain_text(document)
+
+    def adjust_voice_for_presentation(
+        self,
+        obj: Atspi.Accessible | None,
+        voice: list[ACSS],
+        context: SpeechGeneratorContext | None = None,
+    ) -> None:
+        """Adjusts the supplied voice properties for spoken text presentation."""
+
+        if voice and self.should_verbalize_punctuation(obj, context):
+            for acss in voice:
+                acss[ACSS.PUNCTUATIONS] = "all"
 
     def utterances_to_string(self, utterances: list[Any]) -> str:
         """Converts utterances to a string."""
@@ -566,12 +561,24 @@ class SpeechGenerator(generator.Generator):
 
         def use_ancestor_role(x):
             x_role = AXObject.get_role(x)
-            if x_role == role:
+            is_inline_code = (
+                self._context is not None
+                and self._context.announce_inline_code
+                and AXUtilities.is_code(x)
+                and not AXUtilities.is_code_block_descendant(x, inclusive=True)
+            )
+            if x_role == role and not is_inline_code:
                 return False
-            if not (AXUtilities.is_heading(x, x_role) or AXUtilities.is_link(x, x_role)):
+            if not (
+                AXUtilities.is_heading(x, x_role)
+                or AXUtilities.is_link(x, x_role)
+                or is_inline_code
+            ):
                 return False
             if next_obj is None or not AXUtilities.is_ancestor(next_obj, x, True):
                 return True
+            if is_inline_code:
+                return False
             if index == total - 1:
                 return True
             x_content = AXObject.get_name(x) or AXText.get_all_text(x)
@@ -587,7 +594,7 @@ class SpeechGenerator(generator.Generator):
 
         if (
             self._context is not None
-            and self._context.active_mode == focus_manager.OBJECT_NAVIGATOR
+            and self._context.active_mode == ActivePresentationMode.OBJECT_NAVIGATOR
         ):
             return True
 
@@ -859,7 +866,9 @@ class SpeechGenerator(generator.Generator):
             "ROLE_DPUB_SECTION",
             "ROLE_FEED",
             Atspi.Role.FORM,
+            Atspi.Role.FOOTER,
             Atspi.Role.GROUPING,
+            Atspi.Role.HEADER,
             Atspi.Role.LANDMARK,
             Atspi.Role.LIST,
             Atspi.Role.MARK,
@@ -894,6 +903,8 @@ class SpeechGenerator(generator.Generator):
                     "ROLE_DPUB_SECTION",
                 ],
             )
+        if self._context.announce_header_and_footer:
+            enabled.extend([Atspi.Role.HEADER, Atspi.Role.FOOTER])
         if self._context.announce_landmark:
             enabled.extend([Atspi.Role.LANDMARK, "ROLE_DPUB_LANDMARK", "ROLE_REGION"])
         if self._context.announce_list:
@@ -1079,7 +1090,7 @@ class SpeechGenerator(generator.Generator):
     ) -> list[Any]:
         """Generates presentations for the collected ancestor chain."""
 
-        present_once = [Atspi.Role.BLOCK_QUOTE, Atspi.Role.LIST]
+        present_once = [Atspi.Role.BLOCK_QUOTE, Atspi.Role.LIST, "ROLE_CODE_BLOCK"]
         result: list[Any] = []
         presented_roles: list[Atspi.Role] = []
         original_context = self._context
@@ -1128,7 +1139,7 @@ class SpeechGenerator(generator.Generator):
         stop_at_roles: list | None = None,
         stop_after_roles: list | None = None,
     ) -> list[Any]:
-        if self._context.active_mode == focus_manager.FLAT_REVIEW:
+        if self._context.active_mode == ActivePresentationMode.FLAT_REVIEW:
             return []
 
         leaving = self._is_leaving()
@@ -1141,13 +1152,23 @@ class SpeechGenerator(generator.Generator):
         if (prior_obj and AXObject.is_dead(prior_obj)) or AXUtilities.is_tool_tip(prior_obj):
             return []
 
-        if prior_obj and AXObject.get_parent(prior_obj) == AXObject.get_parent(obj):
+        include_self = self._context.announce_code_block and (
+            AXUtilities.is_code_block(obj)
+            if leaving
+            else self._get_resolved_role(obj) == "ROLE_CODE_BLOCK"
+        )
+        same_parent = prior_obj and AXObject.get_parent(prior_obj) == AXObject.get_parent(obj)
+        if same_parent and not include_self:
             return []
 
         if AXUtilities.is_page_tab(obj) or AXUtilities.is_tool_tip(obj):
             return []
 
-        common_ancestor = AXUtilities.get_common_ancestor(prior_obj, obj)
+        common_ancestor = (
+            AXObject.get_parent(obj)
+            if same_parent
+            else AXUtilities.get_common_ancestor(prior_obj, obj)
+        )
         if obj == common_ancestor:
             return []
 
@@ -1183,6 +1204,8 @@ class SpeechGenerator(generator.Generator):
         parent = AXObject.get_parent_checked(obj)
         while parent:
             parent_role = self._get_functional_role(parent)
+            if parent_role == "ROLE_CODE_BLOCK":
+                include_self = False
             if parent_role in stop_at_roles:
                 break
 
@@ -1212,6 +1235,11 @@ class SpeechGenerator(generator.Generator):
                 break
 
             parent = AXObject.get_parent_checked(parent)
+
+        # A standalone pre contains its own text; pre/code uses the enclosing pre.
+        if include_self:
+            ancestors.insert(0, obj)
+            ancestor_roles.insert(0, "ROLE_CODE_BLOCK")
 
         return self._present_ancestor_results(ancestors, ancestor_roles, obj, prior_obj, leaving)
 
@@ -1275,7 +1303,7 @@ class SpeechGenerator(generator.Generator):
         result = []
         if AXUtilities.is_block_quote(prior_obj):
             self._context = replace(original_context, prior_obj=prior_obj, leaving=True)
-            result.extend(
+            result.append(
                 self.generate(prior_obj, role=self._get_functional_role(prior_obj)),
             )
             self._context = replace(original_context, leaving=True)
@@ -1307,7 +1335,7 @@ class SpeechGenerator(generator.Generator):
         ):
             return []
 
-        if prior_obj is not None:
+        if prior_obj is not None or role == "ROLE_CODE_BLOCK":
             return self._generate_ancestors(obj)
 
         frame, dialog = self._script.utilities.frame_and_dialog(obj)
@@ -1605,34 +1633,55 @@ class SpeechGenerator(generator.Generator):
 
         return result
 
+    def _should_announce_code(self, obj: Atspi.Accessible) -> bool:
+        """Returns whether the applicable code announcement setting is enabled."""
+
+        if self._only_speak_displayed_text():
+            return False
+        if self._context is None:
+            return True
+        if self._get_resolved_role(obj) == "ROLE_CODE_BLOCK":
+            return self._context.announce_code_block
+        return self._context.announce_inline_code and not AXUtilities.is_code_block_descendant(
+            obj, inclusive=True
+        )
+
     @log_generator_output
     def _generate_start_of_code(self, obj: Atspi.Accessible) -> list[Any]:
-        if self._only_speak_displayed_text():
-            return []
-
-        if self._context is not None and not self._context.announce_code_block:
+        if not self._should_announce_code(obj):
             return []
 
         start_offset = self._get_start_offset(obj, 0)
         if start_offset != 0:
             return []
 
-        result: list[Any] = [messages.CONTENT_CODE_START]
+        message = (
+            messages.CONTENT_CODE_START
+            if self._get_resolved_role(obj) == "ROLE_CODE_BLOCK"
+            else object_properties.ROLE_CODE_BLOCK
+        )
+        result: list[Any] = [message]
         result.extend(self.voice(SYSTEM, obj=obj))
         return result
 
     @log_generator_output
     def _generate_end_of_code(self, obj: Atspi.Accessible) -> list[Any]:
-        if self._only_speak_displayed_text():
-            return []
-
-        if self._context is not None and not self._context.announce_code_block:
+        if not self._should_announce_code(obj):
             return []
 
         end_offset = self._get_end_offset(obj)
         if end_offset is not None:
             length = AXText.get_character_count(obj)
             if length and length != end_offset:
+                return []
+
+        if self._get_resolved_role(obj) != "ROLE_CODE_BLOCK":
+            text = self._get_content_string(obj)
+            if text is not None and self._get_start_offset(obj) != 0:
+                text = AXText.get_all_text(obj)
+            if text is None or "\ufffc" in text:
+                text = AXUtilities.expand_eocs(obj)
+            if re.search(r"\S\s+\S", text) is None:
                 return []
 
         result: list[Any] = [messages.CONTENT_CODE_END]
@@ -1811,7 +1860,7 @@ class SpeechGenerator(generator.Generator):
         role = self._get_resolved_role()
         if (
             self._only_speak_displayed_text()
-            or self._context.active_mode == focus_manager.MOUSE_REVIEW
+            or self._context.active_mode == ActivePresentationMode.MOUSE_REVIEW
             or not obj
             or AXUtilities.is_text(obj, role)
         ):
@@ -2046,7 +2095,8 @@ class SpeechGenerator(generator.Generator):
         if not result:
             return []
 
-        result.extend(self.voice(DEFAULT, obj=obj))
+        voice = self.voice(DEFAULT, obj=obj)
+        result.extend(voice)
         if result[0] in ["\n", ""]:
             if self._get_content_position(obj).total > 1:
                 return [""]
@@ -2059,14 +2109,17 @@ class SpeechGenerator(generator.Generator):
                 result[0] = messages.BLANK
             return result
 
-        result[0] = speech_presenter.get_presenter().adjust_for_presentation(
-            obj, result[0], self._get_start_offset(obj)
-        )
+        presenter = speech_presenter.get_presenter()
+        self.adjust_voice_for_presentation(obj, voice)
+        result[0] = presenter.adjust_for_presentation(obj, result[0], self._get_start_offset(obj))
         return result
 
     @log_generator_output
     def _generate_text_line(self, obj: Atspi.Accessible) -> list[Any]:
-        if self._context.active_mode == focus_manager.MOUSE_REVIEW and AXUtilities.is_editable(obj):
+        if (
+            self._context.active_mode == ActivePresentationMode.MOUSE_REVIEW
+            and AXUtilities.is_editable(obj)
+        ):
             return []
 
         announce_formatting = self._should_announce_attribute_changes(obj)
@@ -2140,7 +2193,7 @@ class SpeechGenerator(generator.Generator):
         """Returns the leading annotations to speak before each run's text."""
 
         announce_spelling = self._context is not None and self._context.speak_misspelled_indicator
-        system_voice = self.voice(speechserver.VoiceType.SYSTEM)
+        system_voice = self.voice(VoiceType.SYSTEM)
         annotations_per_run: list[list[Any]] = []
         prev_had_spelling = False
         prev_had_grammar = False
@@ -2181,6 +2234,7 @@ class SpeechGenerator(generator.Generator):
             if not string:
                 return []
             voice = self.voice(string=string, obj=obj)
+            self.adjust_voice_for_presentation(obj, voice)
             adjusted = presenter.adjust_for_presentation(obj, string, start_offset)
             return [adjusted, *voice] if adjusted else []
 
@@ -2215,6 +2269,7 @@ class SpeechGenerator(generator.Generator):
                 result[-2] += adjusted
             else:
                 voice = self.voice(string=string, obj=obj, language=language, dialect=dialect)
+                self.adjust_voice_for_presentation(obj, voice)
                 result.extend([adjusted, *voice])
                 open_language_and_dialect = (language, dialect)
 
@@ -2235,8 +2290,11 @@ class SpeechGenerator(generator.Generator):
         if not (result and result[0]):
             return []
 
-        result[0] = speech_presenter.get_presenter().adjust_for_presentation(obj, result[0])
-        result.extend(self.voice(DEFAULT, obj=obj))
+        presenter = speech_presenter.get_presenter()
+        result[0] = presenter.adjust_for_presentation(obj, result[0])
+        voice = self.voice(DEFAULT, obj=obj)
+        self.adjust_voice_for_presentation(obj, voice)
+        result.extend(voice)
         return result
 
     @log_generator_output
@@ -2444,18 +2502,19 @@ class SpeechGenerator(generator.Generator):
         if self._is_leaving():
             return self._generate_leaving(obj)
 
-        if self._is_ancestor() or self._is_minimal():
-            result = self._generate_accessible_label_and_name(obj)
+        is_ancestor = self._is_ancestor()
+        if is_ancestor or self._is_minimal():
+            result = []
+            if not is_ancestor or AXUtilities.has_explicit_name(obj):
+                result += self._generate_accessible_label_and_name(obj)
             result += self._generate_accessible_role(obj)
             return result
 
         result = self._generate_default_prefix(obj)
-        result += self._generate_start_of_code(obj)
         result += self._generate_pause(obj)
         result += self._generate_text_indentation(obj)
         result += self._generate_text_line(obj)
         result += self._generate_pause(obj)
-        result += self._generate_end_of_code(obj)
         result += self._generate_default_suffix(obj)
         return result
 
@@ -2622,15 +2681,15 @@ class SpeechGenerator(generator.Generator):
         """Generates speech for the combo-box role."""
 
         result = []
-        label_and_name = self._generate_accessible_label_and_name(obj)
         value = self._generate_value(obj)
-        include_value = bool(value and value[0] and value[0] not in label_and_name)
         if self._is_minimal():
-            result += value if include_value else self._generate_accessible_name(obj)
+            result += value
             result += self._generate_pause(obj)
             result += self._generate_position_in_list(obj)
             return result
 
+        label_and_name = self._generate_accessible_label_and_name(obj)
+        include_value = bool(value and value[0] and value[0] not in label_and_name)
         result += label_and_name
         result += self._generate_accessible_role(obj)
         if self._is_ancestor():
@@ -3474,7 +3533,8 @@ class SpeechGenerator(generator.Generator):
 
         if self._is_ancestor():
             result = self._generate_accessible_label_and_name(obj)
-            result += self._generate_accessible_role(obj)
+            if result:
+                result += self._generate_accessible_role(obj)
             return result
 
         result = self._generate_default_prefix(obj)
@@ -3829,8 +3889,12 @@ class SpeechGenerator(generator.Generator):
 
         result = self._generate_default_prefix(obj)
         if AXUtilities.is_code(obj):
+            result += self._generate_start_of_code(obj)
             result += self._generate_text_indentation(obj)
             result += self._generate_text_line(obj)
+            if end := self._generate_end_of_code(obj):
+                result += self._generate_pause(obj)
+                result += end
         else:
             result += self._generate_text_content(obj) or self._generate_accessible_name(
                 obj,
@@ -4160,7 +4224,13 @@ class SpeechGenerator(generator.Generator):
     def _generate_tree_item(self, obj: Atspi.Accessible) -> list[Any]:
         """Generates speech for the tree-item role."""
 
-        if self._is_ancestor() or self._is_minimal():
+        if self._is_ancestor():
+            return self._generate_state_expanded(obj)
+
+        if self._get_reason() == PresentationReason.CHECKED_STATE_CHANGE:
+            return self._generate_state_checked_if_checkable(obj)
+
+        if self._is_minimal():
             return self._generate_state_expanded(obj)
 
         result = self._generate_default_prefix(obj)
@@ -4171,6 +4241,7 @@ class SpeechGenerator(generator.Generator):
         result += self._generate_accessible_label_and_name(
             obj,
         ) or self._generate_text_content(obj)
+        result += self._generate_state_checked_if_checkable(obj)
         result += self._generate_pause(obj)
         result += self._generate_state_expanded(obj)
         if result and not isinstance(result[-1], Pause):
@@ -4275,7 +4346,9 @@ class SpeechGenerator(generator.Generator):
             if attr is None or attr not in allowed or attr in seen:
                 continue
             seen.add(attr)
-            if desc := attr.get_change_description(curr_attrs.get(key)):
+            if desc := attr.get_change_description(
+                curr_attrs.get(key), self._context.use_color_names
+            ):
                 descriptions.append(desc)
 
         return descriptions
@@ -4331,6 +4404,7 @@ class SpeechGenerator(generator.Generator):
             lang, dialect = lang.split("-", 1)
 
         voice = self.voice(obj=obj, string=text, language=lang, dialect=dialect)
+        self.adjust_voice_for_presentation(obj, voice)
         return [text, *voice]
 
     def generate_word(

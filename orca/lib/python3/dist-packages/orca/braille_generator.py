@@ -25,7 +25,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from typing import TYPE_CHECKING, Any
 
 import gi
@@ -46,27 +46,12 @@ from .ax_object import AXObject
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
 from .braille_rolenames import short_role_names
-from .generator import (
-    ContentItem,
-    ContentPosition,
-    GeneratorContext,
-    GeneratorMode,
-    PresentationReason,
-)
+from .enums import PresentationReason
+from .generator import GeneratorMode
+from .generator_context import BrailleGeneratorContext, ContentItem, ContentPosition
 
 if TYPE_CHECKING:
     from . import script
-
-
-@dataclass(frozen=True)
-class BrailleGeneratorContext(GeneratorContext):
-    """Settings context for braille generators."""
-
-    full_rolenames: bool
-    display_ancestors: bool
-    end_of_line_indicator: bool
-    present_mnemonics: bool
-    indicate_links: bool
 
 
 class Space:
@@ -121,6 +106,14 @@ class BrailleGenerator(generator.Generator):
 
         self._context = context
         return self._generate_braille(obj, role=role, include_context=include_context)
+
+    def generate_state_indicator(
+        self, obj: Atspi.Accessible, context: BrailleGeneratorContext
+    ) -> list[Any]:
+        """Generates an object's state indicator using the supplied context."""
+
+        self._context = context
+        return self.get_state_indicator(obj)
 
     def _generate_braille(
         self,
@@ -1699,21 +1692,21 @@ class BrailleGenerator(generator.Generator):
             result += suffix
             return result
 
-        result = []
-        result += self._generate_state_checked_for_cell(obj)
-        result += [
-            braille.Component(
-                obj,
-                self._as_string(
-                    self._generate_column_header_if_toggle_and_no_text(obj)
-                    + (
-                        self._generate_real_active_descendant_displayed_text(obj)
-                        or self._generate_accessible_label_and_name(obj)
-                    )
-                    + self._generate_state_expanded(obj),
-                ),
-            ),
-        ]
+        result = self._generate_state_checked_for_cell(obj)
+        column_header = []
+        if self._get_is_nameless_toggle(obj):
+            column_header = self._generate_table_cell_column_header(obj)
+        text = self._as_string(
+            column_header
+            + (
+                self._generate_real_active_descendant_displayed_text(obj)
+                or self._generate_accessible_label_and_name(obj)
+            )
+            + self._generate_state_expanded(obj),
+        )
+        if result and text and not result[-1].string[-1:].isspace() and not text[0].isspace():
+            result.append(braille.Region(" ", contracted=False))
+        result.append(braille.Component(obj, text))
         result += suffix
         result += self._generate_default_suffix(obj)
         return result
@@ -1731,7 +1724,9 @@ class BrailleGenerator(generator.Generator):
         row_header = self._generate_table_cell_row_header(obj)
         if row_header:
             result += [braille.Region(" " + self._as_string(row_header))]
-        column_header = self._generate_table_cell_column_header(obj)
+        column_header = []
+        if not self._get_is_nameless_toggle(obj):
+            column_header = self._generate_table_cell_column_header(obj)
         if column_header:
             result += [braille.Region(" " + self._as_string(column_header))]
         if row_header or column_header:
@@ -1874,6 +1869,7 @@ class BrailleGenerator(generator.Generator):
                         self._generate_accessible_label_and_name(obj)
                         + self._generate_state_expanded(obj),
                     ),
+                    indicator=self._as_string(self._generate_state_checked_if_checkable(obj)),
                 ),
             ]
 

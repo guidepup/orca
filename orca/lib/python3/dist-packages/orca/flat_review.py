@@ -499,7 +499,7 @@ class StateZone(Zone):
         if script is None:
             return None
 
-        result = script.get_braille_generator().get_state_indicator(self._obj)
+        result = braille_presenter.get_presenter().generate_state_indicator(script, self._obj)
         if result and result[0]:
             if isinstance(result[0], str):
                 return braille.ReviewComponent(self._obj, result[0], 0, self)
@@ -738,7 +738,8 @@ class Context:
     def _get_zones_from_text(self, obj: Atspi.Accessible, cliprect: Atspi.Rect) -> list[TextZone]:
         """Returns a list of TextZones for the given object."""
 
-        if not AXUtilities.has_presentable_text(obj):
+        # List markers and other punctuation need text zones, not a name containing child text.
+        if not AXUtilities.has_presentable_text(obj, include_punctuation_and_symbols=True):
             return []
 
         zones: list[TextZone] = []
@@ -784,9 +785,19 @@ class Context:
                 zones.append(ValueZone(obj, rect))
             else:
                 string = ""
-                if not AXUtilities.is_table_row(obj):
+                role = AXObject.get_role(obj)
+                if not AXUtilities.is_table_row(obj, role):
                     string = self._script.get_speech_generator().get_name(obj, in_flat_review=True)
-                if not string:
+                if role in (
+                    Atspi.Role.ENTRY,
+                    Atspi.Role.TEXT,
+                    Atspi.Role.PASSWORD_TEXT,
+                ):
+                    role_name = self._script.get_speech_generator().get_localized_role_name(
+                        obj, role=role
+                    )
+                    string = f"{string} {role_name}".strip()
+                elif not string:
                     string = self._script.get_speech_generator().get_role_name(obj)
                 if string:
                     zones.append(Zone(obj, string, rect))
@@ -973,13 +984,13 @@ class Context:
         return ""
 
     def get_current_line_start_offset(self) -> int | None:
-        """Returns the current line's start offset, or None if the line spans multiple zones."""
+        """Returns a text offset only when the current line consists of a single TextZone."""
 
         zone = self._get_current_zone()
         if zone is None or zone.line is None:
             return None
         zones = zone.line.get_zones()
-        if len(zones) != 1:
+        if len(zones) != 1 or not isinstance(zones[0], TextZone):
             return None
         return zones[0].get_start_offset()
 

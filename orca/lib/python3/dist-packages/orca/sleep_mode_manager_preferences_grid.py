@@ -25,6 +25,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from . import gsettings_registry, guilabels, orca_gui_helpers, preferences_grid_base
+from .help_metadata import (
+    PreferenceCategoryDoc,
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+)
 
 if TYPE_CHECKING:
     import gi
@@ -39,21 +44,37 @@ class SleepModePreferencesGrid(preferences_grid_base.PreferencesGridBase):
     """Preferences grid for sleep mode settings."""
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for sleep mode preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.KB_GROUP_SLEEP_MODE,
-            panel_id="manual.sleep-mode",
-            summary="Use these settings to choose applications where Orca should automatically "
-            "enter sleep mode.",
-            description=guilabels.SLEEP_MODE_INFO,
+            panel_id="sleep_mode_manager.sleep-mode",
+            category=PreferenceCategoryDoc(
+                category_id="sleep-mode",
+                title="Sleep mode",
+                description=(
+                    "Sleep mode disables Orca for selected applications. Configure which "
+                    "applications should trigger it automatically."
+                ),
+                panels=("sleep_mode_manager.sleep-mode",),
+                application_preferences=False,
+            ),
+            command_groups=("commands.sleep-mode",),
+            link_summary="Use these settings to choose applications where Orca should "
+            "automatically enter sleep mode.",
+            instructions=(""),
             schema="sleep-mode",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.SLEEP_MODE_APPS,
                     kind="list",
-                    summary="Lists the applications for which you can enable automatic sleep mode.",
+                    summary=(
+                        "Lists applications for which Orca automatically enters sleep mode. Add "
+                        "an application, then enable or disable automatic sleep mode for its "
+                        "entry. An application must be running to add it; saved applications "
+                        "remain listed even when they are not running."
+                    ),
                     schema="sleep-mode",
                     key="apps",
                     dynamic_values=True,

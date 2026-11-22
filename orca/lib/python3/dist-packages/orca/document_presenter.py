@@ -60,6 +60,7 @@ from .ax_object import AXObject
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
 from .ax_utilities_math import AXUtilitiesMath
+from .enums import StructuralNavigationMode
 from .extension import Extension
 
 if TYPE_CHECKING:
@@ -402,7 +403,7 @@ class DocumentPresenter(Extension):
 
         structural_navigator.get_navigator().set_mode(
             script,
-            structural_navigator.NavigationMode.DOCUMENT,
+            StructuralNavigationMode.DOCUMENT,
         )
         caret_navigator.get_navigator().set_enabled_for_script(script, True)
 
@@ -415,6 +416,7 @@ class DocumentPresenter(Extension):
         if (
             AXUtilities.is_expandable(obj)
             and AXUtilities.is_focusable(obj)
+            and AXObject.get_attribute(obj, "tag") != "summary"
             and not AXUtilities.is_link(obj)
         ):
             return True, "it's expandable and focusable"
@@ -788,7 +790,7 @@ class DocumentPresenter(Extension):
             self.suspend_navigators(script, False, reason)
             structural_navigator.get_navigator().set_mode(
                 script,
-                structural_navigator.NavigationMode.OFF,
+                StructuralNavigationMode.OFF,
             )
             caret_navigator.get_navigator().set_enabled_for_script(script, False)
             return True

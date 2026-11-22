@@ -40,6 +40,7 @@ from .sound import Icon, Tone
 
 if TYPE_CHECKING:
     from . import script
+    from .generator_context import GeneratorContext
 
 
 class SoundGenerator(generator.Generator):
@@ -51,7 +52,7 @@ class SoundGenerator(generator.Generator):
         self._sounds = os.path.join(prefs_dir, "sounds")
 
     def _convert_filename_to_icon(self, filename: str) -> Icon | None:
-        icon = Icon(self._sounds, filename)
+        icon = Icon(self._sounds, filename, sound_presenter.get_presenter().get_sound_volume())
         if icon.is_valid():
             return icon
 
@@ -60,7 +61,7 @@ class SoundGenerator(generator.Generator):
     def generate_sound(
         self,
         obj: Atspi.Accessible,
-        context: generator.GeneratorContext,
+        context: GeneratorContext,
     ) -> list[Any]:
         """Returns an array of sounds for the complete presentation of obj."""
 

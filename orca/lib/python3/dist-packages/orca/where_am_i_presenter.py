@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 
 import gi
 
+gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gdk, Gtk  # pylint: disable=no-name-in-module
 
@@ -41,6 +42,7 @@ from . import (
     math_presenter,
     messages,
     presentation_manager,
+    speech_manager,
     spellcheck_presenter,
     text_attribute_manager,
     text_selection_presenter,
@@ -50,8 +52,8 @@ from .ax_component import AXComponent
 from .ax_object import AXObject
 from .ax_text import AXText, AXTextAttribute
 from .ax_utilities import AXUtilities
+from .enums import PresentationReason
 from .extension import Extension
-from .generator import PresentationReason
 
 if TYPE_CHECKING:
     gi.require_version("Atspi", "2.0")
@@ -106,7 +108,8 @@ class WhereAmIPresenter(Extension):
             return ""
 
         localized_key = ax_text_attribute.get_localized_name()
-        localized_value = ax_text_attribute.get_localized_value(value)
+        use_color_names = speech_manager.get_manager().get_use_color_names()
+        localized_value = ax_text_attribute.get_localized_value(value, use_color_names)
         return f"{localized_key}: {localized_value}"
 
     def _get_all_available_text_attributes(self, attrs: dict[str, str]) -> list[str]:
@@ -114,6 +117,7 @@ class WhereAmIPresenter(Extension):
 
         result = []
         seen = set()
+        use_color_names = speech_manager.get_manager().get_use_color_names()
         for key, value in attrs.items():
             ax_text_attribute = AXTextAttribute.from_string(key)
             sort_key = ax_text_attribute.get_localized_name() if ax_text_attribute else key
@@ -124,7 +128,7 @@ class WhereAmIPresenter(Extension):
 
             if ax_text_attribute is not None:
                 localized_key = ax_text_attribute.get_localized_name()
-                localized_value = ax_text_attribute.get_localized_value(value)
+                localized_value = ax_text_attribute.get_localized_value(value, use_color_names)
                 description = f"{localized_key}: {localized_value}"
             else:
                 description = f"{key}: {value}"
@@ -494,7 +498,11 @@ class WhereAmIPresenter(Extension):
             return text_selection_presenter.get_presenter().present_selected_text(script, obj)
 
         selected_count = AXUtilities.selected_child_count(container)
-        child_count = AXUtilities.selectable_child_count(container)
+        child_count = -1
+        if AXUtilities.is_table_row(obj) and obj != container:
+            child_count = AXUtilities.get_set_size(obj)
+        if child_count < 0:
+            child_count = AXUtilities.selectable_child_count(container)
         presentation_manager.get_manager().present_message(
             messages.selected_items_count(selected_count, child_count),
         )
@@ -502,8 +510,16 @@ class WhereAmIPresenter(Extension):
             return True
 
         selected_items = AXUtilities.selected_children(container)
-        item_names = ",".join(map(AXObject.get_name, selected_items))
-        presentation_manager.get_manager().speak_message(item_names)
+        item_names = []
+        for item in selected_items:
+            name = AXObject.get_name(item)
+            if not name:
+                descendant = AXUtilities.active_descendant(item)
+                if descendant != item:
+                    name = AXObject.get_name(descendant)
+                name = name or AXText.get_all_text(descendant)
+            item_names.append(name)
+        presentation_manager.get_manager().speak_message(",".join(item_names))
         return True
 
     def _do_where_am_i(

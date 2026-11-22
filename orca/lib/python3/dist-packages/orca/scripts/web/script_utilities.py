@@ -59,11 +59,10 @@ from orca.ax_text import AXText
 from orca.ax_utilities import AXUtilities
 from orca.ax_utilities_debugging import AXUtilitiesDebugging
 from orca.ax_utilities_hypertext import CaretPolicy
+from orca.enums import CaretSetReason
 
 if TYPE_CHECKING:
     from collections.abc import Hashable, Iterator
-
-    from orca.ax_utilities_text import CaretSetReason
 
     from .script import Script
 
@@ -504,7 +503,9 @@ class Utilities(script_utilities.Utilities):
         self._cache.set_for_object(namespace, obj, rv)
         return rv
 
-    def grab_focus_when_setting_caret(self, obj: Atspi.Accessible) -> bool:
+    def grab_focus_when_setting_caret(
+        self, obj: Atspi.Accessible, state_set: Atspi.StateSet | None = None
+    ) -> bool:
         """Returns true if we should grab focus when setting the caret."""
 
         # To avoid triggering popup lists.
@@ -517,7 +518,7 @@ class Utilities(script_utilities.Utilities):
         if AXUtilities.is_heading(obj) and AXObject.get_child_count(obj) == 1:
             return self.is_link(AXObject.get_child(obj, 0))
 
-        return AXUtilities.is_focusable(obj)
+        return AXUtilities.is_focusable(obj, state_set)
 
     def set_caret_position(
         self,
@@ -527,7 +528,14 @@ class Utilities(script_utilities.Utilities):
         *,
         reason: CaretSetReason,
     ) -> None:
-        grab_focus = self.grab_focus_when_setting_caret(obj)
+        state_set = None
+        avoid_expansion = False
+        if reason == CaretSetReason.SAY_ALL_COMMAND:
+            state_set = AXObject.get_state_set(obj)
+            avoid_expansion = AXUtilities.has_popup(obj, state_set) or AXUtilities.is_expandable(
+                obj, state_set
+            )
+        grab_focus = not avoid_expansion and self.grab_focus_when_setting_caret(obj, state_set)
 
         obj, offset = self.first_context(obj, offset)
         self.set_caret_context(obj, offset, document)
@@ -539,7 +547,9 @@ class Utilities(script_utilities.Utilities):
         if grab_focus:
             AXObject.grab_focus(obj)
 
-        super().set_caret_offset(obj, offset, reason=reason)
+        # Setting the caret can also focus the control and expand it.
+        if not avoid_expansion:
+            super().set_caret_offset(obj, offset, reason=reason)
 
         # If we return earlier than here, braille cursor routing fails in sticky focus mode.
         presenter = document_presenter.get_presenter()
@@ -840,6 +850,10 @@ class Utilities(script_utilities.Utilities):
         ) or document_presenter.get_presenter().browse_mode_is_sticky(self._script.app):
             return True
 
+        if AXUtilities.is_math(obj):
+            return False
+
+        # TODO - JD: Is this still needed?
         if AXUtilities.is_live_region(obj):
             return True
 
@@ -859,7 +873,6 @@ class Utilities(script_utilities.Utilities):
                 Atspi.Role.LIST_BOX,
                 Atspi.Role.TABLE,
                 Atspi.Role.TABLE_ROW,
-                Atspi.Role.MATH,
             ]
             role = AXObject.get_role(obj)
             if rv and role in not_text_roles:
@@ -2092,9 +2105,9 @@ class Utilities(script_utilities.Utilities):
             else:
 
                 def pred1(x):
-                    return x is not None and AXObject.get_role(x) not in valid_roles
+                    return x is not None and AXObject.get_role(x) in valid_roles
 
-                rv = bool(list(AXObject.iter_children(obj, pred1)))
+                rv = next(AXObject.iter_children(obj, pred1), None) is None
 
         if not rv:
             parent = AXObject.get_parent(obj)
@@ -2102,9 +2115,9 @@ class Utilities(script_utilities.Utilities):
             if valid_roles:
 
                 def pred2(x):
-                    return x is not None and AXObject.get_role(x) not in valid_roles
+                    return x is not None and AXObject.get_role(x) in valid_roles
 
-                rv = bool(list(AXObject.iter_children(parent, pred2)))
+                rv = next(AXObject.iter_children(parent, pred2), None) is None
 
         self._cache.set_for_object(namespace, obj, rv)
         return rv
@@ -2215,6 +2228,9 @@ class Utilities(script_utilities.Utilities):
 
         if not super().should_read_full_row(obj, previous_object):
             return False
+
+        if input_event_manager.get_manager().last_event_was_tab_navigation():
+            return True
 
         if AXUtilities.is_grid_descendant(obj) or AXUtilities.is_tree_or_tree_table_descendant(obj):
             return not document_presenter.get_presenter().in_focus_mode(self._script.app)
@@ -3231,7 +3247,13 @@ class Utilities(script_utilities.Utilities):
             obj = focused_event.source
             tokens = ["WEB: Recovering removed focus using focused object", obj]
             debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-            focus_manager.get_manager().set_locus_of_focus(event, obj)
+            # Native caret navigation presents the replacement through its caret event.
+            notify = not (
+                obj == event.source
+                and input_event_manager.get_manager().last_event_was_caret_navigation()
+                and AXUtilities.is_editable(obj)
+            )
+            focus_manager.get_manager().set_locus_of_focus(event, obj, notify)
             return True
 
         if event.detail1 == -1:

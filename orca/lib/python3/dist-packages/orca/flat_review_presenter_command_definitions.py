@@ -26,6 +26,7 @@ from typing import TYPE_CHECKING
 
 from . import braille, cmdnames, keybindings
 from .command import BrailleCommand, Command, KeyboardCommand
+from .help_metadata import CommandDoc, CommandGroupDoc, CommandSectionDoc
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -35,6 +36,139 @@ if TYPE_CHECKING:
     from .scripts import default
 
     CommandCallback = Callable[[default.Script, InputEvent | None, bool], bool]
+
+
+def get_documentation() -> CommandGroupDoc:
+    """Returns documentation metadata for flat review commands."""
+
+    return CommandGroupDoc(
+        summary=(
+            "Flat review treats the contents of a window as lines, words, "
+            "and characters for review."
+        ),
+        see_also=("reviewing.flat-review", "clipboard.feature"),
+        commands=(
+            CommandDoc(
+                "toggleFlatReviewModeHandler",
+                summary=(
+                    "Toggling flat review off and back on discards the previous review "
+                    "location and starts again at the focus."
+                ),
+            ),
+            CommandDoc(
+                "move_review_to_focus",
+                summary=(
+                    "Moves review to the current focus or caret without changing the "
+                    "tracking setting."
+                ),
+            ),
+            CommandDoc(
+                "move_focus_to_review",
+                summary=(
+                    "Attempts to move focus and the caret to the reviewed location. "
+                    "This requires support from the application."
+                ),
+            ),
+            CommandDoc(
+                "reviewHomeHandler",
+                summary="Moves to the beginning of the window's content.",
+            ),
+            CommandDoc(
+                "reviewEndHandler",
+                summary="Moves to the last item in the window.",
+            ),
+            CommandDoc(
+                "reviewBottomLeftHandler",
+                summary="Moves to the start of the last line.",
+            ),
+            CommandDoc(
+                "showContentsHandler",
+                summary="Opens the entire review content in a text window.",
+            ),
+            CommandDoc(
+                "flatReviewCopyHandler",
+                summary=(
+                    "Copies the last text presented by flat review to the clipboard. Works "
+                    "while flat review is active and does not require text selection in the "
+                    "application. See [[clipboard.feature]] for the requirements for reliable "
+                    "clipboard access on Wayland."
+                ),
+            ),
+            CommandDoc(
+                "flatReviewAppendHandler",
+                summary=(
+                    "Adds the last text presented by flat review to the clipboard's existing "
+                    "text. Works while flat review is active and does not require text "
+                    "selection in the application. See [[clipboard.feature]] for the "
+                    "requirements for reliable clipboard access on Wayland."
+                ),
+            ),
+            CommandDoc(
+                "flatReviewSayAllHandler",
+                details=(
+                    "Uses flat review to speak the visible contents of the current window or "
+                    "dialog."
+                ),
+            ),
+        ),
+        sections=(
+            CommandSectionDoc(
+                title="Starting and positioning review",
+                command_names=(
+                    "toggleFlatReviewModeHandler",
+                    "reviewHomeHandler",
+                    "reviewEndHandler",
+                    "reviewBottomLeftHandler",
+                    "move_review_to_focus",
+                    "move_focus_to_review",
+                ),
+            ),
+            CommandSectionDoc(
+                title="Lines",
+                command_names=(
+                    "reviewPreviousLineHandler",
+                    "reviewCurrentLineHandler",
+                    "reviewNextLineHandler",
+                    "reviewSpellCurrentLineHandler",
+                    "reviewPhoneticCurrentLineHandler",
+                    "reviewEndOfLineHandler",
+                    "reviewAboveHandler",
+                    "reviewBelowHandler",
+                ),
+            ),
+            CommandSectionDoc(
+                title="Words and items",
+                command_names=(
+                    "reviewPreviousItemHandler",
+                    "reviewCurrentItemHandler",
+                    "reviewNextItemHandler",
+                    "reviewSpellCurrentItemHandler",
+                    "reviewPhoneticCurrentItemHandler",
+                ),
+            ),
+            CommandSectionDoc(
+                title="Characters",
+                command_names=(
+                    "reviewPreviousCharacterHandler",
+                    "reviewCurrentCharacterHandler",
+                    "reviewNextCharacterHandler",
+                    "reviewSpellCurrentCharacterHandler",
+                    "reviewUnicodeCurrentCharacterHandler",
+                ),
+            ),
+            CommandSectionDoc(
+                title="Objects and contents",
+                command_names=(
+                    "reviewCurrentAccessibleHandler",
+                    "showContentsHandler",
+                    "flatReviewCopyHandler",
+                    "flatReviewAppendHandler",
+                    "flatReviewSayAllHandler",
+                    "flatReviewToggleRestrictHandler",
+                ),
+            ),
+        ),
+    )
 
 
 # pylint: disable-next=too-many-arguments,too-many-positional-arguments

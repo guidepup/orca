@@ -40,7 +40,8 @@ gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
 from gi.repository import Atk, Gdk, GLib, Gtk  # pylint: disable=no-name-in-module
 
-from . import orca_gui_helpers
+from . import gsettings_registry, orca_gui_helpers
+from .help_metadata import PreferencePanelDoc
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -206,56 +207,6 @@ ControlType = (
 )
 
 
-@dataclass(frozen=True)
-class PreferenceValueDoc:
-    """Documentation metadata for one preference value."""
-
-    label: str
-    value: str = ""
-    summary: str = ""
-
-
-@dataclass(frozen=True)
-class PreferenceActionDoc:
-    """Documentation metadata for an action associated with a preference control."""
-
-    label: str
-    summary: str = ""
-    placement: str = ""
-
-
-@dataclass(frozen=True)
-class PreferenceControlDoc:
-    """Documentation metadata for a preference control."""
-
-    label: str
-    kind: str
-    summary: str = ""
-    schema: str = ""
-    key: str = ""
-    values: tuple[str, ...] = ()
-    value_docs: tuple[PreferenceValueDoc, ...] = ()
-    actions: tuple[PreferenceActionDoc, ...] = ()
-    item_actions: tuple[PreferenceActionDoc, ...] = ()
-    controls: tuple[PreferenceControlDoc, ...] = ()
-    dynamic_values: bool = False
-    minimum: str = ""
-    maximum: str = ""
-
-
-@dataclass(frozen=True)
-class PreferencePanelDoc:
-    """Documentation metadata for a preference panel."""
-
-    title: str
-    panel_id: str = ""
-    summary: str = ""
-    description: str = ""
-    schema: str = ""
-    controls: tuple[PreferenceControlDoc, ...] = ()
-    show_available_settings: bool = True
-
-
 # pylint: disable=no-member
 class PreferencesFocusManagedListBox(orca_gui_helpers.FocusManagedListBox):
     """Focus-managed listbox with preferences-window Left arrow behavior."""
@@ -337,6 +288,13 @@ class PreferencesGridBase(Gtk.Grid):
 
     def on_becoming_visible(self) -> None:
         """Called when this grid becomes the visible panel in the main stack."""
+
+    def on_window_closed(self) -> None:
+        """Called when the preferences window is closed."""
+
+        if self._multipage_categories:
+            for _label, _page_id, grid in self._multipage_categories:
+                grid.on_window_closed()
 
     def set_focus_sidebar_callback(self, callback: Callable[[], None]) -> None:
         """Set the callback to focus the sidebar navigation list."""
@@ -1520,7 +1478,6 @@ class AutoPreferencesGrid(PreferencesGridBase):  # pylint: disable=too-many-inst
 
         if not profile or not self._gsettings_schema:
             return
-        from . import gsettings_registry  # pylint: disable=import-outside-toplevel
 
         skip_defaults = not app_name and profile == "default"
         gsettings_registry.get_registry().save_schema(

@@ -40,13 +40,20 @@ from typing import TYPE_CHECKING, Any, cast
 
 from gi.repository import GLib
 
-from . import debug, language_utilities, script_manager, systemd, text_attribute_manager
+from . import (
+    ax_cache_manager,
+    debug,
+    language_utilities,
+    script_manager,
+    systemd,
+    text_attribute_manager,
+)
 from .ax_event_synthesizer import AXEventSynthesizer
 from .ax_hypertext import AXHypertext
 from .ax_object import AXObject
 from .ax_text import AXText, AXTextAttribute
 from .ax_utilities import AXUtilities
-from .ax_utilities_text import CaretSetReason
+from .enums import CaretSetReason
 from .orca_platform import tablesdir  # pylint: disable=import-error
 
 try:
@@ -189,6 +196,48 @@ BRLAPI_PRIORITY_HIGH = 70
 INDICATOR_NONE: int = 0x00
 
 
+class _BrailleCache:
+    """Provides braille-specific access to manager-backed cached values."""
+
+    HYPERLINK_MASK = "Braille.hyperlink-mask"
+    _LAST_REGION = "last-region"
+
+    def __init__(self) -> None:
+        manager = ax_cache_manager.get_manager()
+        manager.register_cache(
+            self,
+            self.HYPERLINK_MASK,
+            lifetime=ax_cache_manager.Lifetime.PROCESS,
+            clear_interval_seconds=None,
+        )
+        self._hyperlink_mask = manager.get_cache(self, self.HYPERLINK_MASK)
+
+    def get_hyperlink_mask(
+        self, key: tuple[Any, ...], calculate: Callable[[], list[int]]
+    ) -> list[int]:
+        """Returns the cached mask, calculating and caching it on a miss."""
+
+        if self._hyperlink_mask is None:
+            return calculate()
+        cached = self._hyperlink_mask.get(self._LAST_REGION, None)
+        if cached is not None and cached[0] == key and cached[1] is not None:
+            return cached[1].copy()
+
+        pending = (key, None)
+        self._hyperlink_mask.put(self._LAST_REGION, pending)
+        mask = calculate()
+        # A clear during calculation removes this entry, so do not restore it.
+        if self._hyperlink_mask.get(self._LAST_REGION, None) is pending:
+            self._hyperlink_mask.put(self._LAST_REGION, (key, mask.copy()))
+        return mask
+
+    def clear_cache(self) -> None:
+        """Clears all cached braille data."""
+
+        if self._hyperlink_mask is not None:
+            self._hyperlink_mask.discard(self._LAST_REGION)
+
+
 @dataclass(frozen=True)
 class _LineInfo:
     """Rendered line string plus focus/mask/ranges used for viewport and output."""
@@ -295,7 +344,7 @@ class _BrailleState:
     region_with_focus: Region | None = None
     last_text_info: _TextInfo = field(default_factory=lambda: _TextInfo(None, 0, 0, 0))
     viewport: list[int] = field(default_factory=lambda: [0, 0])
-    callback: Callable[[Any], bool] | None = None
+    callback: Callable[[Any], None] | None = None
     end_is_showing: bool = False
     beginning_is_showing: bool = False
     cursor_cell: int = 0
@@ -306,6 +355,8 @@ class _BrailleState:
     default_contraction_table: str | None = None
     pending_key_ranges: list[int] = field(default_factory=list)
     monitor_callback: MonitorCallback | None = None
+    display_ready_callback: Callable[[], None] | None = None
+    presentation_enabled_callback: Callable[[], bool] | None = None
     enable_braille: bool = True
     enable_contracted_braille: bool = False
     contraction_table: str = ""
@@ -318,12 +369,31 @@ class _BrailleState:
 
 
 _STATE = _BrailleState(brlapi_available=_BRLAPI_AVAILABLE)
+_CACHE = _BrailleCache()
+
+
+def clear_cache() -> None:
+    """Clears cached braille data."""
+
+    _CACHE.clear_cache()
 
 
 def set_monitor_callback(callback: MonitorCallback | None) -> None:
     """Sets the callback for updating the braille monitor display."""
 
     _STATE.monitor_callback = callback
+
+
+def set_display_ready_callback(callback: Callable[[], None] | None) -> None:
+    """Sets the callback invoked when a braille display becomes ready."""
+
+    _STATE.display_ready_callback = callback
+
+
+def set_presentation_enabled_callback(callback: Callable[[], bool] | None) -> None:
+    """Sets the callback deciding whether braille presentation is needed."""
+
+    _STATE.presentation_enabled_callback = callback
 
 
 def set_enable_braille(value: bool) -> None:
@@ -647,7 +717,10 @@ def _update_brlapi_display_size(size: tuple[int, int]) -> bool:
     _STATE.display_size = [size[0], 1]
     _STATE.brlapi_ready = True
     _cancel_brlapi_display_size_poll()
-    refresh(True)
+    if _STATE.display_ready_callback is not None:
+        _STATE.display_ready_callback()
+    else:
+        refresh(True)
     return False
 
 
@@ -852,7 +925,10 @@ def _finish_brlapi_connection(
 
     if not _STATE.lines:
         _clear()
-    refresh(True)
+    if _STATE.brlapi_ready and _STATE.display_ready_callback is not None:
+        _STATE.display_ready_callback()
+    else:
+        refresh(True)
 
     msg = "BRAILLE: Initialized"
     debug.print_message(debug.LEVEL_INFO, msg, True)
@@ -1213,6 +1289,46 @@ class _AccessibleTextRegion(Region):
 
         return self._has_selection_indicator
 
+    def _get_hyperlink_mask(
+        self, region_mask: list[int], string_length: int, link_indicator: int
+    ) -> list[int]:
+        """Adds hyperlink indicators to the source-character mask."""
+
+        if not string_length:
+            return region_mask
+
+        region_start = self.line_offset + self._start_offset
+        links = AXUtilities.get_all_links(self.accessible)
+        for link in links:
+            end_offset = AXHypertext.get_link_end_offset(link)
+            if end_offset <= region_start:
+                continue
+            start_offset = AXHypertext.get_link_start_offset(link)
+            mask_start = max(start_offset - region_start, 0)
+            mask_end = min(end_offset - region_start, string_length)
+            if mask_start < mask_end:
+                link_text = self._raw_line[mask_start:mask_end]
+                tokens = [
+                    "BRAILLE: Link underline in text region: text offsets [",
+                    start_offset,
+                    ",",
+                    end_offset,
+                    "), line_offset",
+                    self.line_offset,
+                    ", mask cells [",
+                    mask_start,
+                    ",",
+                    mask_end,
+                    "), text '",
+                    link_text,
+                    "'",
+                ]
+                debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            for i in range(mask_start, mask_end):
+                region_mask[i] |= link_indicator
+
+        return region_mask
+
     def get_attribute_mask(self) -> str:
         """Return the attrOr mask for links, attributes, and selections."""
 
@@ -1234,36 +1350,27 @@ class _AccessibleTextRegion(Region):
         selection_indicator = _STATE.selector_indicator
         link_indicator = _STATE.link_indicator
 
-        if link_indicator != INDICATOR_NONE and AXUtilities.is_link_descendant(self.accessible):
+        is_link = link_indicator != INDICATOR_NONE and AXUtilities.is_link_descendant(
+            self.accessible
+        )
+        if is_link:
             region_mask = [link_indicator] * string_length
 
         if self._indicate_links and link_indicator != INDICATOR_NONE:
-            links = AXUtilities.get_all_links(self.accessible)
-            for link in links:
-                start_offset = AXHypertext.get_link_start_offset(link)
-                end_offset = AXHypertext.get_link_end_offset(link)
-                mask_start = max(start_offset - self.line_offset - self._start_offset, 0)
-                mask_end = min(end_offset - self.line_offset - self._start_offset, string_length)
-                if mask_start < mask_end:
-                    link_text = self._raw_line[mask_start:mask_end]
-                    tokens = [
-                        "BRAILLE: Link underline in text region: text offsets [",
-                        start_offset,
-                        ",",
-                        end_offset,
-                        "), line_offset",
-                        self.line_offset,
-                        ", mask cells [",
-                        mask_start,
-                        ",",
-                        mask_end,
-                        "), text '",
-                        link_text,
-                        "'",
-                    ]
-                    debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-                for i in range(mask_start, mask_end):
-                    region_mask[i] |= link_indicator
+            cache_key = (
+                self.accessible,
+                self.line_offset,
+                self._start_offset,
+                string_length,
+                self._raw_line,
+                self.caret_offset if isinstance(self, Text) else None,
+                link_indicator,
+                is_link,
+            )
+            region_mask = _CACHE.get_hyperlink_mask(
+                cache_key,
+                lambda: self._get_hyperlink_mask(region_mask, string_length, link_indicator),
+            )
 
         if attr_indicator:
             enabled = [
@@ -1317,8 +1424,8 @@ class _AccessibleTextRegion(Region):
             # is counted once.
             contracted_mask = [0] * (len(self.string) - len(self._eol))
             out_position = self._out_position[len(self._label) :]
-            if self._label:
-                out_position = [offset - len(self._label) - 1 for offset in out_position]
+            # Liblouis positions already address the complete contracted line,
+            # including its contracted label. Do not subtract source-label lengths.
             out_len = len(out_position)
             mask_len = len(contracted_mask)
             # out_position[i] is the first output cell for source index i. One source index can
@@ -1335,7 +1442,7 @@ class _AccessibleTextRegion(Region):
 
         # Add empty mask characters for the EOL character as well as for the label.
         region_mask += [0] * len(self._eol)
-        if self._label:
+        if self._label and not self._contracted:
             region_mask = [0] * len(self._label) + region_mask
 
         return "".join(map(chr, region_mask))
@@ -1371,6 +1478,7 @@ class Text(_AccessibleTextRegion):
         self._indicate_links = indicate_links
         self.accessible = accessible
         self._eol = eol
+        self._source_line = ""
         string = ""
         self.caret_offset = 0
         self.line_offset = 0
@@ -1385,6 +1493,7 @@ class Text(_AccessibleTextRegion):
                 self.accessible,
                 self.caret_offset,
             )[0:2]
+            self._source_line = string
             if end_offset is not None and end_offset > self.line_offset + len(string):
                 # This can happen with CSSed-offscreen text in which the reported lines contain
                 # single characters or words.
@@ -1429,18 +1538,17 @@ class Text(_AccessibleTextRegion):
         )
 
     def reposition_cursor(self) -> bool:
-        """Update caret/cursor when the caret moves within the same line."""
+        """Update caret/cursor when the caret moves within an unchanged line."""
 
         if not _STATE.region_with_focus:
             return False
 
         string, line_offset = AXText.get_line_at_offset(self.accessible)[0:2]
-        caret_offset = AXText.get_caret_offset(self.accessible)
-        cursor_offset = min(caret_offset - line_offset, len(string))
-
-        if line_offset != self.line_offset:
+        if line_offset != self.line_offset or string != self._source_line:
             return False
 
+        caret_offset = AXText.get_caret_offset(self.accessible)
+        cursor_offset = min(caret_offset - line_offset, len(string))
         self.caret_offset = caret_offset
         self.line_offset = line_offset
 
@@ -1761,6 +1869,7 @@ def _clear() -> None:
 def clear_display() -> None:
     """Clear braille state and refresh the display."""
 
+    _CACHE.clear_cache()
     _clear()
     refresh(True)
 
@@ -2019,13 +2128,13 @@ def _prepare_refresh(stop_flash: bool) -> bool:
     if stop_flash:
         kill_flash(restore_saved=False)
 
-    from . import braille_presenter  # pylint: disable=import-outside-toplevel
-
-    braille_enabled = braille_presenter.get_presenter().use_braille()
+    braille_enabled = _STATE.enable_braille or _STATE.monitor_cell_count > 0
+    if _STATE.presentation_enabled_callback is not None:
+        braille_enabled = _STATE.presentation_enabled_callback()
 
     # TODO - JD: This should be taken care of in orca.py.
     if not braille_enabled:
-        if _STATE.brlapi_running:
+        if _STATE.brlapi_running and not _STATE.enable_braille:
             msg = "BRAILLE: FIXME - Braille disabled, but not properly shut down."
             debug.print_message(debug.LEVEL_INFO, msg, True)
             shutdown()
@@ -2457,7 +2566,7 @@ def display_message(message: str, flash_time: int = 0) -> None:
     debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
     _init_flash(flash_time)
-    region = Region(message, -1)
+    region = Region(" ".join(message.splitlines()), -1)
     line = Line(region)
     display_line(line, region, stop_flash=False)
 
@@ -2644,21 +2753,17 @@ def process_routing_key(event: BrailleEvent) -> bool:
     return True
 
 
-def _process_braille_event(event: Any) -> bool:
+def _process_braille_event(event: Any) -> None:
     """Processes a BrailleEvent, calling the callback if it exists."""
 
     tokens = ["BRAILLE: Processing event", event]
     debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-    consumed = False
     if _STATE.callback:
         try:
-            consumed = _STATE.callback(event)
+            _STATE.callback(event)
         except CALLBACK_ERRORS as error:
             tokens = ["WARNING: Could not process braille event:", error]
             debug.print_tokens(debug.LEVEL_WARNING, tokens, True)
-            consumed = False
-
-    return consumed
 
 
 def _brlapi_key_reader(_source: Any, _condition: Any) -> bool:
@@ -2783,7 +2888,7 @@ def set_brlapi_priority(level: int = BRLAPI_PRIORITY_DEFAULT) -> None:
     )
 
 
-def init(callback: Callable[[Any], bool] | None = None) -> bool:
+def init(callback: Callable[[Any], None] | None = None) -> bool:
     """Initialize braille and start an asynchronous BrlAPI connection."""
 
     if not _STATE.enable_braille:
@@ -2826,6 +2931,7 @@ def shutdown() -> bool:
     msg = "BRAILLE: Attempting braille shutdown."
     debug.print_message(debug.LEVEL_INFO, msg, True)
 
+    _CACHE.clear_cache()
     _cancel_brlapi_retry()
     if _STATE.brlapi_connecting:
         _STATE.brlapi_token += 1

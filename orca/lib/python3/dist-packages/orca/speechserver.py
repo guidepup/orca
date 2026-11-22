@@ -27,21 +27,11 @@
 
 from __future__ import annotations
 
-from enum import Enum, StrEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Any
 
 from . import debug, gsettings_registry, guilabels, language_utilities
 from .acss import ACSS
-from .ax_utilities_debugging import AXUtilitiesDebugging
-
-
-class VoiceType(StrEnum):
-    """Voice type identifiers. Values match GSettings path components."""
-
-    DEFAULT = "default"
-    UPPERCASE = "uppercase"
-    HYPERLINK = "hyperlink"
-    SYSTEM = "system"
 
 
 @gsettings_registry.get_registry().gsettings_enum(
@@ -144,7 +134,7 @@ class SayAllContext:
         self.current_end_offset = None
 
     def __str__(self) -> str:
-        obj_string = AXUtilitiesDebugging.as_string(self.obj)
+        obj_string = debug.token_as_string(self.obj)
         return (
             f"SAY ALL: {obj_string} '{self.utterance}' ({self.start_offset}-{self.end_offset}, "
             f"current: {self.current_offset})"

@@ -110,16 +110,16 @@ class AXUtilitiesSelection:
                 )
             return AXUtilitiesSelection.get_selected_children(container)
 
-        children = set()
+        children: dict[Atspi.Accessible, None] = {}
         for i in range(count):
             child = AXSelection.get_selected_child(obj, i)
             if child is not None:
-                children.add(child)
+                children[child] = None
 
         if obj in children:
             tokens = ["AXUtilitiesSelection:", obj, "claims to be its own selected child"]
             debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-            children.remove(obj)
+            del children[obj]
 
         result = list(children)
         if len(result) != count:
@@ -153,10 +153,12 @@ class AXUtilitiesSelection:
         rolemap = {
             Atspi.Role.CANVAS: [Atspi.Role.LAYERED_PANE],
             Atspi.Role.ICON: [Atspi.Role.LAYERED_PANE],
-            Atspi.Role.LIST_ITEM: [Atspi.Role.LIST_BOX],
+            Atspi.Role.LIST_ITEM: [Atspi.Role.LIST_BOX, Atspi.Role.LIST],
             Atspi.Role.TREE_ITEM: [Atspi.Role.TREE, Atspi.Role.TREE_TABLE],
             Atspi.Role.TABLE_CELL: [Atspi.Role.TABLE, Atspi.Role.TREE_TABLE],
-            Atspi.Role.TABLE_ROW: [Atspi.Role.TABLE, Atspi.Role.TREE_TABLE],
+            # Nautilus's GtkColumnView puts table rows in an intermediate list
+            # whose parent is a tree table. The list implements Selection.
+            Atspi.Role.TABLE_ROW: [Atspi.Role.TABLE, Atspi.Role.TREE_TABLE, Atspi.Role.LIST],
         }
 
         matching_roles = rolemap.get(AXObject.get_role(obj))
@@ -175,7 +177,9 @@ class AXUtilitiesSelection:
         if not AXObject.supports_selection(obj):
             return 0
 
-        if AXObject.supports_table(obj):
+        # A row of icons in Dolphin can contain several files. Count list items
+        # rather than rows to get the total number of files and folders.
+        if not AXUtilitiesRole.is_list(obj) and AXObject.supports_table(obj):
             rows = AXTable.get_row_count(obj)
             return max(0, rows)
 
@@ -201,7 +205,9 @@ class AXUtilitiesSelection:
     def selected_child_count(obj: Atspi.Accessible) -> int:
         """Returns the number of selected children in obj."""
 
-        if AXObject.supports_table(obj):
+        # Count selected list items, not layout rows. Dolphin's Table returns zero
+        # selected rows even when its Selection interface reports selected items.
+        if not AXUtilitiesRole.is_list(obj) and AXObject.supports_table(obj):
             return AXTable.get_selected_row_count(obj)
         return AXSelection.get_selected_child_count(obj)
 
@@ -218,9 +224,22 @@ class AXUtilitiesSelection:
         if AXUtilitiesRole.is_combo_box(obj) or AXUtilitiesRole.is_menu(obj):
             return False
 
+        selected_count = AXSelection.get_selected_child_count(obj)
+        if not selected_count:
+            return False
+
         child_count = AXObject.get_child_count(obj)
-        if child_count == AXSelection.get_selected_child_count(obj):
-            child = AXSelection.get_selected_child(obj, 0)
+        child = None
+        if selected_count > child_count:
+            child = AXSelection.get_selected_child(obj, 0, selected_count)
+            set_size = AXObject.get_attribute(child, "setsize", False)
+            if set_size == "-1":
+                return False
+            if set_size.isnumeric():
+                child_count = int(set_size)
+        if child_count == selected_count:
+            if child is None:
+                child = AXSelection.get_selected_child(obj, 0, selected_count)
             if AXObject.get_parent(child) != obj:
                 return False
 
@@ -237,6 +256,15 @@ class AXUtilitiesSelection:
         should_skip: Callable[[Atspi.Accessible], bool] | None = None,
     ) -> Atspi.Accessible | None:
         """Returns the selected child of obj that should become the locus of focus, or None."""
+
+        if (
+            focus is not None
+            and AXObject.get_parent(focus) == obj
+            and AXSelection.is_child_selected(obj, AXObject.get_index_in_parent(focus))
+        ):
+            tokens = ["AXUtilitiesSelection: Focus", focus, "is already a selected child"]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            return None
 
         selected = AXUtilitiesSelection.selected_children(obj)
         if focus in selected:

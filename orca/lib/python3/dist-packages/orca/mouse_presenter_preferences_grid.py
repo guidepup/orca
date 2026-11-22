@@ -24,7 +24,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from . import guilabels, mouse_presenter, preferences_grid_base
+from . import guilabels, preferences_grid_base
+from .help_metadata import (
+    PreferenceCategoryDoc,
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+)
+from .mouse_presenter_settings import MouseSettings
 
 if TYPE_CHECKING:
     from .mouse_presenter import MousePresenter
@@ -34,31 +40,39 @@ class MousePreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the Mouse preferences page."""
 
     _gsettings_schema = "mouse-review"
-    _documentation_summary = (
-        "Use these settings to control what Orca presents as the pointer moves."
-    )
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for mouse preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.MOUSE,
             panel_id="mouse_presenter.mouse",
-            description=guilabels.MOUSE_WAYLAND_WARNING,
+            category=PreferenceCategoryDoc(
+                category_id="mouse",
+                title="Mouse",
+                description=(
+                    "Mouse review presents the object under the pointer. Configure this "
+                    "behavior and mouse-triggered tooltips."
+                ),
+                panels=("mouse_presenter.mouse",),
+            ),
+            command_groups=("commands.mouse",),
             schema="mouse-review",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.GENERAL_PRESENT_TOOLTIPS,
                     kind="switch",
                     summary=(
                         "Controls whether Orca presents tooltips that appear when the "
-                        "pointer hovers over an object."
+                        "pointer hovers over an object. Tooltips requested from the keyboard, "
+                        "such as with Ctrl+F1 in supported applications, are presented "
+                        "regardless of this setting."
                     ),
                     schema="mouse-review",
-                    key=mouse_presenter.MousePresenter.KEY_PRESENT_TOOLTIPS,
+                    key=MouseSettings.KEY_PRESENT_TOOLTIPS,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.GENERAL_SPEAK_OBJECT_UNDER_MOUSE,
                     kind="switch",
                     summary=(
@@ -66,7 +80,7 @@ class MousePreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                         "as the pointer moves."
                     ),
                     schema="mouse-review",
-                    key=mouse_presenter.MousePresenter.KEY_ENABLED,
+                    key=MouseSettings.KEY_ENABLED,
                 ),
             ),
         )
@@ -79,13 +93,13 @@ class MousePreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                 label=guilabels.GENERAL_PRESENT_TOOLTIPS,
                 getter=presenter.get_present_tooltips,
                 setter=presenter.set_present_tooltips,
-                prefs_key=mouse_presenter.MousePresenter.KEY_PRESENT_TOOLTIPS,
+                prefs_key=MouseSettings.KEY_PRESENT_TOOLTIPS,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.GENERAL_SPEAK_OBJECT_UNDER_MOUSE,
                 getter=presenter.get_is_enabled,
                 setter=presenter.set_is_enabled,
-                prefs_key=mouse_presenter.MousePresenter.KEY_ENABLED,
+                prefs_key=MouseSettings.KEY_ENABLED,
             ),
         ]
 

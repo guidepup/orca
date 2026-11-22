@@ -48,9 +48,11 @@ from .ax_utilities_component import AXUtilitiesComponent
 from .ax_utilities_object import AXUtilitiesObject
 from .ax_utilities_relation import AXUtilitiesRelation
 from .ax_utilities_role import AXUtilitiesRole
+from .ax_utilities_selection import AXUtilitiesSelection
 from .ax_utilities_state import AXUtilitiesState
-from .ax_utilities_text import AXUtilitiesText, CaretSetReason, TextUnit
+from .ax_utilities_text import AXUtilitiesText
 from .ax_value import AXValue
+from .enums import ActivePresentationMode, CaretSetReason, TextEventReason, TextUnit
 
 if TYPE_CHECKING:
     from collections.abc import Hashable
@@ -68,62 +70,6 @@ class CheckedState(enum.Enum):
     UNCHECKED = enum.auto()
     CHECKED = enum.auto()
     MIXED = enum.auto()
-
-
-class TextEventReason(enum.Enum):
-    """Enum representing the reason for an object:text- event."""
-
-    UNKNOWN = enum.auto()
-    AUTO_DELETION_PRESENTABLE = enum.auto()
-    AUTO_DELETION_UNPRESENTABLE = enum.auto()
-    AUTO_INSERTION_PRESENTABLE = enum.auto()
-    AUTO_INSERTION_UNPRESENTABLE = enum.auto()
-    AUTO_SELECTION = enum.auto()
-    AUTO_UNSELECTION = enum.auto()
-    BACKSPACE = enum.auto()
-    BRAILLE_PANNING = enum.auto()
-    CHILDREN_CHANGE = enum.auto()
-    CUT = enum.auto()
-    DELETE = enum.auto()
-    FOCUS_CHANGE = enum.auto()
-    LIVE_REGION_UPDATE = enum.auto()
-    MOUSE_MIDDLE_BUTTON = enum.auto()
-    MOUSE_PRIMARY_BUTTON = enum.auto()
-    NAVIGATION_BY_CHARACTER = enum.auto()
-    NAVIGATION_BY_LINE = enum.auto()
-    NAVIGATION_BY_PARAGRAPH = enum.auto()
-    NAVIGATION_BY_PAGE = enum.auto()
-    NAVIGATION_BY_WORD = enum.auto()
-    NAVIGATION_TO_FILE_BOUNDARY = enum.auto()
-    NAVIGATION_TO_LINE_BOUNDARY = enum.auto()
-    PAGE_SWITCH = enum.auto()
-    PASTE = enum.auto()
-    REDO = enum.auto()
-    SAY_ALL = enum.auto()
-    SEARCH_PRESENTABLE = enum.auto()
-    SEARCH_UNPRESENTABLE = enum.auto()
-    SELECT_ALL = enum.auto()
-    SELECTED_TEXT_DELETION = enum.auto()
-    SELECTED_TEXT_INSERTION = enum.auto()
-    SELECTED_TEXT_RESTORATION = enum.auto()
-    SELECTION_BY_CHARACTER = enum.auto()
-    SELECTION_BY_LINE = enum.auto()
-    SELECTION_BY_PARAGRAPH = enum.auto()
-    SELECTION_BY_PAGE = enum.auto()
-    SELECTION_BY_WORD = enum.auto()
-    SELECTION_UNPRESENTABLE = enum.auto()
-    SELECTION_TO_FILE_BOUNDARY = enum.auto()
-    SELECTION_TO_LINE_BOUNDARY = enum.auto()
-    SPIN_BUTTON_VALUE_CHANGE = enum.auto()
-    SYSTEM_UPDATE = enum.auto()
-    TERMINAL_LINE_NAVIGATION_REPAINT = enum.auto()
-    TYPING = enum.auto()
-    TYPING_ECHOABLE = enum.auto()
-    UI_UPDATE = enum.auto()
-    UNDO = enum.auto()
-    UNSPECIFIED_COMMAND = enum.auto()
-    UNSPECIFIED_NAVIGATION = enum.auto()
-    UNSPECIFIED_SELECTION = enum.auto()
 
 
 class _AXUtilitiesEventCache:
@@ -383,7 +329,7 @@ class AXUtilitiesEvent:
         return not AXUtilitiesEvent._did_line_change(obj)
 
     @staticmethod
-    def _is_terminal_line_navigation_repaint(event: Atspi.Event) -> bool:
+    def _is_terminal_scrolling_repaint(event: Atspi.Event) -> bool:
         prior = AXUtilitiesEvent._LAST_TERMINAL_LINE_NAVIGATION_DELETION
         if prior is None:
             return False
@@ -400,7 +346,7 @@ class AXUtilitiesEvent:
         if min(len(deleted_lines), len(inserted_lines)) < 4:
             return False
 
-        # Terminal repaint text can have clipped edge lines. Compare the deleted
+        # Scrolling repaint text can have clipped edge lines. Compare the deleted
         # lines without their edges with the inserted lines shifted one row in either
         # direction. In tiny terminals, an expiring TUI status line can be another
         # edge row, leaving only the inner two shifted rows to compare.
@@ -514,13 +460,13 @@ class AXUtilitiesEvent:
         if not AXUtilitiesRole.is_terminal(obj):
             return False
         mode, acc = focus_manager.get_manager().get_active_mode_and_object_of_interest()
-        return mode == focus_manager.FLAT_REVIEW and obj == acc
+        return mode == ActivePresentationMode.FLAT_REVIEW and obj == acc
 
     @staticmethod
     def _is_terminal_escape_sequence(string: str) -> bool:
         """Returns True if string is an escape sequence the terminal displayed as literal text."""
 
-        return bool(re.fullmatch(r"\s*ESC\[[\d;]*[A-Za-z~]?\s*", string))
+        return bool(re.fullmatch(r"\s*ESC\[[\d;]*[A-Za-z~]?\s*|\^\[O[A-D]\s*", string))
 
     @staticmethod
     def _is_spin_button_descendant(obj: Atspi.Accessible) -> bool:
@@ -676,7 +622,7 @@ class AXUtilitiesEvent:
                 return reason
 
         mode, focus = focus_manager.get_manager().get_active_mode_and_object_of_interest()
-        if mode == focus_manager.SAY_ALL:
+        if mode == ActivePresentationMode.SAY_ALL:
             return TextEventReason.SAY_ALL
         if focus != obj and AXUtilitiesRole.is_text_input_search(focus):
             if mgr.last_event_was_backspace() or mgr.last_event_was_delete():
@@ -820,8 +766,10 @@ class AXUtilitiesEvent:
             return TextEventReason.CHILDREN_CHANGE
 
         obj = event.source
-        is_terminal = AXUtilitiesRole.is_terminal(obj)
-        if not (AXUtilitiesState.is_editable(obj) or is_terminal):
+        source_role = AXObject.get_role(obj)
+        is_terminal = AXUtilitiesRole.is_terminal(obj, source_role)
+        source_states = AXObject.get_state_set(obj)
+        if not (AXUtilitiesState.is_editable(obj, source_states) or is_terminal):
             return AXUtilitiesEvent._get_non_editable_reason(mgr)
 
         if is_terminal and AXUtilitiesEvent._is_terminal_escape_sequence(event.any_data):
@@ -853,7 +801,7 @@ class AXUtilitiesEvent:
         # are excluded because Home, End, and Page Up/Down change their value.
         is_document = (
             not is_terminal
-            and not AXUtilitiesState.is_single_line(obj)
+            and not AXUtilitiesState.is_single_line(obj, source_states)
             and not AXUtilitiesEvent._is_spin_button_descendant(obj)
         )
         if is_document and (
@@ -865,7 +813,7 @@ class AXUtilitiesEvent:
             return TextEventReason.AUTO_INSERTION_UNPRESENTABLE
         if mgr.last_event_was_command():
             return TextEventReason.UNSPECIFIED_COMMAND
-        if mgr.last_event_was_space() and not AXUtilitiesRole.is_password_text(obj):
+        if mgr.last_event_was_space() and not AXUtilitiesRole.is_password_text(obj, source_role):
             if event.any_data == "\n":
                 return TextEventReason.AUTO_INSERTION_UNPRESENTABLE
             return TextEventReason.TYPING
@@ -886,7 +834,7 @@ class AXUtilitiesEvent:
             if has_selected:
                 return TextEventReason.AUTO_INSERTION_PRESENTABLE
             presenter = typing_echo_presenter.get_presenter()
-            if AXUtilitiesRole.is_password_text(obj):
+            if AXUtilitiesRole.is_password_text(obj, source_role):
                 echo = presenter.get_key_echo_enabled()
             else:
                 echo = presenter.get_character_echo_enabled()
@@ -901,8 +849,8 @@ class AXUtilitiesEvent:
                 and mgr.last_event_was_up_or_down()
                 and mgr.last_event_was_line_navigation()
             ):
-                if AXUtilitiesEvent._is_terminal_line_navigation_repaint(event):
-                    return TextEventReason.TERMINAL_LINE_NAVIGATION_REPAINT
+                if AXUtilitiesEvent._is_terminal_scrolling_repaint(event):
+                    return TextEventReason.TERMINAL_SCROLLING_REPAINT
                 # VTE can draw the row scrolled into view as a separate insertion after the
                 # repaint. If the repaint handling already presented exactly that line, saying
                 # it again is noise.
@@ -920,6 +868,30 @@ class AXUtilitiesEvent:
             return TextEventReason.SELECTED_TEXT_INSERTION
         if AXUtilitiesEvent._is_terminal_being_flat_reviewed(obj):
             return TextEventReason.AUTO_INSERTION_UNPRESENTABLE
+        if (
+            event.detail1 == 0
+            and not AXUtilitiesState.is_multi_line(obj, source_states)
+            and AXUtilitiesState.is_showing_and_visible(obj, source_states)
+        ):
+            focus = focus_manager.get_manager().get_locus_of_focus()
+            if (
+                obj == focus
+                and AXUtilitiesRole.is_combo_box(obj, source_role)
+                and AXText.get_character_count(obj) == event.detail2
+            ):
+                return TextEventReason.AUTO_INSERTION_PRESENTABLE
+            parent = AXObject.get_parent(obj)
+            if (
+                focus in (obj, parent)
+                and AXUtilitiesRole.is_combo_box(parent)
+                and AXText.get_character_count(obj) == event.detail2
+            ):
+                # Selecting a combo box item can replace its entry without an editing command.
+                selected = AXSelection.get_selected_child(parent, 0)
+                if selected is None:
+                    selected = AXSelection.get_selected_child(AXObject.get_child(parent, 0), 0)
+                if selected is not None and AXObject.get_name(selected) == event.any_data:
+                    return TextEventReason.AUTO_INSERTION_PRESENTABLE
         return TextEventReason.UNKNOWN
 
     @staticmethod
@@ -1470,22 +1442,48 @@ class AXUtilitiesEvent:
 
         from . import input_event_manager  # pylint: disable=import-outside-toplevel
 
-        if input_event_manager.get_manager().last_event_was_space():
-            msg = "AXUtilitiesEvent: Selection toggled via space; handled elsewhere."
-            debug.print_message(debug.LEVEL_INFO, msg, True)
-            return False
+        mgr = input_event_manager.get_manager()
+        focus = focus_manager.get_manager().get_locus_of_focus()
+        is_space = mgr.last_event_was_space()
+        if is_space:
+            # An ignored selection change can invalidate the previous Select All result.
+            AXUtilitiesSelection.set_all_items_selected_state(event.source, False)
+            if event.source != focus:
+                msg = "AXUtilitiesEvent: Selection toggled via space; handled elsewhere."
+                debug.print_message(debug.LEVEL_INFO, msg, True)
+                return False
 
         source_states = AXObject.get_state_set(event.source)
-        if AXUtilitiesState.manages_descendants(event.source, source_states):
-            msg = "AXUtilitiesEvent: Source manages descendants; handled elsewhere."
-            debug.print_message(debug.LEVEL_INFO, msg, True)
-            return False
+        if (
+            AXUtilitiesState.manages_descendants(event.source, source_states)
+            and not mgr.last_event_was_select_all()
+            and not (is_space and event.source == focus)
+        ):
+            AXUtilitiesSelection.set_all_items_selected_state(event.source, False)
+            if not AXUtilitiesState.is_focused(event.source, source_states) or (
+                focus is not None and not AXObject.is_dead(focus)
+            ):
+                msg = "AXUtilitiesEvent: Source manages descendants; handled elsewhere."
+                debug.print_message(debug.LEVEL_INFO, msg, True)
+                return False
 
         if AXUtilitiesRole.is_menu(event.source):
             if AXUtilitiesState.is_showing_and_visible(event.source, source_states):
                 msg = "AXUtilitiesEvent: Event is presentable: Source is a menu."
                 debug.print_message(debug.LEVEL_INFO, msg, True)
                 return True
+
+            parent = AXObject.get_parent(event.source)
+            if AXUtilitiesRole.is_combo_box(parent):
+                parent_states = AXObject.get_state_set(parent)
+                if (
+                    not AXUtilitiesState.is_expanded(parent, parent_states)
+                    and AXUtilitiesState.is_showing_and_visible(parent, parent_states)
+                    and (parent == focus or AXUtilitiesState.is_focused(parent, parent_states))
+                ):
+                    msg = "AXUtilitiesEvent: Selection changed in a focused, collapsed combo box."
+                    debug.print_message(debug.LEVEL_INFO, msg, True)
+                    return True
 
             # This is a sad workaround for GTK2 menu items with submenus losing their showing state
             # when submenu children become selected.
@@ -1506,6 +1504,17 @@ class AXUtilitiesEvent:
         if AXUtilitiesRole.is_combo_box(event.source) and not AXUtilitiesState.is_expanded(
             event.source, source_states
         ):
+            if not (
+                event.source == focus
+                or AXUtilitiesState.is_focused(event.source, source_states)
+                or AXUtilitiesObject.is_ancestor(focus, event.source)
+            ):
+                msg = (
+                    "AXUtilitiesEvent: Collapsed combo box is unfocused "
+                    "and unrelated to the locus of focus."
+                )
+                debug.print_message(debug.LEVEL_INFO, msg, True)
+                return False
             text_input = AXUtilitiesObject.find_descendant(
                 event.source, AXUtilitiesRole.is_text_input
             )
@@ -1513,10 +1522,11 @@ class AXUtilitiesEvent:
                 msg = "AXUtilitiesEvent: Combo box text input is focused; not a user selection."
                 debug.print_message(debug.LEVEL_INFO, msg, True)
                 return False
+            if event.source == focus and mgr.last_event_was_return():
+                msg = "AXUtilitiesEvent: Selection change after collapsing combo box."
+                debug.print_message(debug.LEVEL_INFO, msg, True)
+                return False
 
-        focus = focus_manager.get_manager().get_locus_of_focus()
-
-        mgr = input_event_manager.get_manager()
         if (
             AXUtilitiesState.supports_autocompletion(focus)
             and not mgr.last_event_was_up_or_down()

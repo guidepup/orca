@@ -26,9 +26,27 @@ from typing import TYPE_CHECKING
 
 from . import cmdnames
 from .command import Command, KeyboardCommand
+from .help_metadata import CommandDoc, CommandGroupDoc
 
 if TYPE_CHECKING:
     from .typing_echo_presenter import TypingEchoPresenter
+
+
+def get_documentation() -> CommandGroupDoc:
+    """Returns documentation metadata for echo commands."""
+
+    return CommandGroupDoc(
+        commands=(
+            CommandDoc(
+                "cycleKeyEchoHandler",
+                details=(
+                    "Switches among key echo, word echo, sentence echo, key and word echo, word "
+                    "and sentence echo, and off."
+                ),
+            ),
+        ),
+        summary="Echo controls what Orca speaks while you type.",
+    )
 
 
 def get_commands(owner: TypingEchoPresenter) -> list[Command]:

@@ -381,6 +381,14 @@
       <default>true</default>
       <summary>Announce groupings</summary>
     </key>
+    <key name="announce-header-and-footer" type="b">
+      <default>true</default>
+      <summary>Announce headers and footers</summary>
+    </key>
+    <key name="announce-inline-code" type="b">
+      <default>false</default>
+      <summary>Announce inline code</summary>
+    </key>
     <key name="announce-landmark" type="b">
       <default>true</default>
       <summary>Announce landmarks</summary>
@@ -578,6 +586,14 @@
     <key name="announce-grouping" type="b">
       <default>true</default>
       <summary>Announce groupings/panels</summary>
+    </key>
+    <key name="announce-header-and-footer" type="b">
+      <default>true</default>
+      <summary>Announce headers and footers</summary>
+    </key>
+    <key name="announce-inline-code" type="b">
+      <default>false</default>
+      <summary>Announce inline code</summary>
     </key>
     <key name="announce-landmark" type="b">
       <default>true</default>

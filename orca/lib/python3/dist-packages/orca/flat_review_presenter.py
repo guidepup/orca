@@ -27,7 +27,6 @@
 from __future__ import annotations
 
 import time
-from enum import Enum
 from typing import TYPE_CHECKING
 
 import gi
@@ -39,7 +38,7 @@ from gi.repository import Atspi, GLib, Gtk  # pylint: disable=no-name-in-module
 from . import (
     braille,
     braille_presenter,
-    clipboard,
+    clipboard_manager,
     dbus_service,
     debug,
     flat_review,
@@ -58,27 +57,15 @@ from .ax_event_synthesizer import AXEventSynthesizer
 from .ax_object import AXObject
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
-from .ax_utilities_event import TextEventReason
-from .ax_utilities_text import CaretSetReason
+from .enums import ActivePresentationMode, CaretSetReason, TextEventReason
 from .extension import Extension
+from .flat_review_presenter_preferences_grid import FlatReviewPreferencesGrid
+from .flat_review_presenter_settings import FlatReviewSettings, FocusTracking
 
 if TYPE_CHECKING:
     from .command import Command
     from .dbus_service import UInt32
-    from .flat_review_presenter_preferences_grid import FlatReviewPreferencesGrid
     from .scripts import default
-
-
-@gsettings_registry.get_registry().gsettings_enum(
-    "org.gnome.Orca.FocusTracking",
-    values={"off": 0, "auto": 1, "on": 2},
-)
-class FocusTracking(Enum):
-    """How closely flat review follows the focus/caret location."""
-
-    OFF = 0
-    AUTO = 1
-    ON = 2
 
 
 @gsettings_registry.get_registry().gsettings_schema("org.gnome.Orca.FlatReview", name="flat-review")
@@ -86,10 +73,6 @@ class FlatReviewPresenter(Extension):
     """Provides access to on-screen objects via flat-review."""
 
     _SCHEMA = "flat-review"
-    KEY_DISPLAY_UPDATES = "display-updates"
-    KEY_FOCUS_TRACKING = "focus-tracking"
-    KEY_RESTRICTED = "restricted"
-    KEY_SPEAK_UPDATES = "speak-updates"
 
     def _get_setting(self, key: str, default: bool) -> bool:
         """Returns the dconf value for key, or default if not in dconf."""
@@ -120,6 +103,8 @@ class FlatReviewPresenter(Extension):
         self._pending_caret_moved: Atspi.Event | None = None
         self._pending_text_inserted: Atspi.Event | None = None
         self._idle_id: int = 0
+        self._braille_timer_id: int = 0
+        self._last_braille_update: float = 0.0
         self._region_changed_listener_registered: bool = False
         super().__init__()
 
@@ -244,7 +229,7 @@ class FlatReviewPresenter(Extension):
         """Returns True if the flat review presenter is active."""
 
         mode, _obj = focus_manager.get_manager().get_active_mode_and_object_of_interest()
-        return mode == focus_manager.FLAT_REVIEW
+        return mode == ActivePresentationMode.FLAT_REVIEW
 
     def last_input_event_was_review_command(self) -> bool:
         """Returns True if the last input event was a flat review command."""
@@ -353,7 +338,7 @@ class FlatReviewPresenter(Extension):
                         self._context.set_current_location(fallback)
                         break
 
-            manager.emit_region_changed(current_obj, mode=focus_manager.FLAT_REVIEW)
+            manager.emit_region_changed(current_obj, mode=ActivePresentationMode.FLAT_REVIEW)
             self._context_input_event = input_event_manager.get_manager().get_last_input_event()
             app = AXUtilities.get_application(current_obj)
             if app is not None:
@@ -381,7 +366,7 @@ class FlatReviewPresenter(Extension):
         # On invalidates the context elsewhere; off stays put; only auto moves the location here.
         if (
             self.get_focus_tracking() == FocusTracking.AUTO.value
-            and mode != focus_manager.FLAT_REVIEW
+            and mode != ActivePresentationMode.FLAT_REVIEW
             and obj != self._context.get_current_object()
             and not self._restrict
         ):
@@ -395,7 +380,7 @@ class FlatReviewPresenter(Extension):
             self._context.set_current_to_zone_with_object(obj)
 
         # If we are restricting, and the current mode is not flat review, calculate a new context
-        if self._restrict and mode != focus_manager.FLAT_REVIEW:
+        if self._restrict and mode != ActivePresentationMode.FLAT_REVIEW:
             msg = "FLAT REVIEW PRESENTER: Creating new restricted context."
             debug.print_message(debug.LEVEL_INFO, msg, True)
             self._context = flat_review.Context(script, obj)
@@ -424,9 +409,12 @@ class FlatReviewPresenter(Extension):
 
         context = self.get_or_create_context(script)
         manager = focus_manager.get_manager()
-        if manager.get_active_mode_and_object_of_interest()[0] != focus_manager.FLAT_REVIEW:
+        if (
+            manager.get_active_mode_and_object_of_interest()[0]
+            != ActivePresentationMode.FLAT_REVIEW
+        ):
             manager.emit_region_changed(
-                context.get_current_object(), mode=focus_manager.FLAT_REVIEW
+                context.get_current_object(), mode=ActivePresentationMode.FLAT_REVIEW
             )
         if event is None:
             return
@@ -452,6 +440,7 @@ class FlatReviewPresenter(Extension):
 
         self._last_input_event = None
         self._context = None
+        self._cancel_braille_update()
         self._context_input_event = None
         self._deregister_event_listeners()
         self._sync_region_changed_listener()
@@ -463,7 +452,9 @@ class FlatReviewPresenter(Extension):
         self._pending_caret_moved = None
         self._pending_text_inserted = None
         focus = focus_manager.get_manager().get_locus_of_focus()
-        focus_manager.get_manager().emit_region_changed(focus, mode=focus_manager.FOCUS_TRACKING)
+        focus_manager.get_manager().emit_region_changed(
+            focus, mode=ActivePresentationMode.FOCUS_TRACKING
+        )
         if event is None or script is None:
             return
 
@@ -483,11 +474,14 @@ class FlatReviewPresenter(Extension):
             manager.remove_region_changed_listener(self._on_region_changed)
             self._region_changed_listener_registered = False
 
-    def _on_region_changed(self, _obj: Atspi.Accessible | None, mode: str) -> None:
+    def _on_region_changed(
+        self, _obj: Atspi.Accessible | None, mode: ActivePresentationMode
+    ) -> None:
         """Resets the review state when focus leaves flat review and tracking is on."""
 
-        if mode == focus_manager.FLAT_REVIEW:
+        if mode == ActivePresentationMode.FLAT_REVIEW:
             return
+        self._cancel_braille_update()
         if self.get_focus_tracking() != FocusTracking.ON.value:
             return
 
@@ -1173,13 +1167,13 @@ class FlatReviewPresenter(Extension):
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
 
         self._context = self.get_or_create_context(script)
+        focus_manager.get_manager().emit_region_changed(
+            self._context.get_current_object(),
+            mode=ActivePresentationMode.FLAT_REVIEW,
+        )
         if not isinstance(event, input_event.BrailleEvent):
             script.present_object(self._context.get_current_object(), generate_braille=False)
 
-        focus_manager.get_manager().emit_region_changed(
-            self._context.get_current_object(),
-            mode=focus_manager.FLAT_REVIEW,
-        )
         self._last_input_event = event
         return True
 
@@ -1264,12 +1258,50 @@ class FlatReviewPresenter(Extension):
             return True
         return AXEventSynthesizer.route_to_object(obj)
 
-    def _update_braille(self, script: default.Script) -> None:
+    def refresh_braille(self, script: default.Script) -> None:
+        """Regenerates braille at the current flat review position."""
+
+        self._update_braille(script)
+
+    def _cancel_braille_update(self) -> None:
+        """Cancels a pending background refresh."""
+
+        if self._braille_timer_id:
+            GLib.source_remove(self._braille_timer_id)
+            self._braille_timer_id = 0
+
+    def _flush_deferred_braille(self, script: default.Script) -> bool:
+        """Refreshes the current review position if it still owns braille output."""
+
+        self._braille_timer_id = 0
+        if (
+            self._context is not None
+            and self.is_active()
+            and self.last_input_event_was_review_command()
+            and self.get_displays_updates()
+            and script == script_manager.get_manager().get_active_script()
+        ):
+            self._update_braille(script)
+        return GLib.SOURCE_REMOVE
+
+    def _update_braille(self, script: default.Script, is_live_update: bool = False) -> None:
         """Obtains the braille regions for the current flat review line and displays them."""
 
         if not braille_presenter.get_presenter().use_braille():
             return
 
+        if is_live_update:
+            remaining = script.get_braille_update_interval() - (
+                time.monotonic() - self._last_braille_update
+            )
+            if remaining > 0:
+                if not self._braille_timer_id:
+                    self._braille_timer_id = GLib.timeout_add(
+                        max(1, int(remaining * 1000) + 1), self._flush_deferred_braille, script
+                    )
+                return
+        self._cancel_braille_update()
+        self._last_braille_update = time.monotonic()
         self._context = self.get_or_create_context(script)
         regions, focused_region = self._context.get_current_braille_regions()
         if not regions:
@@ -1296,13 +1328,13 @@ class FlatReviewPresenter(Extension):
     def _present_review_update(self, script: default.Script) -> None:
         """Presents the current review unit when it changes via a live update."""
 
-        self._context = self.get_or_create_context(script)
         if self.get_displays_updates():
-            self._update_braille(script)
+            self._update_braille(script, is_live_update=True)
 
         if not self.get_speaks_updates():
             return
 
+        self._context = self.get_or_create_context(script)
         if self._last_presented_unit == flat_review.Context.WORD:
             current = self._context.get_current_word_string()
         elif self._last_presented_unit == flat_review.Context.CHAR:
@@ -1323,6 +1355,7 @@ class FlatReviewPresenter(Extension):
     ) -> bool:
         """Pans the braille display left."""
 
+        self._cancel_braille_update()
         self._context = self.get_or_create_context(script, is_panning=True)
         self._last_input_event = event
 
@@ -1365,6 +1398,7 @@ class FlatReviewPresenter(Extension):
     ) -> bool:
         """Pans the braille display right."""
 
+        self._cancel_braille_update()
         self._context = self.get_or_create_context(script, is_panning=True)
         self._last_input_event = event
 
@@ -1495,7 +1529,7 @@ class FlatReviewPresenter(Extension):
                 presentation_manager.get_manager().present_message(messages.FLAT_REVIEW_NOT_IN)
             return True
 
-        clipboard.get_presenter().set_text(self._current_contents.rstrip("\n"))
+        clipboard_manager.get_manager().set_text(self._current_contents.rstrip("\n"))
         if notify_user:
             presentation_manager.get_manager().present_message(messages.FLAT_REVIEW_COPIED)
         self._last_input_event = event
@@ -1525,7 +1559,7 @@ class FlatReviewPresenter(Extension):
                 presentation_manager.get_manager().present_message(messages.FLAT_REVIEW_NOT_IN)
             return True
 
-        clipboard.get_presenter().append_text(self._current_contents.rstrip("\n"))
+        clipboard_manager.get_manager().append_text(self._current_contents.rstrip("\n"))
         if notify_user:
             presentation_manager.get_manager().present_message(messages.FLAT_REVIEW_APPENDED)
         self._last_input_event = event
@@ -1534,13 +1568,10 @@ class FlatReviewPresenter(Extension):
     def create_preferences_grid(self) -> FlatReviewPreferencesGrid:
         """Returns the GtkGrid containing the Flat Review preferences UI."""
 
-        # pylint: disable-next=import-outside-toplevel
-        from .flat_review_presenter_preferences_grid import FlatReviewPreferencesGrid
-
         return FlatReviewPreferencesGrid(self)
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_RESTRICTED,
+        key=FlatReviewSettings.KEY_RESTRICTED,
         schema="flat-review",
         gtype="b",
         default=False,
@@ -1551,7 +1582,7 @@ class FlatReviewPresenter(Extension):
     def get_is_restricted(self) -> bool:
         """Returns whether flat review is restricted to the current object."""
 
-        return self._get_setting(self.KEY_RESTRICTED, False)
+        return self._get_setting(FlatReviewSettings.KEY_RESTRICTED, False)
 
     @dbus_service.setter
     def set_is_restricted(self, value: bool) -> bool:
@@ -1560,12 +1591,12 @@ class FlatReviewPresenter(Extension):
         tokens = ["FLAT REVIEW PRESENTER: Setting is-restricted to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_RESTRICTED, value
+            self._SCHEMA, FlatReviewSettings.KEY_RESTRICTED, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_SPEAK_UPDATES,
+        key=FlatReviewSettings.KEY_SPEAK_UPDATES,
         schema="flat-review",
         gtype="b",
         default=False,
@@ -1575,7 +1606,7 @@ class FlatReviewPresenter(Extension):
     def get_speaks_updates(self) -> bool:
         """Returns whether changes at the review location are spoken automatically."""
 
-        return self._get_setting(self.KEY_SPEAK_UPDATES, False)
+        return self._get_setting(FlatReviewSettings.KEY_SPEAK_UPDATES, False)
 
     @dbus_service.setter
     def set_speaks_updates(self, value: bool) -> bool:
@@ -1584,12 +1615,12 @@ class FlatReviewPresenter(Extension):
         tokens = ["FLAT REVIEW PRESENTER: Setting speak-updates to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_SPEAK_UPDATES, value
+            self._SCHEMA, FlatReviewSettings.KEY_SPEAK_UPDATES, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_DISPLAY_UPDATES,
+        key=FlatReviewSettings.KEY_DISPLAY_UPDATES,
         schema="flat-review",
         gtype="b",
         default=True,
@@ -1599,7 +1630,7 @@ class FlatReviewPresenter(Extension):
     def get_displays_updates(self) -> bool:
         """Returns whether changes at the review location refresh braille automatically."""
 
-        return self._get_setting(self.KEY_DISPLAY_UPDATES, True)
+        return self._get_setting(FlatReviewSettings.KEY_DISPLAY_UPDATES, True)
 
     @dbus_service.setter
     def set_displays_updates(self, value: bool) -> bool:
@@ -1608,12 +1639,12 @@ class FlatReviewPresenter(Extension):
         tokens = ["FLAT REVIEW PRESENTER: Setting display-updates to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_DISPLAY_UPDATES, value
+            self._SCHEMA, FlatReviewSettings.KEY_DISPLAY_UPDATES, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_FOCUS_TRACKING,
+        key=FlatReviewSettings.KEY_FOCUS_TRACKING,
         schema="flat-review",
         genum="org.gnome.Orca.FocusTracking",
         default="auto",
@@ -1625,7 +1656,7 @@ class FlatReviewPresenter(Extension):
 
         nick = gsettings_registry.get_registry().layered_lookup(
             self._SCHEMA,
-            self.KEY_FOCUS_TRACKING,
+            FlatReviewSettings.KEY_FOCUS_TRACKING,
             "",
             genum="org.gnome.Orca.FocusTracking",
             default="auto",
@@ -1643,7 +1674,7 @@ class FlatReviewPresenter(Extension):
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         mode = FocusTracking(value)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_FOCUS_TRACKING, mode.name.lower()
+            self._SCHEMA, FlatReviewSettings.KEY_FOCUS_TRACKING, mode.name.lower()
         )
         return True
 
@@ -1692,6 +1723,10 @@ class FlatReviewPresenter(Extension):
 
         self._context = self.get_or_create_context(script)
         line_string = self._context.get_current_line_string()
+        focus_manager.get_manager().emit_region_changed(
+            self._context.get_current_object(),
+            mode=ActivePresentationMode.FLAT_REVIEW,
+        )
 
         if not isinstance(event, input_event.BrailleEvent):
             presenter = presentation_manager.get_manager()
@@ -1730,10 +1765,6 @@ class FlatReviewPresenter(Extension):
                         self._context.get_current_line_start_offset(),
                     )
 
-        focus_manager.get_manager().emit_region_changed(
-            self._context.get_current_object(),
-            mode=focus_manager.FLAT_REVIEW,
-        )
         self._update_braille(script)
         self._last_presented_unit = flat_review.Context.LINE
         self._current_contents = line_string
@@ -1749,6 +1780,10 @@ class FlatReviewPresenter(Extension):
 
         self._context = self.get_or_create_context(script)
         word_string = self._context.get_current_word_string()
+        focus_manager.get_manager().emit_region_changed(
+            self._context.get_current_object(),
+            mode=ActivePresentationMode.FLAT_REVIEW,
+        )
         if not isinstance(event, input_event.BrailleEvent):
             presenter = presentation_manager.get_manager()
             if not word_string or word_string == "\n":
@@ -1783,10 +1818,6 @@ class FlatReviewPresenter(Extension):
                         word_string,
                     )
 
-        focus_manager.get_manager().emit_region_changed(
-            self._context.get_current_object(),
-            mode=focus_manager.FLAT_REVIEW,
-        )
         self._update_braille(script)
         self._last_presented_unit = flat_review.Context.WORD
         self._current_contents = word_string
@@ -1809,6 +1840,9 @@ class FlatReviewPresenter(Extension):
             char_string = self._context.get_current_character_string()
             obj = self._context.get_current_object()
             offset = self._context.get_current_text_offset()
+            focus_manager.get_manager().emit_region_changed(
+                obj, mode=ActivePresentationMode.FLAT_REVIEW
+            )
         if not isinstance(event, input_event.BrailleEvent):
             presenter = presentation_manager.get_manager()
             if not char_string or (char_string == "\n" and speech_type != 3):
@@ -1825,10 +1859,6 @@ class FlatReviewPresenter(Extension):
         if not self._context:
             return True
 
-        focus_manager.get_manager().emit_region_changed(
-            self._context.get_current_object(),
-            mode=focus_manager.FLAT_REVIEW,
-        )
         self._update_braille(script)
         self._last_presented_unit = flat_review.Context.CHAR
         self._current_contents = char_string

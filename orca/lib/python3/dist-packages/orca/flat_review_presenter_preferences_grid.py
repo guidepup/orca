@@ -24,7 +24,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from . import flat_review_presenter, guilabels, preferences_grid_base
+from . import guilabels, preferences_grid_base
+from .flat_review_presenter_settings import FlatReviewSettings, FocusTracking
+from .help_metadata import (
+    PreferenceCategoryDoc,
+    PreferenceControlDoc,
+    PreferencePanelDoc,
+    PreferenceValueDoc,
+)
 
 if TYPE_CHECKING:
     from .flat_review_presenter import FlatReviewPresenter
@@ -34,74 +41,90 @@ class FlatReviewPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
     """GtkGrid containing the Flat Review preferences page."""
 
     _gsettings_schema = "flat-review"
-    _documentation_summary = (
-        "Use these settings to control how flat review follows focus and presents updates."
-    )
 
     @classmethod
-    def get_documentation(cls) -> preferences_grid_base.PreferencePanelDoc:
+    def get_documentation(cls) -> PreferencePanelDoc:
         """Return documentation metadata for flat review preferences."""
 
-        return preferences_grid_base.PreferencePanelDoc(
+        return PreferencePanelDoc(
             title=guilabels.FLAT_REVIEW,
             panel_id="flat_review_presenter.flat-review",
-            description=(
-                "Flat review lets you examine the contents of the window as a sequence "
-                "of lines, items, and characters, independently of the focus and caret."
+            category=PreferenceCategoryDoc(
+                category_id="flat-review",
+                title="Flat Review",
+                description=(
+                    "Flat review lets you examine visible window content without moving focus "
+                    "or the caret. Configure how it follows your location and presents updates."
+                ),
+                panels=("flat_review_presenter.flat-review",),
             ),
+            command_groups=("commands.flat-review",),
             schema="flat-review",
             controls=(
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.FLAT_REVIEW_FOLLOW_FOCUS,
                     kind="choice",
                     summary=(
-                        "Controls when the flat review location moves to follow the focus or caret."
+                        "Controls when the flat review location moves to follow the focus "
+                        "or caret. Using application navigation keys resumes presentation "
+                        "of the application; where flat review resumes depends on this setting."
                     ),
                     schema="flat-review",
-                    key=flat_review_presenter.FlatReviewPresenter.KEY_FOCUS_TRACKING,
+                    key=FlatReviewSettings.KEY_FOCUS_TRACKING,
                     value_docs=(
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
                             label=guilabels.FLAT_REVIEW_FOLLOW_ALWAYS,
                             value="on",
                             summary=(
-                                "Flat review moves whenever the focus or caret location changes."
+                                "Return to the focus or caret when you resume flat review "
+                                "after interacting with the application. Unrelated terminal "
+                                "output does not pull review away from its location."
                             ),
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
                             label=guilabels.FLAT_REVIEW_FOLLOW_AUTOMATICALLY,
                             value="auto",
                             summary=(
-                                "Orca decides when moving flat review to the focus or caret "
-                                "location is useful."
+                                "Follow selected changes, such as moving focus to another "
+                                "object or navigating to another line, while retaining the "
+                                "review location through other changes."
                             ),
                         ),
-                        preferences_grid_base.PreferenceValueDoc(
+                        PreferenceValueDoc(
                             label=guilabels.FLAT_REVIEW_FOLLOW_NEVER,
                             value="off",
-                            summary="Flat review stays where you last moved it.",
+                            summary=(
+                                "Keep the review location independent of focus and caret "
+                                "changes, as long as the reviewed content remains available."
+                            ),
                         ),
                     ),
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.FLAT_REVIEW_SPEAK_UPDATES,
                     kind="switch",
                     summary=(
-                        "Controls whether Orca speaks content changes at the flat review location."
+                        "Controls whether Orca speaks changes to the line, word, or character "
+                        "you last reviewed while you are using flat review. This is independent "
+                        "of whether the review location follows focus and caret changes."
                     ),
                     schema="flat-review",
-                    key=flat_review_presenter.FlatReviewPresenter.KEY_SPEAK_UPDATES,
+                    key=FlatReviewSettings.KEY_SPEAK_UPDATES,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.FLAT_REVIEW_DISPLAY_UPDATES,
                     kind="switch",
                     summary=(
                         "Controls whether Orca refreshes braille when content changes at "
-                        "the flat review location."
+                        "the flat review location while you are using flat review. This is "
+                        "independent of focus and caret tracking and of spoken updates. For "
+                        "example, you can stay on a changing terminal line and have Orca "
+                        "update braille without speaking each change."
                     ),
                     schema="flat-review",
-                    key=flat_review_presenter.FlatReviewPresenter.KEY_DISPLAY_UPDATES,
+                    key=FlatReviewSettings.KEY_DISPLAY_UPDATES,
                 ),
-                preferences_grid_base.PreferenceControlDoc(
+                PreferenceControlDoc(
                     label=guilabels.FLAT_REVIEW_RESTRICT,
                     kind="switch",
                     summary=(
@@ -109,7 +132,7 @@ class FlatReviewPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                         "instead of the whole window."
                     ),
                     schema="flat-review",
-                    key=flat_review_presenter.FlatReviewPresenter.KEY_RESTRICTED,
+                    key=FlatReviewSettings.KEY_RESTRICTED,
                 ),
             ),
         )
@@ -124,31 +147,31 @@ class FlatReviewPreferencesGrid(preferences_grid_base.AutoPreferencesGrid):
                     guilabels.FLAT_REVIEW_FOLLOW_NEVER,
                 ],
                 values=[
-                    flat_review_presenter.FocusTracking.ON.value,
-                    flat_review_presenter.FocusTracking.AUTO.value,
-                    flat_review_presenter.FocusTracking.OFF.value,
+                    FocusTracking.ON.value,
+                    FocusTracking.AUTO.value,
+                    FocusTracking.OFF.value,
                 ],
                 getter=presenter.get_focus_tracking,
                 setter=presenter.set_focus_tracking,
-                prefs_key=flat_review_presenter.FlatReviewPresenter.KEY_FOCUS_TRACKING,
+                prefs_key=FlatReviewSettings.KEY_FOCUS_TRACKING,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.FLAT_REVIEW_SPEAK_UPDATES,
                 getter=presenter.get_speaks_updates,
                 setter=presenter.set_speaks_updates,
-                prefs_key=flat_review_presenter.FlatReviewPresenter.KEY_SPEAK_UPDATES,
+                prefs_key=FlatReviewSettings.KEY_SPEAK_UPDATES,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.FLAT_REVIEW_DISPLAY_UPDATES,
                 getter=presenter.get_displays_updates,
                 setter=presenter.set_displays_updates,
-                prefs_key=flat_review_presenter.FlatReviewPresenter.KEY_DISPLAY_UPDATES,
+                prefs_key=FlatReviewSettings.KEY_DISPLAY_UPDATES,
             ),
             preferences_grid_base.BooleanPreferenceControl(
                 label=guilabels.FLAT_REVIEW_RESTRICT,
                 getter=presenter.get_is_restricted,
                 setter=presenter.set_is_restricted,
-                prefs_key=flat_review_presenter.FlatReviewPresenter.KEY_RESTRICTED,
+                prefs_key=FlatReviewSettings.KEY_RESTRICTED,
             ),
         ]
         super().__init__(guilabels.FLAT_REVIEW, controls)

@@ -46,14 +46,15 @@ from . import (
     systemd,
 )
 from .acss import ACSS
+from .enums import VoiceType
 from .extension import Extension
+from .speech_manager_preferences_grid import VoicesPreferencesGrid, VoiceTypesPreferencesGrid
 from .speechserver import CapitalizationStyle, PunctuationStyle
 
 if TYPE_CHECKING:
     from .command import Command, KeyboardCommand
     from .dbus_service import UInt32
     from .scripts import default
-    from .speech_manager_preferences_grid import VoicesPreferencesGrid, VoiceTypesPreferencesGrid
     from .speechserver import SpeechServer
 
 SPEECH_FACTORY_MODULES: list[str] = ["speechdispatcherfactory", "spiel"]
@@ -121,7 +122,7 @@ class SpeechManager(Extension):
     ) -> ACSS:
         """Returns voice properties from dconf for the given voice type and set."""
 
-        vtype = voice_type or speechserver.VoiceType.DEFAULT
+        vtype = voice_type or VoiceType.DEFAULT
 
         if voice_set != gsettings_registry.PRIMARY_VOICE_SET:
             return self._get_voice_set_properties(vtype, voice_set)
@@ -178,7 +179,7 @@ class SpeechManager(Extension):
         """Returns the set's voice for voice_type, optionally falling back to its default voice."""
 
         if fall_back_to_default:
-            types: tuple[str, ...] = (voice_type, speechserver.VoiceType.DEFAULT)
+            types: tuple[str, ...] = (voice_type, VoiceType.DEFAULT)
         else:
             types = (voice_type,)
         for vtype in types:
@@ -233,20 +234,73 @@ class SpeechManager(Extension):
         """Auditions voice as the live default voice, bypassing voice-set rerouting."""
 
         self._auditioning_voice = True
-        self._set_runtime_voice(speechserver.VoiceType.DEFAULT, voice)
+        self._set_runtime_voice(VoiceType.DEFAULT, voice)
         if (server := self.get_server()) is not None:
             server.set_default_voice(voice)
             server.clear_cached_voice_properties()
 
     def restore_live_voices(self, voices: dict[str, ACSS]) -> None:
-        """Makes each staged voice live by voice type and resumes normal voice-set processing."""
+        """Makes each changed voice live, returns the others to their saved values."""
 
         self._auditioning_voice = False
-        for voice_type, voice in voices.items():
-            self._set_runtime_voice(voice_type, voice)
+        for voice_type in VoiceType:
+            if voice_type in voices:
+                self._set_runtime_voice(voice_type, voices[voice_type])
+            else:
+                self._remove_runtime_voice(voice_type)
         if (server := self.get_server()) is not None:
-            server.set_default_voice(voices.get(speechserver.VoiceType.DEFAULT, ACSS({})))
+            server.set_default_voice(voices.get(VoiceType.DEFAULT) or self.get_voice_properties())
             server.clear_cached_voice_properties()
+
+    def _remove_runtime_voice(self, voice_type: str) -> None:
+        """Removes the runtime voice overrides for voice_type."""
+
+        registry = gsettings_registry.get_registry()
+        for key in (
+            self.KEY_ESTABLISHED,
+            self.KEY_RATE,
+            self.KEY_PITCH,
+            self.KEY_PITCH_RANGE,
+            self.KEY_VOLUME,
+            self.KEY_FAMILY_NAME,
+            self.KEY_FAMILY_LANG,
+            self.KEY_FAMILY_DIALECT,
+            self.KEY_FAMILY_GENDER,
+            self.KEY_FAMILY_VARIANT,
+        ):
+            registry.remove_runtime_value(self._VOICE_SCHEMA, key, voice_type=voice_type)
+
+    def update_server_settings(self) -> None:
+        """Updates the punctuation, capitalization, and synthesizer on the speech server."""
+
+        server = self._get_server()
+        if server is None:
+            msg = "SPEECH MANAGER: Cannot get speech server."
+            debug.print_message(debug.LEVEL_INFO, msg, True)
+            return
+
+        self._apply_settings_to_server(server)
+
+    def restore_live_settings(self) -> None:
+        """Updates the speech server to the current settings, without a responsiveness check."""
+
+        if (server := self.get_server()) is None:
+            return
+
+        self._apply_settings_to_server(server)
+        server.set_default_voice(self.get_voice_properties())
+        server.clear_cached_voice_properties()
+
+    def _apply_settings_to_server(self, server: SpeechServer) -> None:
+        """Applies the punctuation, capitalization, and synthesizer settings to server."""
+
+        server.update_punctuation_level(PunctuationStyle[self.get_punctuation_level().upper()])
+        server.update_capitalization_style(self.get_capitalization_style())
+        synthesizer = self.get_synthesizer()
+        if synthesizer and synthesizer != (active := server.get_output_module()):
+            tokens = ["SPEECH MANAGER: Updating synthesizer from", active, "to", synthesizer, "."]
+            debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+            server.set_output_module(synthesizer)
 
     @staticmethod
     def apply_voice_overrides(base: ACSS, override: ACSS) -> ACSS:
@@ -274,14 +328,14 @@ class SpeechManager(Extension):
         if self._auditioning_voice:
             # A voice is being auditioned in preferences; let it be heard as configured.
             return voice
-        voice_type = voice.get(ACSS.VOICE_TYPE, speechserver.VoiceType.DEFAULT)
+        voice_type = voice.get(ACSS.VOICE_TYPE, VoiceType.DEFAULT)
         fall_back_to_default = True
         if self._active_voice_set != gsettings_registry.PRIMARY_VOICE_SET:
             # A command loaded a set manually; it overrides every voice type. The system
             # voice is used only if the set configures one; otherwise status messages stay
             # in Orca's own voice rather than borrowing the set's default voice.
             voice_set = self._active_voice_set
-            fall_back_to_default = voice_type != speechserver.VoiceType.SYSTEM
+            fall_back_to_default = voice_type != VoiceType.SYSTEM
         else:
             # Otherwise follow the voice's own language (automatic switching).
             family = voice.get(ACSS.FAMILY)
@@ -821,7 +875,7 @@ class SpeechManager(Extension):
             family_name = voice_family.get(speechserver.VoiceFamily.NAME, "")
             if family_name == voice_name:
                 server.set_voice_family(voice_family)
-                self._set_runtime_voice_family(speechserver.VoiceType.DEFAULT, voice_family)
+                self._set_runtime_voice_family(VoiceType.DEFAULT, voice_family)
                 result = True
                 break
 
@@ -1068,7 +1122,7 @@ class SpeechManager(Extension):
             )
             if found:
                 return value
-            voice = self.get_voice_set_voice(speechserver.VoiceType.DEFAULT, self._active_voice_set)
+            voice = self.get_voice_set_voice(VoiceType.DEFAULT, self._active_voice_set)
             if acss_key in voice:
                 return voice[acss_key]
 
@@ -1076,23 +1130,26 @@ class SpeechManager(Extension):
             self._VOICE_SCHEMA,
             key,
             "i" if key == self.KEY_RATE else "d",
+            voice_type=VoiceType.DEFAULT,
             default=default,
         )
 
     def _set_active_voice_value(self, key: str, value: Any) -> None:
         """Sets a temporary voice property for the selected voice set."""
 
+        if self._active_voice_set == gsettings_registry.PRIMARY_VOICE_SET:
+            self._sync_runtime_value_to_all_voice_types(key, value)
+            return
+
         gsettings_registry.get_registry().set_runtime_value(
             self._VOICE_SCHEMA, key, value, voice_set=self._active_voice_set
         )
-        if self._active_voice_set == gsettings_registry.PRIMARY_VOICE_SET:
-            self._sync_runtime_value_to_all_voice_types(key, value)
 
     def _sync_runtime_value_to_all_voice_types(self, key: str, value: Any) -> None:
         """Sets a runtime value override for all voice types."""
 
         registry = gsettings_registry.get_registry()
-        for vtype in speechserver.VoiceType:
+        for vtype in VoiceType:
             registry.set_runtime_value(self._VOICE_SCHEMA, key, value, voice_type=vtype)
 
     @dbus_service.setter
@@ -1791,7 +1848,7 @@ class SpeechManager(Extension):
 
         if script is not None and notify_user:
             presentation_manager.get_manager().present_message(
-                self._voice_set_display_name(set_id), voice_type=speechserver.VoiceType.DEFAULT
+                self._voice_set_display_name(set_id), voice_type=VoiceType.DEFAULT
             )
         return True
 
@@ -2095,18 +2152,12 @@ class SpeechManager(Extension):
     def create_voices_preferences_grid(self, app_name: str = "") -> VoicesPreferencesGrid:
         """Returns the GtkGrid containing the voices preferences UI."""
 
-        # pylint: disable-next=import-outside-toplevel
-        from .speech_manager_preferences_grid import VoicesPreferencesGrid
-
         return VoicesPreferencesGrid(self, app_name=app_name)
 
     def create_voice_types_preferences_grid(
         self, voices_grid: VoicesPreferencesGrid
     ) -> VoiceTypesPreferencesGrid:
         """Returns the GtkGrid containing the voice types preferences UI."""
-
-        # pylint: disable-next=import-outside-toplevel
-        from .speech_manager_preferences_grid import VoiceTypesPreferencesGrid
 
         return VoiceTypesPreferencesGrid(voices_grid)
 

@@ -44,6 +44,8 @@ from . import (
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
 from .extension import Extension
+from .typing_echo_presenter_preferences_grid import TypingEchoPreferencesGrid
+from .typing_echo_presenter_settings import TypingEchoSettings
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
@@ -52,7 +54,6 @@ if TYPE_CHECKING:
 
     from .command import Command
     from .scripts import default
-    from .typing_echo_presenter_preferences_grid import TypingEchoPreferencesGrid
 
 
 class PreferenceCategory(Enum):
@@ -81,19 +82,6 @@ class TypingEchoPresenter(Extension):
     GROUP_LABEL = guilabels.ECHO
 
     _SCHEMA = "typing-echo"
-    KEY_KEY_ECHO = "key-echo"
-    KEY_CHARACTER_ECHO = "character-echo"
-    KEY_WORD_ECHO = "word-echo"
-    KEY_SENTENCE_ECHO = "sentence-echo"
-    KEY_ALPHABETIC_KEYS = "alphabetic-keys"
-    KEY_NUMERIC_KEYS = "numeric-keys"
-    KEY_PUNCTUATION_KEYS = "punctuation-keys"
-    KEY_SPACE = "space"
-    KEY_MODIFIER_KEYS = "modifier-keys"
-    KEY_FUNCTION_KEYS = "function-keys"
-    KEY_ACTION_KEYS = "action-keys"
-    KEY_NAVIGATION_KEYS = "navigation-keys"
-    KEY_DIACRITICAL_KEYS = "diacritical-keys"
 
     def _get_setting(self, key: str, default: bool) -> bool:
         """Returns the dconf value for key, or default if not in dconf."""
@@ -108,6 +96,7 @@ class TypingEchoPresenter(Extension):
     def __init__(self) -> None:
         self._delayed_terminal_press: input_event.KeyboardEvent | None = None
         self._present_locking_keys: bool | None = None
+        self._key_echo_suspended: bool = False
         super().__init__()
 
     def _get_commands(self) -> list[Command]:
@@ -117,9 +106,6 @@ class TypingEchoPresenter(Extension):
 
     def create_preferences_grid(self) -> TypingEchoPreferencesGrid:
         """Returns the GtkGrid containing the Typing Echo preferences UI."""
-
-        # pylint: disable-next=import-outside-toplevel
-        from .typing_echo_presenter_preferences_grid import TypingEchoPreferencesGrid
 
         return TypingEchoPreferencesGrid(self)
 
@@ -289,7 +275,7 @@ class TypingEchoPresenter(Extension):
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_KEY_ECHO,
+        key=TypingEchoSettings.KEY_KEY_ECHO,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -300,7 +286,7 @@ class TypingEchoPresenter(Extension):
     def get_key_echo_enabled(self) -> bool:
         """Returns whether echo of key presses is enabled. See also get_character_echo_enabled."""
 
-        return self._get_setting(self.KEY_KEY_ECHO, True)
+        return self._get_setting(TypingEchoSettings.KEY_KEY_ECHO, True)
 
     @dbus_service.setter
     def set_key_echo_enabled(self, value: bool) -> bool:
@@ -308,11 +294,13 @@ class TypingEchoPresenter(Extension):
 
         tokens = ["TYPING ECHO PRESENTER: Setting enable key echo to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-        gsettings_registry.get_registry().set_runtime_value(self._SCHEMA, self.KEY_KEY_ECHO, value)
+        gsettings_registry.get_registry().set_runtime_value(
+            self._SCHEMA, TypingEchoSettings.KEY_KEY_ECHO, value
+        )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_CHARACTER_ECHO,
+        key=TypingEchoSettings.KEY_CHARACTER_ECHO,
         schema="typing-echo",
         gtype="b",
         default=False,
@@ -323,7 +311,7 @@ class TypingEchoPresenter(Extension):
     def get_character_echo_enabled(self) -> bool:
         """Returns whether echo of inserted characters is enabled."""
 
-        return self._get_setting(self.KEY_CHARACTER_ECHO, False)
+        return self._get_setting(TypingEchoSettings.KEY_CHARACTER_ECHO, False)
 
     @dbus_service.setter
     def set_character_echo_enabled(self, value: bool) -> bool:
@@ -332,12 +320,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable character echo to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_CHARACTER_ECHO, value
+            self._SCHEMA, TypingEchoSettings.KEY_CHARACTER_ECHO, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_WORD_ECHO,
+        key=TypingEchoSettings.KEY_WORD_ECHO,
         schema="typing-echo",
         gtype="b",
         default=False,
@@ -348,7 +336,7 @@ class TypingEchoPresenter(Extension):
     def get_word_echo_enabled(self) -> bool:
         """Returns whether word echo is enabled."""
 
-        return self._get_setting(self.KEY_WORD_ECHO, False)
+        return self._get_setting(TypingEchoSettings.KEY_WORD_ECHO, False)
 
     @dbus_service.setter
     def set_word_echo_enabled(self, value: bool) -> bool:
@@ -356,11 +344,13 @@ class TypingEchoPresenter(Extension):
 
         tokens = ["TYPING ECHO PRESENTER: Setting enable word echo to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-        gsettings_registry.get_registry().set_runtime_value(self._SCHEMA, self.KEY_WORD_ECHO, value)
+        gsettings_registry.get_registry().set_runtime_value(
+            self._SCHEMA, TypingEchoSettings.KEY_WORD_ECHO, value
+        )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_SENTENCE_ECHO,
+        key=TypingEchoSettings.KEY_SENTENCE_ECHO,
         schema="typing-echo",
         gtype="b",
         default=False,
@@ -371,7 +361,7 @@ class TypingEchoPresenter(Extension):
     def get_sentence_echo_enabled(self) -> bool:
         """Returns whether sentence echo is enabled."""
 
-        return self._get_setting(self.KEY_SENTENCE_ECHO, False)
+        return self._get_setting(TypingEchoSettings.KEY_SENTENCE_ECHO, False)
 
     @dbus_service.setter
     def set_sentence_echo_enabled(self, value: bool) -> bool:
@@ -380,12 +370,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable sentence echo to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_SENTENCE_ECHO, value
+            self._SCHEMA, TypingEchoSettings.KEY_SENTENCE_ECHO, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_ALPHABETIC_KEYS,
+        key=TypingEchoSettings.KEY_ALPHABETIC_KEYS,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -396,7 +386,7 @@ class TypingEchoPresenter(Extension):
     def get_alphabetic_keys_enabled(self) -> bool:
         """Returns whether alphabetic keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_ALPHABETIC_KEYS, True)
+        return self._get_setting(TypingEchoSettings.KEY_ALPHABETIC_KEYS, True)
 
     @dbus_service.setter
     def set_alphabetic_keys_enabled(self, value: bool) -> bool:
@@ -405,12 +395,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable alphabetic keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_ALPHABETIC_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_ALPHABETIC_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_NUMERIC_KEYS,
+        key=TypingEchoSettings.KEY_NUMERIC_KEYS,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -421,7 +411,7 @@ class TypingEchoPresenter(Extension):
     def get_numeric_keys_enabled(self) -> bool:
         """Returns whether numeric keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_NUMERIC_KEYS, True)
+        return self._get_setting(TypingEchoSettings.KEY_NUMERIC_KEYS, True)
 
     @dbus_service.setter
     def set_numeric_keys_enabled(self, value: bool) -> bool:
@@ -430,12 +420,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable numeric keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_NUMERIC_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_NUMERIC_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_PUNCTUATION_KEYS,
+        key=TypingEchoSettings.KEY_PUNCTUATION_KEYS,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -446,7 +436,7 @@ class TypingEchoPresenter(Extension):
     def get_punctuation_keys_enabled(self) -> bool:
         """Returns whether punctuation keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_PUNCTUATION_KEYS, True)
+        return self._get_setting(TypingEchoSettings.KEY_PUNCTUATION_KEYS, True)
 
     @dbus_service.setter
     def set_punctuation_keys_enabled(self, value: bool) -> bool:
@@ -455,12 +445,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable punctuation keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_PUNCTUATION_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_PUNCTUATION_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_SPACE,
+        key=TypingEchoSettings.KEY_SPACE,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -471,7 +461,7 @@ class TypingEchoPresenter(Extension):
     def get_space_enabled(self) -> bool:
         """Returns whether space key will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_SPACE, True)
+        return self._get_setting(TypingEchoSettings.KEY_SPACE, True)
 
     @dbus_service.setter
     def set_space_enabled(self, value: bool) -> bool:
@@ -479,11 +469,13 @@ class TypingEchoPresenter(Extension):
 
         tokens = ["TYPING ECHO PRESENTER: Setting enable space to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
-        gsettings_registry.get_registry().set_runtime_value(self._SCHEMA, self.KEY_SPACE, value)
+        gsettings_registry.get_registry().set_runtime_value(
+            self._SCHEMA, TypingEchoSettings.KEY_SPACE, value
+        )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_MODIFIER_KEYS,
+        key=TypingEchoSettings.KEY_MODIFIER_KEYS,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -494,7 +486,7 @@ class TypingEchoPresenter(Extension):
     def get_modifier_keys_enabled(self) -> bool:
         """Returns whether modifier keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_MODIFIER_KEYS, True)
+        return self._get_setting(TypingEchoSettings.KEY_MODIFIER_KEYS, True)
 
     @dbus_service.setter
     def set_modifier_keys_enabled(self, value: bool) -> bool:
@@ -503,12 +495,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable modifier keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_MODIFIER_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_MODIFIER_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_FUNCTION_KEYS,
+        key=TypingEchoSettings.KEY_FUNCTION_KEYS,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -519,7 +511,7 @@ class TypingEchoPresenter(Extension):
     def get_function_keys_enabled(self) -> bool:
         """Returns whether function keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_FUNCTION_KEYS, True)
+        return self._get_setting(TypingEchoSettings.KEY_FUNCTION_KEYS, True)
 
     @dbus_service.setter
     def set_function_keys_enabled(self, value: bool) -> bool:
@@ -528,12 +520,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable function keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_FUNCTION_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_FUNCTION_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_ACTION_KEYS,
+        key=TypingEchoSettings.KEY_ACTION_KEYS,
         schema="typing-echo",
         gtype="b",
         default=True,
@@ -544,7 +536,7 @@ class TypingEchoPresenter(Extension):
     def get_action_keys_enabled(self) -> bool:
         """Returns whether action keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_ACTION_KEYS, True)
+        return self._get_setting(TypingEchoSettings.KEY_ACTION_KEYS, True)
 
     @dbus_service.setter
     def set_action_keys_enabled(self, value: bool) -> bool:
@@ -553,12 +545,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable action keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_ACTION_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_ACTION_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_NAVIGATION_KEYS,
+        key=TypingEchoSettings.KEY_NAVIGATION_KEYS,
         schema="typing-echo",
         gtype="b",
         default=False,
@@ -569,7 +561,7 @@ class TypingEchoPresenter(Extension):
     def get_navigation_keys_enabled(self) -> bool:
         """Returns whether navigation keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_NAVIGATION_KEYS, False)
+        return self._get_setting(TypingEchoSettings.KEY_NAVIGATION_KEYS, False)
 
     @dbus_service.setter
     def set_navigation_keys_enabled(self, value: bool) -> bool:
@@ -578,12 +570,12 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable navigation keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_NAVIGATION_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_NAVIGATION_KEYS, value
         )
         return True
 
     @gsettings_registry.get_registry().gsetting(
-        key=KEY_DIACRITICAL_KEYS,
+        key=TypingEchoSettings.KEY_DIACRITICAL_KEYS,
         schema="typing-echo",
         gtype="b",
         default=False,
@@ -594,7 +586,7 @@ class TypingEchoPresenter(Extension):
     def get_diacritical_keys_enabled(self) -> bool:
         """Returns whether diacritical keys will be echoed when key echo is enabled."""
 
-        return self._get_setting(self.KEY_DIACRITICAL_KEYS, False)
+        return self._get_setting(TypingEchoSettings.KEY_DIACRITICAL_KEYS, False)
 
     @dbus_service.setter
     def set_diacritical_keys_enabled(self, value: bool) -> bool:
@@ -603,7 +595,7 @@ class TypingEchoPresenter(Extension):
         tokens = ["TYPING ECHO PRESENTER: Setting enable diacritical keys to", value, "."]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         gsettings_registry.get_registry().set_runtime_value(
-            self._SCHEMA, self.KEY_DIACRITICAL_KEYS, value
+            self._SCHEMA, TypingEchoSettings.KEY_DIACRITICAL_KEYS, value
         )
         return True
 
@@ -824,13 +816,25 @@ class TypingEchoPresenter(Extension):
             presentation_manager.get_manager().present_key_event(self._delayed_terminal_press)
             self._delayed_terminal_press = None
 
+    def suspend_key_echo(self, suspended: bool, reason: str = "") -> None:
+        """Suspends key echo independent of the key echo settings."""
+
+        tokens = ["TYPING ECHO PRESENTER: Key echo suspended:", suspended]
+        if reason:
+            tokens += [":", reason]
+        debug.print_tokens(debug.LEVEL_INFO, tokens, True)
+        self._key_echo_suspended = suspended
+
     def echo_keyboard_event(self, event: input_event.KeyboardEvent) -> None:
         """Presents the KeyboardEvent event."""
 
-        if not event.is_pressed_key():
-            presentation_manager.get_manager().clear_command_announcement()
+        if self._key_echo_suspended:
             return
 
+        if not event.is_pressed_key():
+            return
+
+        presentation_manager.get_manager().clear_command_announcement()
         self._delayed_terminal_press = None
         if not self.should_echo_keyboard_event(event):
             return

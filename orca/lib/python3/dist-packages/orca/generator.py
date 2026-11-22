@@ -26,7 +26,7 @@
 from __future__ import annotations
 
 import time
-from dataclasses import dataclass, field, replace
+from dataclasses import replace
 from difflib import SequenceMatcher
 from enum import Enum
 from typing import TYPE_CHECKING, Any
@@ -36,11 +36,13 @@ import gi
 gi.require_version("Atspi", "2.0")
 from gi.repository import Atspi
 
-from . import ax_cache_manager, braille, debug, focus_manager, messages, object_properties
+from . import ax_cache_manager, braille, debug, messages, object_properties
 from .ax_object import AXObject
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
 from .ax_value import AXValue
+from .enums import ActivePresentationMode, PresentationReason
+from .generator_context import ContentItem, ContentPosition, GeneratorContext
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Hashable
@@ -54,58 +56,6 @@ class GeneratorMode(Enum):
     SPEECH = "speech"
     BRAILLE = "braille"
     SOUND = "sound"
-
-
-class PresentationReason(Enum):
-    """Why a presentation is being generated, beyond what active_mode captures."""
-
-    FOCUS_CHANGE = "focus-change"
-    STATE_CHANGE = "state-change"
-    PROGRESS_BAR_UPDATE = "progress-bar-update"
-    WHERE_AM_I_BASIC = "where-am-i-basic"
-    WHERE_AM_I_DETAILED = "where-am-i-detailed"
-
-
-@dataclass(frozen=True)
-class ContentItem:
-    """The slice of an object's content being presented (one entry in a contents batch)."""
-
-    start_offset: int
-    end_offset: int
-    string: str
-    caret_offset: int | None = None
-
-
-@dataclass(frozen=True)
-class ContentPosition:
-    """An item's position within a batch of contents presented together."""
-
-    index: int = 0
-    total: int = 1
-    last_for_object: bool = True
-
-
-@dataclass(frozen=True)
-class GeneratorContext:
-    """Base settings context shared by all generators."""
-
-    enabled: bool
-    verbose: bool
-    focus: Atspi.Accessible | None
-    in_focus_mode: bool
-    active_mode: str | None
-    reason: PresentationReason
-    prior_obj: Atspi.Accessible | None
-    offset: int | None
-    leaving: bool
-    ancestor_of: Atspi.Accessible | None
-    content_item: ContentItem | None
-    content_position: ContentPosition | None
-    content_subject: Atspi.Accessible | None
-    resolved_role: Atspi.Role | str | None
-    role_subject: Atspi.Accessible | None
-    include_context: bool
-    presented_names: set[Atspi.Accessible] | None = field(default=None, kw_only=True)
 
 
 class _GeneratorCache:
@@ -427,15 +377,16 @@ class Generator:
     def _is_minimal(self) -> bool:
         """Returns True if only the changed state/value should be presented."""
 
-        return self._get_reason() in (
-            PresentationReason.STATE_CHANGE,
-            PresentationReason.PROGRESS_BAR_UPDATE,
-        )
+        reason = self._get_reason()
+        return reason.is_state_change() or reason == PresentationReason.PROGRESS_BAR_UPDATE
 
     def _is_say_all(self) -> bool:
         """Returns True if this presentation is part of a say-all read."""
 
-        return self._context is not None and self._context.active_mode == focus_manager.SAY_ALL
+        return (
+            self._context is not None
+            and self._context.active_mode == ActivePresentationMode.SAY_ALL
+        )
 
     def _get_offset(self) -> int | None:
         """Returns the caller-supplied caret offset from the context."""
@@ -1097,7 +1048,8 @@ class Generator:
     @log_generator_output
     def _generate_state_checked_for_cell(self, obj: Atspi.Accessible) -> list[Any]:
         result = []
-        if self._script.utilities.has_meaningful_toggle_action(obj):
+        checkable = AXUtilities.is_checkable(obj)
+        if checkable or self._script.utilities.has_meaningful_toggle_action(obj):
             result.extend(self.generate(obj, role=Atspi.Role.CHECK_BOX, include_context=False))
 
         return result
@@ -1601,12 +1553,18 @@ class Generator:
 
         result: list[Any] = []
         original_context = self._context
+        names = original_context.presented_names
         prior = original_context.prior_obj
         prior_reading_row = self._reading_row
         self._reading_row = reading_row
         for index, cell in enumerate(cells):
             with_context = index == 0 or detailed
-            self._context = replace(original_context, prior_obj=prior, include_context=with_context)
+            self._context = replace(
+                original_context,
+                prior_obj=prior,
+                include_context=with_context,
+                presented_names=names if names is not None else set(),
+            )
             cell_result = self._generate_table_cell_contents(cell)
             if cell_result and result and self._mode is GeneratorMode.BRAILLE:
                 result.append(braille.Region(object_properties.TABLE_CELL_DELIMITER_BRAILLE))
@@ -1619,22 +1577,6 @@ class Generator:
             result.extend(self._generate_position_in_list(obj))
         if reading_row:
             result.extend(self._generate_state_unselected(obj))
-        return result
-
-    # TODO - JD: If we had dedicated generators for cell types, we wouldn't need this.
-    @log_generator_output
-    def _generate_column_header_if_toggle_and_no_text(
-        self,
-        obj: Atspi.Accessible,
-    ) -> list[Any]:
-        if not self._get_is_nameless_toggle(obj):
-            return []
-
-        result = []
-        headers = AXUtilities.get_column_headers(obj)
-        if headers:
-            result.append(AXObject.get_name(headers[0]) or AXText.get_all_text(headers[0]))
-
         return result
 
     # TODO - JD: This needs to also be looked into.
@@ -1749,10 +1691,7 @@ class Generator:
             return attrs.get("valuetext")
 
         if not AXObject.get_child_count(obj):
-            if not AXUtilities.is_editable(obj):
-                text = AXText.get_all_text(obj)
-                return text if text and "\ufffc" not in text else AXObject.get_name(obj)
-            return AXObject.get_name(obj) or AXText.get_all_text(obj)
+            return AXText.get_all_text(obj)
 
         children = list(AXObject.iter_children(obj, AXUtilities.is_text_input))
         if len(children) == 1:
@@ -1763,7 +1702,8 @@ class Generator:
         if len(selected) == 1:
             return AXObject.get_name(selected[0]) or AXText.get_all_text(selected[0])
 
-        return AXObject.get_name(obj) or AXText.get_all_text(obj)
+        # Qt5 exposes the selected item's text as the name, but lacks Selection support.
+        return AXText.get_all_text(obj) or AXObject.get_name(obj)
 
     @log_generator_output
     def _generate_value(self, obj: Atspi.Accessible) -> list[Any]:

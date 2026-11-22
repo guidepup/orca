@@ -51,10 +51,10 @@ from .ax_object import AXObject
 from .ax_table import AXTable
 from .ax_text import AXText
 from .ax_utilities import AXUtilities
-from .ax_utilities_text import TextUnit
+from .enums import TextUnit
 
 if TYPE_CHECKING:
-    from .ax_utilities_text import CaretSetReason
+    from .enums import CaretSetReason
 
 
 class Utilities:
@@ -164,10 +164,12 @@ class Utilities:
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
         return results
 
-    def grab_focus_when_setting_caret(self, obj: Atspi.Accessible) -> bool:
+    def grab_focus_when_setting_caret(
+        self, obj: Atspi.Accessible, state_set: Atspi.StateSet | None = None
+    ) -> bool:
         """Returns true if we should grab focus when setting the caret."""
 
-        return AXUtilities.is_focusable(obj)
+        return AXUtilities.is_focusable(obj, state_set)
 
     def grab_focus_before_routing(self, obj: Atspi.Accessible) -> bool:
         """Returns true if we should grab focus before routing the cursor."""
@@ -252,12 +254,27 @@ class Utilities:
         if (
             focus_manager.get_manager().in_say_all()
             or table_navigator.get_navigator().last_input_event_was_navigation_command()
-            or input_event_manager.get_manager().last_event_was_tab_navigation()
-            or not AXUtilities.cell_row_changed(obj, previous_object)
         ):
             return False
 
-        table = AXUtilities.get_table(obj)
+        table = None
+        if input_event_manager.get_manager().last_event_was_tab_navigation():
+            if previous_object is None or obj == previous_object:
+                return False
+            table = AXUtilities.get_table(obj)
+            if not AXObject.supports_selection(table) or AXUtilities.is_ancestor(
+                previous_object, table, inclusive=True
+            ):
+                return False
+            row = AXObject.get_parent(obj)
+            if not (AXUtilities.is_table_row(row) and AXUtilities.is_selected(row)):
+                row_index, _column = AXTable.get_cell_coordinates(obj, prefer_attribute=False)
+                if not AXTable.is_row_selected(table, row_index):
+                    return False
+        elif not AXUtilities.cell_row_changed(obj, previous_object):
+            return False
+
+        table = table or AXUtilities.get_table(obj)
         if table is None:
             return False
 
@@ -486,13 +503,16 @@ class Utilities:
     ) -> tuple[Atspi.Accessible, int]:
         """Returns an (obj, offset) tuple representing the current location."""
 
+        focus = focus_manager.get_manager().get_locus_of_focus()
         obj, offset = self._caret_context
-        if obj is not None:
+        if obj is not None and obj == focus:
             tokens = ["SCRIPT UTILITIES: Returning cached caret context", obj, offset]
             debug.print_tokens(debug.LEVEL_INFO, tokens, True)
             return obj, offset
 
-        obj = focus_manager.get_manager().get_locus_of_focus()
+        if obj is not None:
+            self.clear_caret_context()
+        obj = focus
         offset = AXText.get_caret_offset(obj)
         tokens = ["SCRIPT UTILITIES: Returning focus + caret offset", obj, offset]
         debug.print_tokens(debug.LEVEL_INFO, tokens, True)
